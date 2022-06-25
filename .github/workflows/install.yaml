@@ -16,6 +16,35 @@ on:
 
 jobs:
   install-test:
+    strategy:
+      matrix:
+        magento:
+          - magento/project-community-edition:^2.3
+          - magento/project-community-edition:~2.3.5
+          - magento/project-community-edition:^2.4 
+          - magento/project-community-edition:~2.4.1 
+          - magento/project-community-edition:~2.4.2
+          - magento/project-community-edition:~2.4.3
+          - magento/project-community-edition:~2.4.4 
+          - magento/project-community-edition
+        include:
+          - magento: magento/project-community-edition:~2.3.5
+            phpVersion: 7.2
+            composer_version: 1
+          - magento: magento/project-community-edition:^2.3
+            php_version: 7.4
+          - magento: magento/project-community-edition:^2.4
+            php_version: 8.1
+          - magento: magento/project-community-edition:~2.4.1
+            php_version: 7.4
+            composer_version: 1
+          - magento: magento/project-community-edition:~2.4.2
+            php_version: 7.4
+          - magento: magento/project-community-edition:~2.4.3
+            php_version: 7.4
+          - magento: magento/project-community-edition:~2.4.4 
+            php_version: 8.1
+          - magento: magento/project-community-edition 
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
