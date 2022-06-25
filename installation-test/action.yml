@@ -74,7 +74,7 @@ runs:
     - name: "Cache Composer Packages"
       uses: actions/cache@v3
       with:
-        key: 'composer | "$(Agent.OS)"  | composer.lock | ${{ inputs.composer_version }} | ${{ inputs.php_version }} | ${{ inputs.magento_version }}' 
+        key: 'composer | v2 | "$(Agent.OS)"  | composer.lock | ${{ inputs.composer_version }} | ${{ inputs.php_version }} | ${{ inputs.magento_version }}' 
         path: ${{ steps.composer-cache.outputs.dir }}
 
     - run: composer config repositories.local path ${{ inputs.source_folder }}
