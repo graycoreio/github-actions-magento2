@@ -17,6 +17,10 @@ inputs:
     default: composer run test
     description: "The test command"
 
+  composer_auth:
+    required: true
+    description: "Composer Authentication Credentials"
+    
 runs:
   using: "composite"
   steps: 
