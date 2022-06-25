@@ -28,23 +28,39 @@ jobs:
           - magento/project-community-edition:~2.4.4 
           - magento/project-community-edition
         include:
+          
           - magento: magento/project-community-edition:~2.3.5
             phpVersion: 7.2
             composer_version: 1
+          
           - magento: magento/project-community-edition:^2.3
             php_version: 7.4
+            composer_version: 2
+          
           - magento: magento/project-community-edition:^2.4
             php_version: 8.1
+            composer_version: 2
+          
           - magento: magento/project-community-edition:~2.4.1
             php_version: 7.4
             composer_version: 1
+          
           - magento: magento/project-community-edition:~2.4.2
             php_version: 7.4
+            composer_version: 2
+
           - magento: magento/project-community-edition:~2.4.3
             php_version: 7.4
+            composer_version: 2
+
           - magento: magento/project-community-edition:~2.4.4 
             php_version: 8.1
+            composer_version: 2
+
           - magento: magento/project-community-edition 
+            composer_version: 2
+            php_version: 8.1
+
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -52,7 +68,7 @@ jobs:
       with:
         composer_version: ${{ matrix.composer_version }}
         php_version: ${{ matrix.php_version }}
-        magento_version: ${{ matrix.magento_version }}
+        magento_version: ${{ matrix.php_version }}
         composer_auth: ${{ secrets.COMPOSER_AUTH }}
         package_name: graycore/magento2-demo-package
         source_folder: $GITHUB_WORKSPACE/_test/demo-package
