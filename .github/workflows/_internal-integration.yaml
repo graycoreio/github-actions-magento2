@@ -15,6 +15,7 @@ on:
 jobs:
   integration-workflow:
     uses: ./.github/workflows/integration.yaml
+    with:
+      source_folder: _test/demo-package
     secrets:
       composer_auth: ${{ secrets.COMPOSER_AUTH }}
-      source_folder: _test/demo-package
