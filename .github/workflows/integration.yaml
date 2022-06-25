@@ -58,7 +58,7 @@ on:
       test_command:
         type: string
         required: false
-        default: dev/tests/integration ../../../vendor/bin/phpunit
+        default: ../../../vendor/bin/phpunit
         description: "The integration test command to run"
 
     secrets:
@@ -133,5 +133,5 @@ jobs:
         COMPOSER_AUTH: ${{ secrets.composer_auth }}
     
     - run: ${{ inputs.test_command }}
-      working-directory:  ${{ inputs.magento_directory }}
+      working-directory:  ${{ inputs.magento_directory }}/dev/tests/integration
       name: Run Integration Tests
