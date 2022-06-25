@@ -54,8 +54,9 @@ runs:
       with:
         php-version: ${{ inputs.php_version }}
 
-    - run: Pin to Composer Version ${{ inputs.composer_version }}
-      shell: composer self-update --${{ inputs.composer_version }}
+    - run: composer self-update --${{ inputs.composer_version }}
+      name: Pin to Composer Version ${{ inputs.composer_version }}
+      shell: bash
 
     - name: "Cache Composer Packages"
       uses: actions/cache@v3
@@ -64,15 +65,18 @@ runs:
         path:  ${{ inputs.cache_directory }}
 
     - run: composer create-project --repository-url="${{ inputs.magento_repository }}" ${{ inputs.magento_directory }} --no-install
-      shell: Create Magento ${{ inputs.magento_version }} Project 
+      shell: bash
+      name: Create Magento ${{ inputs.magento_version }} Project 
+
+    - run: composer config repositories.local path ${{ inputs.source_folder }}
+      name: Add Github Repo for Testing
+      working-directory:  ${{ inputs.magento_directory }}
+      shell: bash
     
-    - run: Add Github Repo for Testing
-      working-directory: $(magedir)
-      shell: composer config repositories.local path ${{ inputs.source_folder }}
-    
-    - run: Require and attempt install
-      working-directory: $(magedir)
-      shell: composer require ${{ inputs.package_name }} "@dev" --no-update && composer install --dry-run
+    - run: composer require ${{ inputs.package_name }} "@dev" --no-update && composer install --dry-run
+      name: Require and attempt install
+      working-directory:  ${{ inputs.magento_directory }}
+      shell: bash
 
 branding:
   icon: "code"
