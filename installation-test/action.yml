@@ -68,25 +68,28 @@ runs:
       with:
         key: 'composer | "$(Agent.OS)"  | composer.lock | ${{ inputs.composer_version }} | ${{ inputs.php_version }} | ${{ inputs.magento_version }}' 
         path: ${{ inputs.COMPOSER_CACHE_DIR }}
-
-    - run: composer create-project --repository-url="${{ inputs.magento_repository }}" "${{ inputs.magento_version }}" ${{ inputs.magento_directory }} --no-install
-      shell: bash
-      env:
-        COMPOSER_AUTH: ${{ inputs.composer_auth }}
-      name: Create Magento ${{ inputs.magento_version }} Project 
-
-    - run: composer config repositories.local path ${{ inputs.source_folder }}
-      name: Add Github Repo for Testing
-      working-directory:  ${{ inputs.magento_directory }}
-      shell: bash
     
-    - run: composer require ${{ inputs.package_name }} "@dev" --no-update && composer install --dry-run
-      name: Require and attempt install
-      working-directory:  ${{ inputs.magento_directory }}
+    - run: echo ${{ inputs.COMPOSER_CACHE_DIR }}
       shell: bash
-      env:
-        COMPOSER_CACHE_DIR: ${{ inputs.COMPOSER_CACHE_DIR }}
-        COMPOSER_AUTH: ${{ inputs.composer_auth }}
+
+    # - run: composer create-project --repository-url="${{ inputs.magento_repository }}" "${{ inputs.magento_version }}" ${{ inputs.magento_directory }} --no-install
+    #   shell: bash
+    #   env:
+    #     COMPOSER_AUTH: ${{ inputs.composer_auth }}
+    #   name: Create Magento ${{ inputs.magento_version }} Project 
+
+    # - run: composer config repositories.local path ${{ inputs.source_folder }}
+    #   name: Add Github Repo for Testing
+    #   working-directory:  ${{ inputs.magento_directory }}
+    #   shell: bash
+    
+    # - run: composer require ${{ inputs.package_name }} "@dev" --no-update && composer install --dry-run
+    #   name: Require and attempt install
+    #   working-directory:  ${{ inputs.magento_directory }}
+    #   shell: bash
+    #   env:
+    #     COMPOSER_CACHE_DIR: ${{ inputs.COMPOSER_CACHE_DIR }}
+    #     COMPOSER_AUTH: ${{ inputs.composer_auth }}
 
 branding:
   icon: "code"
