@@ -4,7 +4,7 @@ on:
       
       source_folder:
         type: string
-        required: true
+        required: false
         default: $GITHUB_WORKSPACE
         description: "The source folder of the package"
       
@@ -17,29 +17,29 @@ on:
         type: string
         default: "2"
         description: The composer version to use.
-        required: true
+        required: false
       
       php_version:
         type: string
         default: "8.1"
         description: The php version to use.
-        required: true
+        required: false
       
       magento_version: 
         type: string
         default: magento/project-community-edition:>2.4
         description: The magento version to use.
-        required: true
+        required: false
       
       magento_directory:
         type: string
-        required: true
+        required: false
         default: "../magento2"
         description: "The folder where Magento will be installed"
       
       magento_repository:
         type: string
-        required: true
+        required: false
         default: "https://repo.magento.com/"
         description: "Where to install Magento from"
       
@@ -47,17 +47,17 @@ on:
         type: string
         default: mysql:8.0
         description: The mysql image to use.
-        required: true
+        required: false
       
       elasticsearch_image:
         type: string
         default: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
         description: The elasticsearch image to use.
-        required: true
+        required: false
 
       test_command:
         type: string
-        required: true
+        required: false
         default: dev/tests/integration ../../../vendor/bin/phpunit
         description: "The integration test command to run"
 
