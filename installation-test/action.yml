@@ -1,6 +1,8 @@
 name: "Installation Test"
 author: "Graycore"
 description: " A Github Action that tests the installability of a Magento Package"
+secrets:
+  
 inputs:
   php_version: 
     required: true
@@ -45,6 +47,10 @@ inputs:
     required: true
     default: "https://repo.magento.com/"
     description: "Where to install Magento from"
+  
+  composer_auth:
+    required: true
+    description: "Composer Authentication Credentials"
 
 runs:
   using: "composite"
@@ -66,6 +72,8 @@ runs:
 
     - run: composer create-project --repository-url="${{ inputs.magento_repository }}" ${{ inputs.magento_directory }} --no-install
       shell: bash
+      env:
+        COMPOSER_AUTH: ${{ inputs.composer_auth }}
       name: Create Magento ${{ inputs.magento_version }} Project 
 
     - run: composer config repositories.local path ${{ inputs.source_folder }}
@@ -77,6 +85,8 @@ runs:
       name: Require and attempt install
       working-directory:  ${{ inputs.magento_directory }}
       shell: bash
+      env:
+        COMPOSER_AUTH: ${{ inputs.composer_auth }}
 
 branding:
   icon: "code"
