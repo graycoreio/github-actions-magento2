@@ -9,7 +9,7 @@ inputs:
 
   source_folder:
     required: true
-    default: $GITHUB_WORKSPACE
+    default: .
     description: "The source folder of the package"
 
   test_command:
