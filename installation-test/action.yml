@@ -69,7 +69,7 @@ runs:
         key: 'composer | "$(Agent.OS)"  | composer.lock | ${{ inputs.composer_version }} | ${{ inputs.php_version }} | ${{ inputs.magento_version }}' 
         path:  ${{ inputs.cache_directory }}
 
-    - run: composer create-project --repository-url="${{ inputs.magento_repository }}" ${{ inputs.magento_version }} ${{ inputs.magento_directory }} --no-install
+    - run: composer create-project --repository-url="${{ inputs.magento_repository }}" "${{ inputs.magento_version }}" ${{ inputs.magento_directory }} --no-install
       shell: bash
       env:
         COMPOSER_AUTH: ${{ inputs.composer_auth }}
