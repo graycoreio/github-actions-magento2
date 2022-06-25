@@ -1,7 +1,6 @@
 name: "Installation Test"
 author: "Graycore"
 description: " A Github Action that tests the installability of a Magento Package"
-secrets:
   
 inputs:
   php_version: 
