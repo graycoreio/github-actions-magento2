@@ -1,7 +1,12 @@
 name: "Installation Test"
 author: "Graycore"
 description: " A Github Action that tests the installability of a Magento Package"
-inputs: 
+inputs:
+  php_version: 
+    required: true
+    default: "2"
+    description: "PHP Version to use"
+
   cache_key: 
     required: true
     default: "2"
@@ -46,6 +51,8 @@ runs:
   steps:
     - name: Set PHP Version
       uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ inputs.php_version }}
 
     - run: Pin to Composer Version ${{ inputs.composer_version }}
       shell: composer self-update --${{ inputs.composer_version }}
@@ -53,10 +60,7 @@ runs:
     - name: "Cache Composer Packages"
       uses: actions/cache@v3
       with:
-        ${{ if eq(inputs['key'], '') }}:
-          key: 'composer | "$(Agent.OS)" | composer.lock'
-        ${{ if ne(inputs['key'], '') }}:
-          key: 'composer | "$(Agent.OS)" | ${{ inputs.cache_key }} | composer.lock'
+        key: 'composer | "$(Agent.OS)"  | composer.lock | ${{ inputs.composer_version }} | ${{ inputs.php_version }} | ${{ inputs.magento_version }}' 
         path:  ${{ inputs.cache_directory }}
 
     - run: composer create-project --repository-url="${{ inputs.magento_repository }}" ${{ inputs.magento_directory }} --no-install
