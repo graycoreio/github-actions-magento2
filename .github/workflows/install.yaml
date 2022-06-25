@@ -24,6 +24,7 @@ jobs:
           - magento/project-community-edition:>=2.4.1 <2.4.2
           - magento/project-community-edition:>=2.4.2 <2.4.3
           - magento/project-community-edition:>=2.4.3 <2.4.4
+          - magento/project-community-edition:>=2.4.4 <2.4.5
           - magento/project-community-edition
         include:
           
@@ -45,6 +46,10 @@ jobs:
 
           - magento: magento/project-community-edition:>=2.4.3 <2.4.4
             php_version: 7.4
+            composer_version: 2
+
+          - magento: magento/project-community-edition:>=2.4.4 <2.4.5
+            php_version: 8.1
             composer_version: 2
 
           - magento: magento/project-community-edition 
