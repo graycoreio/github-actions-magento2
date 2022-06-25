@@ -1,0 +1,75 @@
+name: "Installation Test"
+author: "Graycore"
+description: " A Github Action that tests the installability of a Magento Package"
+inputs: 
+  cache_key: 
+    required: true
+    default: "2"
+    description: "The cache key used to hold Composer Packages"
+
+  cache_directory:
+    required: true
+    default:  $(Pipeline.Workspace)/.composer
+    description: "The cache directory where Composer Packages are held"
+  
+  composer_version: 
+    required: true
+    default: "2"
+    description: "The version of composer to use"
+
+  source_folder:
+    required: true
+    default: $(GITHUB_WORKSPACE)
+    description: "The source folder of the package"
+
+  package_name:
+    required: true
+    description: "The name of the package"
+
+  magento_directory:
+    required: true
+    default: "../magento2"
+    description: "The folder where Magento will be installed"
+
+  magento_version:
+    required: true
+    default: "magento/project-community-edition"
+    description: "The version of Magento to test against"
+    
+  magento_repository:
+    required: true
+    default: "https://repo.magento.com/"
+    description: "Where to install Magento from"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set PHP Version
+      uses: shivammathur/setup-php@v2
+
+    - run: Pin to Composer Version ${{ inputs.composer_version }}
+      shell: composer self-update --${{ inputs.composer_version }}
+
+    - name: "Cache Composer Packages"
+      uses: actions/cache@v3
+      with:
+        ${{ if eq(inputs['key'], '') }}:
+          key: 'composer | "$(Agent.OS)" | composer.lock'
+        ${{ if ne(inputs['key'], '') }}:
+          key: 'composer | "$(Agent.OS)" | ${{ inputs.cache_key }} | composer.lock'
+        path:  ${{ inputs.cache_directory }}
+
+    - run: composer create-project --repository-url="${{ inputs.magento_repository }}" ${{ inputs.magento_directory }} --no-install
+      shell: Create Magento ${{ inputs.magento_version }} Project 
+    
+    - run: Add Github Repo for Testing
+      working-directory: $(magedir)
+      shell: composer config repositories.local path ${{ inputs.source_folder }}
+    
+    - run: Require and attempt install
+      working-directory: $(magedir)
+      shell: composer require ${{ inputs.package_name }} "@dev" --no-update && composer install --dry-run
+
+branding:
+  icon: "code"
+  color: "green"
