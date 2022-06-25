@@ -59,7 +59,7 @@ runs:
       shell: bash
 
     - name: Get Composer Cache Directory
-      working-directory: "${{ inputs.source_folder }}"
+      working-directory: $(${{ inputs.source_folder }})
       shell: bash
       id: composer-cache
       run: |
