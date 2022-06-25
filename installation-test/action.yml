@@ -76,6 +76,7 @@ runs:
       shell: bash
       env:
         COMPOSER_AUTH: ${{ inputs.composer_auth }}
+        COMPOSER_CACHE_DIR: ${{ inputs.COMPOSER_CACHE_DIR }}
       name: Create Magento ${{ inputs.magento_version }} Project 
 
     - name: Get Composer Cache Directory
