@@ -50,6 +50,9 @@ jobs:
     - uses: actions/checkout@v2
     - uses: ./installation-test
       with:
+        composer_version: ${{ matrix.composer_version }}
+        php_version: ${{ matrix.php_version }}
+        magento_version: ${{ matrix.magento_version }}
         composer_auth: ${{ secrets.COMPOSER_AUTH }}
         package_name: graycore/magento2-demo-package
         source_folder: $GITHUB_WORKSPACE/_test/demo-package
