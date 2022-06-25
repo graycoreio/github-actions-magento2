@@ -64,18 +64,6 @@ on:
     secrets:
       composer_auth:
         required: true
-  push:
-    branches:
-    - main
-    paths-ignore:
-    - "docs/**"
-    - README.md
-  pull_request:
-    branches:
-    - main
-    paths-ignore:
-    - "docs/**"
-    - README.md
 
 jobs:
   integration_test:
