@@ -26,5 +26,5 @@ jobs:
     - uses: actions/checkout@v2
     - uses: ./unit-test
       with:
-        source_folder: $GITHUB_WORKSPACE/_test/demo-package
+        source_folder: _test/demo-package
         php_version: ${{ matrix.php_version }}
