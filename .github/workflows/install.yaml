@@ -15,9 +15,8 @@ on:
     - README.md
 
 jobs:
-  build-test:
+  install-test:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
-    - uses: 
+    - uses: ./installation-test
