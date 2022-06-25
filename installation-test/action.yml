@@ -12,11 +12,6 @@ inputs:
     required: true
     default: "2"
     description: "The cache key used to hold Composer Packages"
-
-  cache_directory:
-    required: true
-    default:  $(Pipeline.Workspace)/.composer
-    description: "The cache directory where Composer Packages are held"
   
   composer_version: 
     required: true
@@ -63,11 +58,17 @@ runs:
       name: Pin to Composer Version ${{ inputs.composer_version }}
       shell: bash
 
+    - name: Get Composer Cache Directory
+      shell: bash
+      id: composer-cache
+      run: |
+        echo "::set-output name=dir::$(composer config cache-files-dir)"
+
     - name: "Cache Composer Packages"
       uses: actions/cache@v3
       with:
         key: 'composer | "$(Agent.OS)"  | composer.lock | ${{ inputs.composer_version }} | ${{ inputs.php_version }} | ${{ inputs.magento_version }}' 
-        path:  ${{ inputs.cache_directory }}
+        path: ${{ steps.composer-cache.outputs.dir }}
 
     - run: composer create-project --repository-url="${{ inputs.magento_repository }}" "${{ inputs.magento_version }}" ${{ inputs.magento_directory }} --no-install
       shell: bash

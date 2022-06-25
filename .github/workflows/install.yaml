@@ -29,7 +29,7 @@ jobs:
         include:
           
           - magento: magento/project-community-edition:>=2.3 <2.4
-            php_version: 7.2
+            php_version: 7.4
             composer_version: 1
           
           - magento: magento/project-community-edition:>=2.4.0 <2.4.1
