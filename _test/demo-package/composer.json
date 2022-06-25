@@ -9,6 +9,9 @@
             "email": "damienwebdev@gmail.com"
         }
     ],
+    "scripts": {
+        "test": "./vendor/bin/phpunit Test/Unit"
+    },
     "archive": {
         "exclude": [
             "/docs",
