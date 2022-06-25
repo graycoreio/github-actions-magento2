@@ -130,7 +130,7 @@ jobs:
       shell: bash
       env:
         COMPOSER_CACHE_DIR: ${{ steps.composer-cache.outputs.dir }}
-        COMPOSER_AUTH: ${{ inputs.composer_auth }}
+        COMPOSER_AUTH: ${{ secrets.composer_auth }}
     
     - run: ${{ inputs.test_command }}
       name: Run Integration Tests
