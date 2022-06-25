@@ -44,7 +44,7 @@ jobs:
             composer_version: 2
 
           - magento: magento/project-community-edition:>=2.4.3 <2.4.4
-            php_version: 8.1
+            php_version: 7.4
             composer_version: 2
 
           - magento: magento/project-community-edition 
