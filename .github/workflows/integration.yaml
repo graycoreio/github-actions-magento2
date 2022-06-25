@@ -132,6 +132,6 @@ jobs:
         COMPOSER_CACHE_DIR: ${{ steps.composer-cache.outputs.dir }}
         COMPOSER_AUTH: ${{ secrets.composer_auth }}
     
-    # - run: ${{ inputs.test_command }}
-    #   working-directory:  ${{ inputs.magento_directory }}
-    #   name: Run Integration Tests
+    - run: ${{ inputs.test_command }}
+      working-directory:  ${{ inputs.magento_directory }}
+      name: Run Integration Tests
