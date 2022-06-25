@@ -15,7 +15,7 @@ inputs:
 
   COMPOSER_CACHE_DIR: 
     required: true
-    default: $GITHUB_WORKSPACE/cache
+    default: $GITHUB_WORKSPACE/.composer
     description: The Composer cache directory.
   
   composer_version: 
@@ -65,11 +65,9 @@ runs:
 
     - name: "Cache Composer Packages"
       uses: actions/cache@v3
-      env: 
-        COMPOSER_CACHE_DIR: ${{ inputs.COMPOSER_CACHE_DIR }}
       with:
         key: 'composer | "$(Agent.OS)"  | composer.lock | ${{ inputs.composer_version }} | ${{ inputs.php_version }} | ${{ inputs.magento_version }}' 
-        path: $COMPOSER_CACHE_DIR
+        path: ${{ inputs.COMPOSER_CACHE_DIR }}
 
     - run: composer create-project --repository-url="${{ inputs.magento_repository }}" "${{ inputs.magento_version }}" ${{ inputs.magento_directory }} --no-install
       shell: bash
