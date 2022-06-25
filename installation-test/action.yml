@@ -12,11 +12,6 @@ inputs:
     required: true
     default: "2"
     description: "The cache key used to hold Composer Packages"
-
-  COMPOSER_CACHE_DIR: 
-    required: true
-    default: $GITHUB_WORKSPACE/.composer
-    description: The Composer cache directory.
   
   composer_version: 
     required: true
@@ -63,20 +58,10 @@ runs:
       name: Pin to Composer Version ${{ inputs.composer_version }}
       shell: bash
 
-    - name: "Cache Composer Packages"
-      uses: actions/cache@v3
-      with:
-        key: 'composer | "$(Agent.OS)"  | composer.lock | ${{ inputs.composer_version }} | ${{ inputs.php_version }} | ${{ inputs.magento_version }}' 
-        path: ${{ inputs.COMPOSER_CACHE_DIR }}
-    
-    - run: echo ${{ inputs.COMPOSER_CACHE_DIR }}
-      shell: bash
-
     - run: composer create-project --repository-url="${{ inputs.magento_repository }}" "${{ inputs.magento_version }}" ${{ inputs.magento_directory }} --no-install
       shell: bash
       env:
         COMPOSER_AUTH: ${{ inputs.composer_auth }}
-        COMPOSER_CACHE_DIR: ${{ inputs.COMPOSER_CACHE_DIR }}
       name: Create Magento ${{ inputs.magento_version }} Project 
 
     - name: Get Composer Cache Directory
@@ -85,7 +70,15 @@ runs:
       id: composer-cache
       run: |
         echo "::set-output name=dir::$(composer config cache-files-dir)"
-        echo $(composer config cache-files-dir)
+
+    - name: "Cache Composer Packages"
+      uses: actions/cache@v3
+      with:
+        key: 'composer | "$(Agent.OS)"  | composer.lock | ${{ inputs.composer_version }} | ${{ inputs.php_version }} | ${{ inputs.magento_version }}' 
+        path: ${{ steps.composer-cache.outputs.dir }}
+    
+    - run: echo ${{ steps.composer-cache.outputs.dir }}
+      shell: bash
 
     # - run: composer config repositories.local path ${{ inputs.source_folder }}
     #   name: Add Github Repo for Testing
