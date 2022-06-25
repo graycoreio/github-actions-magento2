@@ -26,7 +26,7 @@ inputs:
 
   source_folder:
     required: true
-    default: $(GITHUB_WORKSPACE)
+    default: $GITHUB_WORKSPACE
     description: "The source folder of the package"
 
   package_name:
