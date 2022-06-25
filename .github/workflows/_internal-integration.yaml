@@ -14,6 +14,6 @@ on:
 
 jobs:
   integration-workflow:
-    uses: .github/workflows/integration.yaml
+    uses: .github/workflows/integration.yaml@add_integration_test
     secrets:
       composer_auth: ${{ secrets.COMPOSER_AUTH }}
