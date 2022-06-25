@@ -1,7 +1,7 @@
 name: "Installation Test"
 author: "Graycore"
 description: " A Github Action that tests the installability of a Magento Package"
-  
+
 inputs:
   php_version: 
     required: true
@@ -12,6 +12,11 @@ inputs:
     required: true
     default: "2"
     description: "The cache key used to hold Composer Packages"
+
+  COMPOSER_CACHE_DIR: 
+    required: true
+    default: $GITHUB_WORKSPACE/cache
+    description: The Composer cache directory.
   
   composer_version: 
     required: true
@@ -60,9 +65,11 @@ runs:
 
     - name: "Cache Composer Packages"
       uses: actions/cache@v3
+      env: 
+        COMPOSER_CACHE_DIR: ${{ inputs.COMPOSER_CACHE_DIR }}
       with:
         key: 'composer | "$(Agent.OS)"  | composer.lock | ${{ inputs.composer_version }} | ${{ inputs.php_version }} | ${{ inputs.magento_version }}' 
-        path: $COMPOSER_HOME/cache
+        path: ${{ inputs.COMPOSER_CACHE_DIR }}
 
     - run: composer create-project --repository-url="${{ inputs.magento_repository }}" "${{ inputs.magento_version }}" ${{ inputs.magento_directory }} --no-install
       shell: bash
@@ -80,6 +87,7 @@ runs:
       working-directory:  ${{ inputs.magento_directory }}
       shell: bash
       env:
+        COMPOSER_CACHE_DIR: ${{ inputs.COMPOSER_CACHE_DIR }}
         COMPOSER_AUTH: ${{ inputs.composer_auth }}
 
 branding:
