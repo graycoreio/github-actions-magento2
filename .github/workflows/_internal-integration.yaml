@@ -14,6 +14,7 @@ on:
 
 jobs:
   integration-workflow:
+    name: Integration Test
     uses: ./.github/workflows/integration.yaml
     with:
       package_name: graycore/magento2-demo-package
