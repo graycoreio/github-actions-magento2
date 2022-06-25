@@ -1,0 +1,63 @@
+name: "Unit Test"
+author: "Graycore"
+description: "A Github Action that runs the Unit Tests of a Magento Package"
+inputs:
+  php_version: 
+    required: true
+    default: "8.1"
+    description: "PHP Version to use"
+
+  source_folder:
+    required: true
+    default: .
+    description: "The source folder of the package"
+
+  test_command:
+    required: true
+    default: composer run test
+    description: "The test command"
+
+  composer_auth:
+    required: true
+    description: "Composer Authentication Credentials"
+
+runs:
+  using: "composite"
+  steps: 
+    - name: Set PHP Version
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ inputs.php_version }}
+
+    - name: Get Composer Cache Directory
+      shell: bash
+      working-directory:  ${{ inputs.source_folder }}
+      id: composer-cache
+      run: |
+        echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+    - name: "Cache Composer Packages"
+      uses: actions/cache@v3
+      with:
+        key: 'composer | v3 | "$(Agent.OS)"  | composer.lock | ${{ inputs.php_version }}' 
+        path: ${{ steps.composer-cache.outputs.dir }}
+
+    - run: composer install
+      name: Require and attempt install
+      working-directory:  ${{ inputs.source_folder }}
+      shell: bash
+      env:
+        COMPOSER_CACHE_DIR: ${{ steps.composer-cache.outputs.dir }}
+        COMPOSER_AUTH: ${{ inputs.composer_auth }}
+
+    - run: ${{ inputs.test_command }}
+      name: Run Unit Tests
+      working-directory:  ${{ inputs.source_folder }}
+      shell: bash
+      env:
+        COMPOSER_CACHE_DIR: ${{ steps.composer-cache.outputs.dir }}
+        COMPOSER_AUTH: ${{ inputs.composer_auth }}
+
+branding:
+  icon: "code"
+  color: "green"

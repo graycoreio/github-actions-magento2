@@ -9,6 +9,9 @@
             "email": "damienwebdev@gmail.com"
         }
     ],
+    "scripts": {
+        "test": "./vendor/bin/phpunit Test/Unit"
+    },
     "archive": {
         "exclude": [
             "/docs",
@@ -37,5 +40,8 @@
     "config": {
         "preferred-install": "dist",
         "sort-packages": true
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
     }
 }
