@@ -76,22 +76,19 @@ runs:
       with:
         key: 'composer | "$(Agent.OS)"  | composer.lock | ${{ inputs.composer_version }} | ${{ inputs.php_version }} | ${{ inputs.magento_version }}' 
         path: ${{ steps.composer-cache.outputs.dir }}
-    
-    - run: echo ${{ steps.composer-cache.outputs.dir }}
-      shell: bash
 
-    # - run: composer config repositories.local path ${{ inputs.source_folder }}
-    #   name: Add Github Repo for Testing
-    #   working-directory:  ${{ inputs.magento_directory }}
-    #   shell: bash
+    - run: composer config repositories.local path ${{ inputs.source_folder }}
+      name: Add Github Repo for Testing
+      working-directory:  ${{ inputs.magento_directory }}
+      shell: bash
     
-    # - run: composer require ${{ inputs.package_name }} "@dev" --no-update && composer install --dry-run
-    #   name: Require and attempt install
-    #   working-directory:  ${{ inputs.magento_directory }}
-    #   shell: bash
-    #   env:
-    #     COMPOSER_CACHE_DIR: ${{ inputs.COMPOSER_CACHE_DIR }}
-    #     COMPOSER_AUTH: ${{ inputs.composer_auth }}
+    - run: composer require ${{ inputs.package_name }} "@dev" --no-update && composer install --dry-run
+      name: Require and attempt install
+      working-directory:  ${{ inputs.magento_directory }}
+      shell: bash
+      env:
+        COMPOSER_CACHE_DIR: ${{ steps.composer-cache.outputs.dir }}
+        COMPOSER_AUTH: ${{ inputs.composer_auth }}
 
 branding:
   icon: "code"
