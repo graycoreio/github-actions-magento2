@@ -1,0 +1,95 @@
+name: "Installation Test"
+author: "Graycore"
+description: " A Github Action that tests the installability of a Magento Package"
+
+inputs:
+  php_version: 
+    required: true
+    default: "8.1"
+    description: "PHP Version to use"
+
+  cache_key: 
+    required: true
+    default: "2"
+    description: "The cache key used to hold Composer Packages"
+  
+  composer_version: 
+    required: true
+    default: "2"
+    description: "The version of composer to use"
+
+  source_folder:
+    required: true
+    default: $GITHUB_WORKSPACE
+    description: "The source folder of the package"
+
+  package_name:
+    required: true
+    description: "The name of the package"
+
+  magento_directory:
+    required: true
+    default: "../magento2"
+    description: "The folder where Magento will be installed"
+
+  magento_version:
+    required: true
+    default: "magento/project-community-edition"
+    description: "The version of Magento to test against"
+    
+  magento_repository:
+    required: true
+    default: "https://repo.magento.com/"
+    description: "Where to install Magento from"
+  
+  composer_auth:
+    required: true
+    description: "Composer Authentication Credentials"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set PHP Version
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ inputs.php_version }}
+
+    - run: composer self-update --${{ inputs.composer_version }}
+      name: Pin to Composer Version ${{ inputs.composer_version }}
+      shell: bash
+
+    - run: composer create-project --repository-url="${{ inputs.magento_repository }}" "${{ inputs.magento_version }}" ${{ inputs.magento_directory }} --no-install
+      shell: bash
+      env:
+        COMPOSER_AUTH: ${{ inputs.composer_auth }}
+      name: Create Magento ${{ inputs.magento_version }} Project 
+
+    - name: Get Composer Cache Directory
+      shell: bash
+      working-directory:  ${{ inputs.magento_directory }}
+      id: composer-cache
+      run: |
+        echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+    - name: "Cache Composer Packages"
+      uses: actions/cache@v3
+      with:
+        key: 'composer | v3 | "$(Agent.OS)"  | composer.lock | ${{ inputs.composer_version }} | ${{ inputs.php_version }} | ${{ inputs.magento_version }}' 
+        path: ${{ steps.composer-cache.outputs.dir }}
+
+    - run: composer config repositories.local path ${{ inputs.source_folder }}
+      name: Add Github Repo for Testing
+      working-directory:  ${{ inputs.magento_directory }}
+      shell: bash
+    
+    - run: composer require ${{ inputs.package_name }} "@dev" --no-update && composer install
+      name: Require and attempt install
+      working-directory:  ${{ inputs.magento_directory }}
+      shell: bash
+      env:
+        COMPOSER_CACHE_DIR: ${{ steps.composer-cache.outputs.dir }}
+        COMPOSER_AUTH: ${{ inputs.composer_auth }}
+
+branding:
+  icon: "code"
+  color: "green"
