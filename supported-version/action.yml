@@ -14,7 +14,7 @@ runs:
     shell: bash          
 
   - run: |
-      content=`cat supported-version/supported.json | jq -c`
+      content=`cat $GITHUB_PATH/supported.json | jq -c`
       echo "::set-output name=matrix::$content"
     shell: bash
     id: generate
