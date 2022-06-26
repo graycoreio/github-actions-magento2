@@ -1,6 +1,6 @@
-name: "Compute Supported Versions"
+name: "Compute Supported Magento 2 Versions"
 author: "Graycore"
-description: "A Github Action that computes a Github Actions matrix for the currently supported versions of Magento 2"
+description: "A Github Action that computes the Github Actions matrix for the currently supported versions of Magento 2"
 
 outputs:
   matrix:

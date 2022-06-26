@@ -23,5 +23,5 @@ on:
 jobs:
   runs-on: ubuntu-latest
   steps:
-  - uses: graycoreio/github-actions-magento2/unit-test@main
+  - uses: graycoreio/github-actions-magento2/supported-version@main
 ```
