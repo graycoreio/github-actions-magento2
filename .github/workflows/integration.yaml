@@ -151,11 +151,8 @@ jobs:
     - name: Replace Configuration Settings for env
       working-directory:  ${{ inputs.magento_directory }}/dev/tests/integration
       run: |
-        sed -i "s/'db-host' => 'localhost'/'db-host' => 'mysql'/" etc/install-config-mysql.php.dist
         sed -i "s/'db-user' => 'root'/'db-user' => 'user'/" etc/install-config-mysql.php.dist
         sed -i "s/'db-password' => '123123q'/'db-password' => 'password'/" etc/install-config-mysql.php.dist
-        sed -i "s/'elasticsearch-host' => 'localhost'/'elasticsearch-host' => 'elasticsearch'/" etc/install-config-mysql.php.dist
-        sed -i "s/'amqp-host' => 'localhost'/'amqp-host' => 'rabbitmq'/" etc/install-config-mysql.php.dist
 
     - run: ${{ inputs.test_command }}
       working-directory:  ${{ inputs.magento_directory }}/dev/tests/integration
