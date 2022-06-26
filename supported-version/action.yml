@@ -2,11 +2,17 @@ name: "Compute Supported Versions"
 author: "Graycore"
 description: "A Github Action computes a Github Actions matrix for the currently supported versions of Magento 2"
 
+outputs:
+  matrix:
+    description: "The Github Actions matrix of software technologies required to run Magento."
+    value: ${{ steps.generate.outputs.matrix }}
+
 runs:
   using: 'composite'
   steps:
-  - run: echo "::set-output name=magento_matrix::$(cat supported-version/supported.json)"
+  - run: echo "::set-output name=matrix::$(cat supported-version/supported.json)"
     shell: bash
+    id: generate
     
 branding:
   icon: "code"

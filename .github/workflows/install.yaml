@@ -18,7 +18,7 @@ jobs:
   compute_matrix:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.supported-version.outputs.magento_matrix }}
+      matrix: ${{ steps.supported-version.outputs.matrix }}
     steps:
       - uses: actions/checkout@v2
       - uses: ./supported-version
