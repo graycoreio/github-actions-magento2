@@ -28,7 +28,7 @@ jobs:
   install-test:
     needs: compute_matrix
     strategy:
-      matrix: ${{ fromJSON(needs.compute_matrix.matrix) }}
+      matrix: ${{ fromJSON(needs.compute_matrix.outputs.matrix) }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
