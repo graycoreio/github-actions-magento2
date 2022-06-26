@@ -11,7 +11,7 @@ runs:
   using: 'composite'
   steps:
   - run: |
-      content=`cat supported-version/supported.json | jq @json -c`
+      content=`cat supported-version/supported.json | jq`
       echo "::set-output name=matrix::$content"
     shell: bash
     id: generate
