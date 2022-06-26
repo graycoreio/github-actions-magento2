@@ -20,8 +20,6 @@ runs:
       echo "::set-output name=matrix::$content"
     shell: bash
     id: generate
-  - run: echo ${{ steps.generate.outputs.matrix }}
-    shell: bash
     
 branding:
   icon: "code"
