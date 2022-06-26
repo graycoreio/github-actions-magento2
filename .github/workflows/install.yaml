@@ -23,6 +23,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ./supported-version
         id: supported-version
+      - run: echo ${{ steps.supported-version.outputs.matrix }}
 
   install-test:
     needs: compute_matrix
