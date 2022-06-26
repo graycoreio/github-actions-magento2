@@ -12,13 +12,6 @@
     "scripts": {
         "test": "./vendor/bin/phpunit Test/Unit"
     },
-    "archive": {
-        "exclude": [
-            "/docs",
-            "/Test",
-            "README.md"
-        ]
-    },
     "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
