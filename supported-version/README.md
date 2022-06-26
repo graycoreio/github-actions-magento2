@@ -1,6 +1,6 @@
 # Magento 2 Supported Versions
 
-A Github Action that computes the Github Actions Matrix for Magento 2 Versions
+A Github Action that computes the currently supported Github Actions Matrix for Magento 2 Versions
 
 All data comes from:
 
