@@ -1,18 +1,23 @@
+# Deploy Angular Universal to Vercel GitHub Actions
+
+A Github Action that runs the Unit Tests of a Magento Package
+
+## Inputs
+
+See the [action.yml](./action.yml)
+
+## Usage
+
+```yml
 name: Unit Test
 
 on:
   push:
     branches:
     - main
-    paths-ignore:
-    - "docs/**"
-    - README.md
   pull_request:
     branches:
     - main
-    paths-ignore:
-    - "docs/**"
-    - README.md
 
 jobs:
   unit-test:
@@ -24,8 +29,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: ./unit-test
+    - uses: graycoreio/github-actions-magento2/unit-test@main
       with:
-        source_folder: _test/demo-package
         php_version: ${{ matrix.php_version }}
         composer_auth: ${{ secrets.COMPOSER_AUTH }}
+```
