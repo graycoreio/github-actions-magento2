@@ -12,8 +12,9 @@ runs:
   steps:
   - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
     shell: bash          
+
   - run: |
-      content=`cat supported.json | jq -c`
+      content=`cat supported-version/supported.json | jq -c`
       echo "::set-output name=matrix::$content"
     shell: bash
     id: generate
