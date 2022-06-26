@@ -11,8 +11,8 @@ runs:
   using: 'composite'
   steps:
   - run: |
-      content=`cat supported-version/supported.json`
-      echo "::set-output name=matrix::${content//'%'/'%25'}"
+      content=`cat supported-version/supported.json | jq -c`
+      echo "::set-output name=matrix::$content"
     shell: bash
     id: generate
   - run: echo "${{ steps.generate.outputs.matrix }}"
