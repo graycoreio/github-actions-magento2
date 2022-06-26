@@ -21,7 +21,7 @@ on:
       
       php_version:
         type: string
-        default: "8.1"
+        default: "7.4"
         description: The php version to use.
         required: false
       
