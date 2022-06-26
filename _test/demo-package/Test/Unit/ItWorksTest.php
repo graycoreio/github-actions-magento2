@@ -2,7 +2,7 @@
 
 namespace Graycore\DemoPackage\Test\Unit;
 
-class TestItWorks extends \PHPUnit\Framework\TestCase
+class ItWorksTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testItWorks()
