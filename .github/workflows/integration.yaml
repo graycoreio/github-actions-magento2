@@ -48,6 +48,12 @@ on:
         default: mysql:8.0
         description: The mysql image to use.
         required: false
+    
+      rabbitmq_image:
+        type: string
+        default: rabbitmq
+        description: The RabbitMQ image to use.
+        required: false
       
       elasticsearch_image:
         type: string
@@ -78,6 +84,7 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 10
+
       mysql:
         image: ${{ inputs.mysql_image }}
         env:
@@ -88,7 +95,14 @@ jobs:
         ports:
           - 33306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-        
+
+      rabbitmq:
+        image: ${{ inputs.rabbitmq_image }}
+        env:
+          RABBITMQ_DEFAULT_USER: guest
+          RABBITMQ_DEFAULT_PASS: guest
+        ports:
+          - 5672:5672
     steps:
     - uses: actions/checkout@v2
     - name: Set PHP Version
@@ -131,7 +145,16 @@ jobs:
       env:
         COMPOSER_CACHE_DIR: ${{ steps.composer-cache.outputs.dir }}
         COMPOSER_AUTH: ${{ secrets.composer_auth }}
-    
+
+    - name: Replace Configuration Settings for env
+      working-directory:  ${{ inputs.magento_directory }}/dev/tests/integration
+      run: |
+        sed -i "s/'db-host' => 'localhost'/'db-host' => 'mysql'/" etc/install-config-mysql.php.dist
+        sed -i "s/'db-user' => 'root'/'db-user' => 'user'/" etc/install-config-mysql.php.dist
+        sed -i "s/'db-password' => '123123q'/'db-password' => 'password'/" etc/install-config-mysql.php.dist
+        sed -i "s/'elasticsearch-host' => 'localhost'/'elasticsearch-host' => 'elasticsearch'/" etc/install-config-mysql.php.dist
+        sed -i "s/'amqp-host' => 'localhost'/'amqp-host' => 'rabbitmq'/" etc/install-config-mysql.php.dist
+
     - run: ${{ inputs.test_command }}
       working-directory:  ${{ inputs.magento_directory }}/dev/tests/integration
       name: Run Integration Tests
