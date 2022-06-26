@@ -27,7 +27,7 @@ on:
       
       magento_version: 
         type: string
-        default: magento/project-community-edition:>2.4.3 <=2.4.4
+        default: magento/project-community-edition:>2.4.3 <2.4.4
         description: The magento version to use.
         required: false
       
