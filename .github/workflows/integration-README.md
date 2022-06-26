@@ -53,10 +53,9 @@ jobs:
     needs: compute_matrix
     uses: graycoreio/github-actions-magento2/.github/workflows/integration.yaml@main
     with:
-      package_name: graycore/magento2-demo-package
-      source_folder: $GITHUB_WORKSPACE/_test/demo-package
+      package_name: my-vendor/package
       matrix: ${{ needs.compute_matrix.outputs.matrix }}
-      test_command: ../../../vendor/bin/phpunit ../../../vendor/graycore/magento2-demo-package/Test/Integration
+      test_command: ../../../vendor/bin/phpunit ../../../vendor/my-vendor/package/Test/Integration
     secrets:
       composer_auth: ${{ secrets.COMPOSER_AUTH }}
 ```

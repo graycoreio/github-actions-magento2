@@ -10,7 +10,7 @@ All data comes from:
 ## Usage
 
 ```yml
-name: Compute Magento 2 Supported Versions
+name: Use Supported Versions
 
 on:
   push:
@@ -21,7 +21,23 @@ on:
     - main
 
 jobs:
-  runs-on: ubuntu-latest
-  steps:
-  - uses: graycoreio/github-actions-magento2/supported-version@main
+  compute_matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.supported-version.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: graycoreio/github-actions-magento2/supported-version@main
+        id: supported-version
+      - run: echo ${{ steps.supported-version.outputs.matrix }}
+
+  install-test:
+    needs: compute_matrix
+    strategy:
+      matrix: ${{ fromJSON(needs.compute_matrix.outputs.matrix) }}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: echo ${{ matrix.magento }} ${{ matrix.os }} ${{ matrix.php }}
+      shell: bash
 ```
