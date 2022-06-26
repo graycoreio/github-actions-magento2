@@ -1,0 +1,13 @@
+name: "Compute Supported Versions"
+author: "Graycore"
+description: "A Github Action computes a Github Actions matrix for the currently supported versions of Magento 2"
+
+runs:
+  using: 'composite'
+  steps:
+  - run: echo "::set-output name=magento_matrix::$(cat supported.json)"
+    shell: bash
+    
+branding:
+  icon: "code"
+  color: "green"
