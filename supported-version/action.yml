@@ -10,11 +10,8 @@ outputs:
 runs:
   using: 'composite'
   steps:
-  - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
-    shell: bash          
-
   - run: |
-      content=`cat $GITHUB_PATH/supported.json | jq -c`
+      content=`cat ${{ github.action_path }}/supported.json | jq -c`
       echo "::set-output name=matrix::$content"
     shell: bash
     id: generate
