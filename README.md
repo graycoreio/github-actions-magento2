@@ -1,5 +1,13 @@
 # Magento 2 GitHub Actions
 
+<div align="center">
+
+[![Unit Test](https://github.com/graycoreio/github-actions-magento2/actions/workflows/_internal-unit.yaml/badge.svg)](https://github.com/graycoreio/github-actions-magento2/actions/workflows/_internal-unit.yaml)
+[![Integration Test](https://github.com/graycoreio/github-actions-magento2/actions/workflows/_internal-integration.yaml/badge.svg)](https://github.com/graycoreio/github-actions-magento2/actions/workflows/_internal-integration.yaml)
+[![Installation Test](https://github.com/graycoreio/github-actions-magento2/actions/workflows/_internal-install.yaml/badge.svg)](https://github.com/graycoreio/github-actions-magento2/actions/workflows/_internal-install.yaml)
+
+</div>
+
 Opinionated Github Actions and Workflows to make building, testing, and maintaining Magento 2 Modules easier.
 
 * [README if you are new to Github Actions.](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions#the-components-of-github-actions)
