@@ -10,9 +10,11 @@ outputs:
 runs:
   using: 'composite'
   steps:
-  - run: echo "::set-output name=matrix::$(echo '{}')"
+  - run: echo "::set-output name=matrix::$(cat supported-version/supported.json)"
     shell: bash
     id: generate
+  - run: echo ${{ steps.generate.outputs.matrix }}
+    shell: bash
     
 branding:
   icon: "code"
