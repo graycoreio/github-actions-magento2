@@ -11,7 +11,7 @@ runs:
   using: 'composite'
   steps:
   - run: |
-      content=`cat supported-version/supported.json | jq -c`
+      content=`cat ${{ github.action_path }}/supported.json | jq -c`
       echo "::set-output name=matrix::$content"
     shell: bash
     id: generate
