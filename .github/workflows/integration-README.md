@@ -6,6 +6,26 @@ A Github Workflow that runs the Integration Tests of a Magento Package
 
 See the [integration.yaml](./integration.yaml)
 
+| Input              | Description                                                   | Required | Default                       |
+| ------------------ | ------------------------------------------------------------- | -------- | ----------------------------- |
+| matrix             | JSON string of [version matrix for Magento](#./matrix-format) | true     | NULL                          |
+| package_name       | The name of the package                                       | true     | NULL                          |
+| source_folder      | The source folder of the package                              | false    | $GITHUB_WORKSPACE             |
+| magento_directory  | The folder where Magento will be installed                    | false    | ../magento2                   |
+| magento_repository | Where to install Magento from                                 | false    | https://repo.magento.com/     |
+| test_command       | The integration test command to run                           | false    | "../../../vendor/bin/phpunit" |
+
+## Secrets
+| Input         | Description                                                                                                                             | Required | Default |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------- |
+| composer_auth | JSON string of [composer credentials]([#./matrix-format](https://devdocs.magento.com/guides/v2.4/install-gde/prereq/connect-auth.html)) | true     | NULL    |
+
+###  Matrix Format
+
+The Magento matrix format outlined by the [supported versions action.](https://github.com/graycoreio/github-actions-magento2/tree/main/supported-version/supported.json
+)
+
+
 ## Usage
 
 ```yml
@@ -20,12 +40,23 @@ on:
     - main
 
 jobs:
+  compute_matrix:
+      runs-on: ubuntu-latest
+      outputs:
+        matrix: ${{ steps.supported-version.outputs.matrix }}
+      steps:
+        - uses: actions/checkout@v2
+        - uses: graycoreio/github-actions-magento2/supported-version@main
+          id: supported-version
+        - run: echo ${{ steps.supported-version.outputs.matrix }}
   integration-workflow:
+    needs: compute_matrix
     uses: graycoreio/github-actions-magento2/.github/workflows/integration.yaml@main
     with:
-      package_name: YOUR_PACKAGE_NAME
-      source_folder: $GITHUB_WORKSPACE
-      test_command: ../../../vendor/bin/phpunit ../../../vendor/YOUR_VENDOR/YOUR_PACKAGE_NAME/Test/Integration
+      package_name: graycore/magento2-demo-package
+      source_folder: $GITHUB_WORKSPACE/_test/demo-package
+      matrix: ${{ needs.compute_matrix.outputs.matrix }}
+      test_command: ../../../vendor/bin/phpunit ../../../vendor/graycore/magento2-demo-package/Test/Integration
     secrets:
       composer_auth: ${{ secrets.COMPOSER_AUTH }}
 ```

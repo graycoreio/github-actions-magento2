@@ -12,24 +12,6 @@ on:
         type: string
         required: true
         description: "The name of the package"
-
-      composer_version:
-        type: string
-        default: "2"
-        description: The composer version to use.
-        required: false
-      
-      php_version:
-        type: string
-        default: "7.4"
-        description: The php version to use.
-        required: false
-      
-      magento_version: 
-        type: string
-        default: magento/project-community-edition:>2.4.3 <2.4.4
-        description: The magento version to use.
-        required: false
       
       magento_directory:
         type: string
@@ -42,25 +24,12 @@ on:
         required: false
         default: "https://repo.magento.com/"
         description: "Where to install Magento from"
-      
-      mysql_image:
-        type: string
-        default: mysql:8.0
-        description: The mysql image to use.
-        required: false
-    
-      rabbitmq_image:
-        type: string
-        default: rabbitmq:3.10-alpine
-        description: The RabbitMQ image to use.
-        required: false
-      
-      elasticsearch_image:
-        type: string
-        default: docker.elastic.co/elasticsearch/elasticsearch:7.16.3
-        description: The elasticsearch image to use.
-        required: false
 
+      matrix:
+        type: string
+        required: true
+        description: "The matrix of Magento versions to test against"
+      
       test_command:
         type: string
         required: false
@@ -73,10 +42,12 @@ on:
 
 jobs:
   integration_test:
-    runs-on: ubuntu-latest
+    runs-on:  ${{ matrix.os }}
+    strategy:
+      matrix: ${{ fromJSON(inputs.matrix) }}
     services:
       elasticsearch:
-        image: ${{ inputs.elasticsearch_image }}
+        image: ${{ matrix.elasticsearch }}
         env:
           discovery.type: single-node
         options: >-
@@ -88,7 +59,7 @@ jobs:
           - 9200:9200
 
       mysql:
-        image: ${{ inputs.mysql_image }}
+        image: ${{ matrix.mysql }}
         env:
           MYSQL_DATABASE: magento_integration_tests
           MYSQL_USER: user
@@ -99,7 +70,7 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
       rabbitmq:
-        image: ${{ inputs.rabbitmq_image }}
+        image: ${{ matrix.rabbitmq }}
         env:
           RABBITMQ_DEFAULT_USER: guest
           RABBITMQ_DEFAULT_PASS: guest
@@ -110,17 +81,17 @@ jobs:
     - name: Set PHP Version
       uses: shivammathur/setup-php@v2
       with:
-        php-version: ${{ inputs.php_version }}
+        php-version: ${{ matrix.php }}
 
-    - run: composer self-update --${{ inputs.composer_version }}
-      name: Pin to Composer Version ${{ inputs.composer_version }}
+    - run: composer self-update --${{ matrix.composer }}
+      name: Pin to Composer Version ${{ matrix.composer }}
       shell: bash
 
-    - run: composer create-project --repository-url="${{ inputs.magento_repository }}" "${{ inputs.magento_version }}" ${{ inputs.magento_directory }} --no-install
+    - run: composer create-project --repository-url="${{ inputs.magento_repository }}" "${{ matrix.magento }}" ${{ inputs.magento_directory }} --no-install
       shell: bash
       env:
         COMPOSER_AUTH: ${{ secrets.composer_auth }}
-      name: Create Magento ${{ inputs.magento_version }} Project 
+      name: Create Magento ${{ matrix.magento }} Project 
 
     - name: Get Composer Cache Directory
       shell: bash
@@ -132,14 +103,18 @@ jobs:
     - name: "Cache Composer Packages"
       uses: actions/cache@v3
       with:
-        key: 'composer | v3 | "$(Agent.OS)"  | composer.lock | ${{ inputs.composer_version }} | ${{ inputs.php_version }} | ${{ inputs.magento_version }}' 
+        key: 'composer | v3 | "$(Agent.OS)"  | composer.lock | ${{ matrix.composer }} | ${{ matrix.php }} | ${{ matrix.magento }}' 
         path: ${{ steps.composer-cache.outputs.dir }}
 
     - run: composer config repositories.local path ${{ inputs.source_folder }}
       name: Add Github Repo for Testing
       working-directory:  ${{ inputs.magento_directory }}
       shell: bash
-    
+
+    - run: composer require monolog/monolog:"!=2.7.0" --no-update
+      name: Fixup Monolog (https://github.com/magento/magento2/pull/35596)
+      working-directory:  ${{ inputs.magento_directory }}
+
     - run: composer require ${{ inputs.package_name }} "@dev" --no-update && composer install
       name: Require and attempt install
       working-directory:  ${{ inputs.magento_directory }}

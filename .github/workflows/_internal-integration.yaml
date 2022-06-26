@@ -17,11 +17,22 @@ on:
     - ".github/workflows/integration.yaml"
 
 jobs:
+  compute_matrix:
+      runs-on: ubuntu-latest
+      outputs:
+        matrix: ${{ steps.supported-version.outputs.matrix }}
+      steps:
+        - uses: actions/checkout@v2
+        - uses: ./supported-version
+          id: supported-version
+        - run: echo ${{ steps.supported-version.outputs.matrix }}
   integration-workflow:
+    needs: compute_matrix
     uses: ./.github/workflows/integration.yaml
     with:
       package_name: graycore/magento2-demo-package
       source_folder: $GITHUB_WORKSPACE/_test/demo-package
+      matrix: ${{ needs.compute_matrix.outputs.matrix }}
       test_command: ../../../vendor/bin/phpunit ../../../vendor/graycore/magento2-demo-package/Test/Integration
     secrets:
       composer_auth: ${{ secrets.COMPOSER_AUTH }}
