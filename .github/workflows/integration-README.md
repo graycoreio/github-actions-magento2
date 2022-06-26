@@ -8,7 +8,7 @@ See the [integration.yaml](./integration.yaml)
 
 | Input              | Description                                                   | Required | Default                       |
 | ------------------ | ------------------------------------------------------------- | -------- | ----------------------------- |
-| matrix             | JSON string of [version matrix for Magento](#./matrix-format) | true     | NULL                          |
+| matrix             | JSON string of [version matrix for Magento](./#matrix-format) | true     | NULL                          |
 | package_name       | The name of the package                                       | true     | NULL                          |
 | source_folder      | The source folder of the package                              | false    | $GITHUB_WORKSPACE             |
 | magento_directory  | The folder where Magento will be installed                    | false    | ../magento2                   |
@@ -22,8 +22,7 @@ See the [integration.yaml](./integration.yaml)
 
 ###  Matrix Format
 
-The Magento matrix format outlined by the [supported versions action.](https://github.com/graycoreio/github-actions-magento2/tree/main/supported-version/supported.json
-)
+The Magento matrix format outlined by the [supported versions action.](https://github.com/graycoreio/github-actions-magento2/tree/main/supported-version/supported.json) 
 
 
 ## Usage

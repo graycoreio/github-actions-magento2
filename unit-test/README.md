@@ -1,4 +1,4 @@
-# Deploy Angular Universal to Vercel GitHub Actions
+# Magento 2 Unit Test Action
 
 A Github Action that runs the Unit Tests of a Magento Package
 

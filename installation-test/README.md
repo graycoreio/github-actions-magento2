@@ -1,4 +1,4 @@
-# Deploy Angular Universal to Vercel GitHub Actions
+# Magento 2 Package Installation Test Action
 
 A Github Action that tests the installability of a Magento Package
 
