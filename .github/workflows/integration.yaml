@@ -27,7 +27,7 @@ on:
       
       magento_version: 
         type: string
-        default: magento/project-community-edition:>2.4
+        default: magento/project-community-edition:>2.4.3 <=2.4.4
         description: The magento version to use.
         required: false
       
@@ -51,13 +51,13 @@ on:
     
       rabbitmq_image:
         type: string
-        default: rabbitmq
+        default: rabbitmq:3.10-alpine
         description: The RabbitMQ image to use.
         required: false
       
       elasticsearch_image:
         type: string
-        default: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
+        default: docker.elastic.co/elasticsearch/elasticsearch:7.16.3
         description: The elasticsearch image to use.
         required: false
 
