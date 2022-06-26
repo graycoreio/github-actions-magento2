@@ -18,7 +18,8 @@
       "rabbitmq": "rabbitmq:3.8",
       "redis": "redis:6.0",
       "varnish": "varnish:6.0",
-      "nginx": "nginx:1.18"
+      "nginx": "nginx:1.18",
+      "os": "ubuntu-18.04"
     },
     {
       "magento": "magento/project-community-edition:>=2.4.0 <2.4.1",
@@ -29,7 +30,7 @@
       "rabbitmq": "rabbitmq:3.8",
       "redis": "redis:5.0",
       "varnish": "varnish:6.0",
-      "nginx": "nginx:1.18"
+      "os": "ubuntu-latest"
     },
     {
       "magento": "magento/project-community-edition:>=2.4.1 <2.4.2",
@@ -40,7 +41,8 @@
       "rabbitmq": "rabbitmq:3.8",
       "redis": "redis:5.0",
       "varnish": "varnish:6.0",
-      "nginx": "nginx:1.18"
+      "nginx": "nginx:1.18",
+      "os": "ubuntu-latest"
     },
     {
       "magento": "magento/project-community-edition:>=2.4.2 <2.4.3",
@@ -51,7 +53,8 @@
       "rabbitmq": "rabbitmq:3.8",
       "redis": "redis:6.0",
       "varnish": "varnish:6.0",
-      "nginx": "nginx:1.18"
+      "nginx": "nginx:1.18",
+      "os": "ubuntu-latest"
     },
     {
       "magento": "magento/project-community-edition:>=2.4.3 <2.4.4",
@@ -62,7 +65,8 @@
       "rabbitmq": "rabbitmq:3.8",
       "redis": "redis:6.0",
       "varnish": "varnish:6.0",
-      "nginx": "nginx:1.18"
+      "nginx": "nginx:1.18",
+      "os": "ubuntu-latest"
     },
     {
       "magento": "magento/project-community-edition:>=2.4.4 <2.4.5",
@@ -73,7 +77,8 @@
       "rabbitmq": "rabbitmq:3.9",
       "redis": "redis:6.2",
       "varnish": "varnish:7.0",
-      "nginx": "nginx:1.18"
+      "nginx": "nginx:1.18",
+      "os": "ubuntu-latest"
     },
     {
       "magento": "magento/project-community-edition",
@@ -84,7 +89,8 @@
       "rabbitmq": "rabbitmq:3.9",
       "redis": "redis:6.2",
       "varnish": "varnish:7.0",
-      "nginx": "nginx:1.18"
+      "nginx": "nginx:1.18",
+      "os": "ubuntu-latest"
     }
   ]
 }
