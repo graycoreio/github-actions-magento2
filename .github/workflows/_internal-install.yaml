@@ -4,15 +4,21 @@ on:
   push:
     branches:
     - main
-    paths-ignore:
-    - "docs/**"
-    - README.md
+    paths:
+    - "_test/demo-package/**"
+    - "installation-test/**"
+    - ".github/workflows/_internal-install.yaml"
+    - "supported-version/**"
+    - "!(**/*.md)"
   pull_request:
     branches:
     - main
-    paths-ignore:
-    - "docs/**"
-    - README.md
+    paths:
+    - "_test/demo-package/**"
+    - "installation-test/**"
+    - ".github/workflows/_internal-install.yaml"
+    - "supported-version/**"
+    - "!(**/*.md)"
 
 jobs:
   compute_matrix:

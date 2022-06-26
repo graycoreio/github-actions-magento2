@@ -4,15 +4,19 @@ on:
   push:
     branches:
     - main
-    paths-ignore:
-    - "docs/**"
-    - README.md
+    paths:
+    - "_test/demo-package/**"
+    - ".github/workflows/_internal-unit.yaml"
+    - "unit-test/**"
+    - "!(**/*.md)"
   pull_request:
     branches:
     - main
-    paths-ignore:
-    - "docs/**"
-    - README.md
+    paths:
+    - "_test/demo-package/**"
+    - ".github/workflows/_internal-unit.yaml"
+    - "unit-test/**"
+    - "!(**/*.md)"
 
 jobs:
   unit-test:
