@@ -1,0 +1,90 @@
+{
+  "magento": [
+    "magento/project-community-edition:>=2.3 <2.4",
+    "magento/project-community-edition:>=2.4.0 <2.4.1",
+    "magento/project-community-edition:>=2.4.1 <2.4.2",
+    "magento/project-community-edition:>=2.4.2 <2.4.3",
+    "magento/project-community-edition:>=2.4.3 <2.4.4",
+    "magento/project-community-edition:>=2.4.4 <2.4.5",
+    "magento/project-community-edition"
+  ],
+  "include": [
+    {
+      "magento": "magento/project-community-edition:>=2.3 <2.4",
+      "php": 7.4,
+      "composer": 1,
+      "mysql": "mysql:5.7",
+      "elasticsearch": "elasticsearch:7.16.3",
+      "rabbitmq": "rabbitmq:3.8",
+      "redis": "redis:6.0",
+      "varnish": "varnish:6.0",
+      "nginx": "nginx:1.18"
+    },
+    {
+      "magento": "magento/project-community-edition:>=2.4.0 <2.4.1",
+      "php": 7.4,
+      "composer": 1,
+      "mysql": "mysql:5.7",
+      "elasticsearch": "elasticsearch:7.6.2",
+      "rabbitmq": "rabbitmq:3.8",
+      "redis": "redis:5.0",
+      "varnish": "varnish:6.0",
+      "nginx": "nginx:1.18"
+    },
+    {
+      "magento": "magento/project-community-edition:>=2.4.1 <2.4.2",
+      "php": 7.4,
+      "composer": 1,
+      "mysql": "mysql:8.0",
+      "elasticsearch": "elasticsearch:7.7.1",
+      "rabbitmq": "rabbitmq:3.8",
+      "redis": "redis:5.0",
+      "varnish": "varnish:6.0",
+      "nginx": "nginx:1.18"
+    },
+    {
+      "magento": "magento/project-community-edition:>=2.4.2 <2.4.3",
+      "php": 7.4,
+      "composer": 2,
+      "mysql": "mysql:8.0",
+      "elasticsearch": "elasticsearch:7.9.3",
+      "rabbitmq": "rabbitmq:3.8",
+      "redis": "redis:6.0",
+      "varnish": "varnish:6.0",
+      "nginx": "nginx:1.18"
+    },
+    {
+      "magento": "magento/project-community-edition:>=2.4.3 <2.4.4",
+      "php": 7.4,
+      "composer": 2,
+      "mysql": "mysql:8.0",
+      "elasticsearch": "elasticsearch:7.16.3",
+      "rabbitmq": "rabbitmq:3.8",
+      "redis": "redis:6.0",
+      "varnish": "varnish:6.0",
+      "nginx": "nginx:1.18"
+    },
+    {
+      "magento": "magento/project-community-edition:>=2.4.4 <2.4.5",
+      "php": 8.1,
+      "composer": 2,
+      "mysql": "mysql:8.0",
+      "elasticsearch": "elasticsearch:7.16.3",
+      "rabbitmq": "rabbitmq:3.9",
+      "redis": "redis:6.2",
+      "varnish": "varnish:7.0",
+      "nginx": "nginx:1.18"
+    },
+    {
+      "magento": "magento/project-community-edition",
+      "php": 8.1,
+      "composer": 2,
+      "mysql": "mysql:8.0",
+      "elasticsearch": "elasticsearch:7.16.3",
+      "rabbitmq": "rabbitmq:3.9",
+      "redis": "redis:6.2",
+      "varnish": "varnish:7.0",
+      "nginx": "nginx:1.18"
+    }
+  ]
+}

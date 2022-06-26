@@ -15,54 +15,27 @@ on:
     - README.md
 
 jobs:
+  compute_matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.supported-version.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./supported-version
+        id: supported-version
+      - run: echo ${{ steps.supported-version.outputs.matrix }}
+
   install-test:
+    needs: compute_matrix
     strategy:
-      matrix:
-        magento:
-          - magento/project-community-edition:>=2.3 <2.4
-          - magento/project-community-edition:>=2.4.0 <2.4.1
-          - magento/project-community-edition:>=2.4.1 <2.4.2
-          - magento/project-community-edition:>=2.4.2 <2.4.3
-          - magento/project-community-edition:>=2.4.3 <2.4.4
-          - magento/project-community-edition:>=2.4.4 <2.4.5
-          - magento/project-community-edition
-        include:
-          
-          - magento: magento/project-community-edition:>=2.3 <2.4
-            php_version: 7.4
-            composer_version: 1
-          
-          - magento: magento/project-community-edition:>=2.4.0 <2.4.1
-            php_version: 7.4
-            composer_version: 1
-          
-          - magento: magento/project-community-edition:>=2.4.1 <2.4.2
-            php_version: 7.4
-            composer_version: 1
-
-          - magento: magento/project-community-edition:>=2.4.2 <2.4.3
-            php_version: 7.4
-            composer_version: 2
-
-          - magento: magento/project-community-edition:>=2.4.3 <2.4.4
-            php_version: 7.4
-            composer_version: 2
-
-          - magento: magento/project-community-edition:>=2.4.4 <2.4.5
-            php_version: 8.1
-            composer_version: 2
-
-          - magento: magento/project-community-edition 
-            composer_version: 2
-            php_version: 8.1
-
+      matrix: ${{ fromJSON(needs.compute_matrix.outputs.matrix) }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - uses: ./installation-test
       with:
-        composer_version: ${{ matrix.composer_version }}
-        php_version: ${{ matrix.php_version }}
+        composer_version: ${{ matrix.composer }}
+        php_version: ${{ matrix.php }}
         magento_version: ${{ matrix.magento }}
         composer_auth: ${{ secrets.COMPOSER_AUTH }}
         package_name: graycore/magento2-demo-package
