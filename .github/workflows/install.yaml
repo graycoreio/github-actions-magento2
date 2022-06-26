@@ -20,6 +20,7 @@ jobs:
     outputs:
       matrix: ${{ steps.supported-version.magento_matrix }}
     steps:
+      - uses: actions/checkout@v2
       - uses: ./supported-version
         id: supported-version
 
