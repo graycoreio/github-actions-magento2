@@ -5,7 +5,7 @@ description: "A Github Action computes a Github Actions matrix for the currently
 runs:
   using: 'composite'
   steps:
-  - run: echo "::set-output name=magento_matrix::$(cat supported.json)"
+  - run: echo "::set-output name=magento_matrix::$(cat supported-version/supported.json)"
     shell: bash
     
 branding:
