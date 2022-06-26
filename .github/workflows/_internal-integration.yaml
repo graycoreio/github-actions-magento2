@@ -1,0 +1,27 @@
+name: Integration Test
+
+on:
+  push:
+    branches:
+    - main
+    paths:
+    - "_test/demo-package/**"
+    - ".github/workflows/_internal-integration.yaml"
+    - ".github/workflows/integration.yaml"
+  pull_request:
+    branches:
+    - main
+    paths:
+    - "_test/demo-package/**"
+    - ".github/workflows/_internal-integration.yaml"
+    - ".github/workflows/integration.yaml"
+
+jobs:
+  integration-workflow:
+    uses: ./.github/workflows/integration.yaml
+    with:
+      package_name: graycore/magento2-demo-package
+      source_folder: $GITHUB_WORKSPACE/_test/demo-package
+      test_command: ../../../vendor/bin/phpunit ../../../vendor/graycore/magento2-demo-package/Test/Integration
+    secrets:
+      composer_auth: ${{ secrets.COMPOSER_AUTH }}
