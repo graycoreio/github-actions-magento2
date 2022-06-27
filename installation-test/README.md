@@ -42,7 +42,6 @@ jobs:
         composer_version: ${{ matrix.composer }}
         php_version: ${{ matrix.php }}
         magento_version: ${{ matrix.magento }}
-        composer_auth: ${{ secrets.COMPOSER_AUTH }}
         package_name: vendor/package
         source_folder: $GITHUB_WORKSPACE
 ```

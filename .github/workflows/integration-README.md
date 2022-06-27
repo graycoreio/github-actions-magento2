@@ -55,6 +55,4 @@ jobs:
       package_name: my-vendor/package
       matrix: ${{ needs.compute_matrix.outputs.matrix }}
       test_command: ../../../vendor/bin/phpunit ../../../vendor/my-vendor/package/Test/Integration
-    secrets:
-      composer_auth: ${{ secrets.COMPOSER_AUTH }}
 ```
