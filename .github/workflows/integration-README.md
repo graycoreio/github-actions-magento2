@@ -12,13 +12,13 @@ See the [integration.yaml](./integration.yaml)
 | package_name       | The name of the package                                       | true     | NULL                          |
 | source_folder      | The source folder of the package                              | false    | $GITHUB_WORKSPACE             |
 | magento_directory  | The folder where Magento will be installed                    | false    | ../magento2                   |
-| magento_repository | Where to install Magento from                                 | false    | https://repo.magento.com/     |
+| magento_repository | Where to install Magento from                                 | false    | https://mirror.mage-os.org/     |
 | test_command       | The integration test command to run                           | false    | "../../../vendor/bin/phpunit" |
 
 ## Secrets
 | Input         | Description                                                                                                                             | Required | Default |
 | ------------- | --------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------- |
-| composer_auth | JSON string of [composer credentials]([#./matrix-format](https://devdocs.magento.com/guides/v2.4/install-gde/prereq/connect-auth.html)) | true     | NULL    |
+| composer_auth | JSON string of [composer credentials]([#./matrix-format](https://devdocs.magento.com/guides/v2.4/install-gde/prereq/connect-auth.html)) | false     | NULL    |
 
 ###  Matrix Format
 
