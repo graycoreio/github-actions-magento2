@@ -81,6 +81,15 @@ runs:
       name: Add Github Repo for Testing
       working-directory:  ${{ inputs.magento_directory }}
       shell: bash
+
+    - run: |
+        composer config --no-interaction allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+        composer config --no-interaction allow-plugins.laminas/laminas-dependency-plugin true
+        composer config --no-interaction allow-plugins.magento/* true
+      name: Fixup Composer Plugins
+      shell: bash
+      working-directory:  ${{ inputs.magento_directory }}
+      if: ${{ !startsWith(inputs.composer_version, '1') }}
     
     - run: composer require ${{ inputs.package_name }} "@dev" --no-update && composer install
       name: Require and attempt install
