@@ -111,7 +111,7 @@ jobs:
       working-directory:  ${{ inputs.magento_directory }}
       shell: bash
 
-    - run: composer require monolog/monolog:"!=2.7.0" --no-update
+    - run: composer require monolog/monolog:"<2.7.0" --no-update
       name: Fixup Monolog (https://github.com/magento/magento2/pull/35596)
       working-directory:  ${{ inputs.magento_directory }}
 
