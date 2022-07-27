@@ -38,7 +38,7 @@ on:
 
     secrets:
       composer_auth:
-        required: true
+        required: false
 
 jobs:
   integration_test:

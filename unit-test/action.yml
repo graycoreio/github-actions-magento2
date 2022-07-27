@@ -18,7 +18,7 @@ inputs:
     description: "The test command"
 
   composer_auth:
-    required: true
+    required: false
     description: "Composer Authentication Credentials"
 
 runs:

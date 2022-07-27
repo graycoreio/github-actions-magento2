@@ -32,4 +32,3 @@ jobs:
       with:
         source_folder: _test/demo-package
         php_version: ${{ matrix.php_version }}
-        composer_auth: ${{ secrets.COMPOSER_AUTH }}
