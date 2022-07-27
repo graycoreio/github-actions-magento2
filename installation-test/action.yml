@@ -43,7 +43,7 @@ inputs:
     description: "Where to install Magento from"
   
   composer_auth:
-    required: true
+    required: false
     description: "Composer Authentication Credentials"
 
 runs:
