@@ -39,7 +39,7 @@ inputs:
     
   magento_repository:
     required: true
-    default: "https://repo.magento.com/"
+    default: "https://mirror.mage-os.org/"
     description: "Where to install Magento from"
   
   composer_auth:
