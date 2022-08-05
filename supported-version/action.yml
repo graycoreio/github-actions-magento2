@@ -1,6 +1,16 @@
 name: "Compute Supported Magento 2 Versions"
 author: "Graycore"
-description: "A Github Action that computes the Github Actions matrix for the currently supported versions of Magento 2"
+description: "A Github Action that computes the Github Actions matrix for the chosen versions of Magento 2"
+
+inputs:
+  kind:
+    required: false
+    description: "The kind of versions you want to return. Allowed values are `currently-supported, latest, custom`"
+    default: "supported"
+  custom_versions:
+    required: false
+    description: "The specific custom versions of Magento that you want to use. Only applies when `kind` is `custom`"
+    default: ""
 
 outputs:
   matrix:
@@ -8,14 +18,9 @@ outputs:
     value: ${{ steps.generate.outputs.matrix }}
 
 runs:
-  using: 'composite'
-  steps:
-  - run: |
-      content=`cat ${{ github.action_path }}/supported.json | jq -c`
-      echo "::set-output name=matrix::$content"
-    shell: bash
-    id: generate
-    
+  using: "node16"
+  main: ${{ github.action_path }}/dist/index.js
+
 branding:
   icon: "code"
   color: "green"
