@@ -44,6 +44,7 @@ jobs:
   integration_test:
     runs-on:  ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix: ${{ fromJSON(inputs.matrix) }}
     services:
       elasticsearch:
