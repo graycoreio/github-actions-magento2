@@ -17,7 +17,7 @@ export async function run(): Promise<void> {
       case 'latest': 
         matrix = getMatrixForVersions(latestJson);
         break;
-      case 'supported':
+      case 'currently-supported':
         matrix = getMatrixForVersions(currentlySupportedJson);
         break;
       case 'custom':
