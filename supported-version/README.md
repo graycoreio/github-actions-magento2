@@ -13,7 +13,7 @@ See the [action.yml](./action.yml)
 
 | Input           | Description                                                                                                                                                  | Required | Default     |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | ----------- |
-| kind            |                                                                                                                                                              | false    | 'supported' |
+| kind            | The "kind" of support you're targeting for your package. Allowed values are `currently-supported`, `latest` and `custom`                                     | false    | 'currently-supported' |
 | custom_versions | The versions you want to support, as a comma-separated string, i.e. 'magento/project-community-edition:2.3.7-p3, magento/project-community-edition:2.4.2-p2' | false    | ''          |
 
 ## Usage
