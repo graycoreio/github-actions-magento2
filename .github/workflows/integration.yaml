@@ -29,6 +29,11 @@ on:
         type: string
         required: true
         description: "The matrix of Magento versions to test against"
+
+      fail_fast:
+        type: boolean
+        required: false
+        default: true
       
       test_command:
         type: string
@@ -44,6 +49,7 @@ jobs:
   integration_test:
     runs-on:  ${{ matrix.os }}
     strategy:
+      fail-fast: ${{ inputs.fail_fast }}
       matrix: ${{ fromJSON(inputs.matrix) }}
     services:
       elasticsearch:
