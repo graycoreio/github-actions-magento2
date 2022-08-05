@@ -23,7 +23,7 @@ export async function run(): Promise<void> {
       case 'custom':
         matrix = getMatrixForVersions(core.getInput("custom_versions").split(","))
       default:
-        throw new Error("Unreachable kind discovered, please report to the maintainers.");
+        throw new Error(`Unreachable kind: ${kind} discovered, please report to the maintainers.`);
     }
 
     core.setOutput('matrix', matrix);
