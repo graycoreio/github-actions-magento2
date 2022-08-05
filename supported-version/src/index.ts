@@ -1,32 +1,16 @@
 import * as core from '@actions/core';
 import { validateOrError } from './kind/compute-kind';
-import { getMatrixForVersions } from './matrix/get-matrix-for-versions';
-import { GithubActionsMatrix } from './matrix/matrix-type';
+import { getMatrixForKind } from './matrix/get-matrix-for-kind';
 
-import latestJson from './kind/latest.json';
-import currentlySupportedJson from './kind/currently-supported.json';
 
 export async function run(): Promise<void> {
   try { 
     const kind = core.getInput("kind");
     validateOrError(kind);
 
-    let matrix: GithubActionsMatrix;
+    const customVersions = core.getInput("custom_versions");
 
-    switch(kind){
-      case 'latest': 
-        matrix = getMatrixForVersions(latestJson);
-        break;
-      case 'currently-supported':
-        matrix = getMatrixForVersions(currentlySupportedJson);
-        break;
-      case 'custom':
-        matrix = getMatrixForVersions(core.getInput("custom_versions").split(","))
-      default:
-        throw new Error(`Unreachable kind: ${kind} discovered, please report to the maintainers.`);
-    }
-
-    core.setOutput('matrix', matrix);
+    core.setOutput('matrix', getMatrixForKind(kind, customVersions));
   } 
   catch (error) {
     core.setFailed(error.message);
