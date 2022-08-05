@@ -47,7 +47,7 @@ on:
 
 jobs:
   integration_test:
-    runs-on:  ${{ matrix.os }}
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: ${{ inputs.fail-fast }}
       matrix: ${{ fromJSON(inputs.matrix) }}
