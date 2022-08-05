@@ -19,7 +19,7 @@ outputs:
 
 runs:
   using: "node16"
-  main: ${{ github.action_path }}/dist/index.js
+  main: ${GITHUB_ACTION_PATH}/dist/index.js
 
 branding:
   icon: "code"
