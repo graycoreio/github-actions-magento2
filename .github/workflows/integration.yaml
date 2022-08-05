@@ -88,10 +88,8 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php }}
-
-    - run: composer self-update --${{ matrix.composer }}
-      name: Pin to Composer Version ${{ matrix.composer }}
-      shell: bash
+        tools: composer:v${{ matrix.composer }}
+        coverage: none
 
     - run: composer create-project --repository-url="${{ inputs.magento_repository }}" "${{ matrix.magento }}" ${{ inputs.magento_directory }} --no-install
       shell: bash
