@@ -1,0 +1,13 @@
+{
+  "name": "@graycore/github-actions-magento2-supported-version",
+  "version": "1.0.0",
+  "description": "A Github Action that computes the currently supported Github Actions Matrix for Magento 2 Versions",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "build": "esbuild --outfile=dist/index.js --platform=node --bundle --minify src/index.ts",
+    "test": "jest"
+  },
+  "author": "",
+  "license": "MIT"
+}
