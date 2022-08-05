@@ -6,7 +6,7 @@ inputs:
   kind:
     required: false
     description: "The kind of versions you want to return. Allowed values are `currently-supported, latest, custom`"
-    default: "supported"
+    default: "currently-supported"
   custom_versions:
     required: false
     description: "The specific custom versions of Magento that you want to use. Only applies when `kind` is `custom`"
