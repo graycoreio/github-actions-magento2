@@ -77,15 +77,13 @@ jobs:
         ports:
           - 5672:5672
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set PHP Version
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php }}
-
-    - run: composer self-update --${{ matrix.composer }}
-      name: Pin to Composer Version ${{ matrix.composer }}
-      shell: bash
+        tools: composer:v${{ matrix.composer }}
+        coverage: none
 
     - run: composer create-project --repository-url="${{ inputs.magento_repository }}" "${{ matrix.magento }}" ${{ inputs.magento_directory }} --no-install
       shell: bash
