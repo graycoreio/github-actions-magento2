@@ -33,7 +33,7 @@ on:
       fail_fast:
         type: boolean
         required: false
-        default: false
+        default: true
       
       test_command:
         type: string
