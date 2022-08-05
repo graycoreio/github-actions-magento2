@@ -127,6 +127,12 @@ jobs:
       working-directory:  ${{ inputs.magento_directory }}
       if: ${{ !startsWith(matrix.composer, '1') }}
 
+    - run: | 
+        composer global require hirak/prestissimo
+      name: Install composer plugin for parallel downloads
+      working-directory:  ${{ inputs.magento_directory }}
+      if: ${{ startsWith(matrix.composer, '1') }}
+
     - run: composer require ${{ inputs.package_name }} "@dev" --no-update && composer install
       name: Require and attempt install
       working-directory:  ${{ inputs.magento_directory }}
