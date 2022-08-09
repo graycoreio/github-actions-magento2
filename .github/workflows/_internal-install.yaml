@@ -27,7 +27,7 @@ jobs:
     outputs:
       matrix: ${{ steps.supported-version.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./supported-version
         id: supported-version
       - run: echo ${{ steps.supported-version.outputs.matrix }}
@@ -38,7 +38,7 @@ jobs:
       matrix: ${{ fromJSON(needs.compute_matrix.outputs.matrix) }}
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: ./installation-test
       with:
         composer_version: ${{ matrix.composer }}
