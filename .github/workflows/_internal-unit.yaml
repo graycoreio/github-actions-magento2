@@ -27,7 +27,7 @@ jobs:
           - 8.1
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: ./unit-test
       with:
         source_folder: _test/demo-package
