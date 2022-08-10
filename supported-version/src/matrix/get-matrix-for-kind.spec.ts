@@ -15,6 +15,13 @@ describe('getMatrixForKind', () => {
         expect(result.include).toBeDefined();
     });
 
+    it('returns a matrix for `all`', () => {
+        const result = getMatrixForKind("all");
+
+        expect(result.magento).toBeDefined();
+        expect(result.include).toBeDefined();
+    });
+
     it('returns a matrix for valid `custom`', () => {
         const result = getMatrixForKind("custom", "magento/project-community-edition:2.3.7-p3");
 
