@@ -29,6 +29,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./supported-version
+        with:
+          kind: all
         id: supported-version
       - run: echo ${{ steps.supported-version.outputs.matrix }}
 
