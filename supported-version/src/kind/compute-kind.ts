@@ -5,6 +5,7 @@ export const KNOWN_KINDS = {
     'currently-supported': true,
     'latest': true,
     'custom': true,
+    'all': true,
 }
 
 export const isValidKind = (kind: string): boolean => {

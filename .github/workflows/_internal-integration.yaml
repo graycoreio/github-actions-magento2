@@ -29,6 +29,8 @@ jobs:
       steps:
         - uses: actions/checkout@v3
         - uses: ./supported-version
+          with:
+            kind: all
           id: supported-version
         - run: echo ${{ steps.supported-version.outputs.matrix }}
   integration-workflow:
@@ -39,3 +41,4 @@ jobs:
       source_folder: $GITHUB_WORKSPACE/_test/demo-package
       matrix: ${{ needs.compute_matrix.outputs.matrix }}
       test_command: ../../../vendor/bin/phpunit ../../../vendor/graycore/magento2-demo-package/Test/Integration
+      fail-fast: false

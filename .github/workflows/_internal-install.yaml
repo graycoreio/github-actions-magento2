@@ -29,6 +29,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./supported-version
+        with:
+          kind: all
         id: supported-version
       - run: echo ${{ steps.supported-version.outputs.matrix }}
 
@@ -36,6 +38,7 @@ jobs:
     needs: compute_matrix
     strategy:
       matrix: ${{ fromJSON(needs.compute_matrix.outputs.matrix) }}
+      fail-fast: false
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
