@@ -71,12 +71,24 @@
         "nginx": "nginx:1.18",
         "os": "ubuntu-latest"
     },
+    "magento/project-community-edition:>=2.4.5 <2.4.6": {
+        "magento": "magento/project-community-edition:>=2.4.5 <2.4.6",
+        "php": 8.1,
+        "composer": 2,
+        "mysql": "mysql:8.0",
+        "elasticsearch": "elasticsearch:7.17.5",
+        "rabbitmq": "rabbitmq:3.9",
+        "redis": "redis:6.2",
+        "varnish": "varnish:7.0",
+        "nginx": "nginx:1.18",
+        "os": "ubuntu-latest"
+    },
     "magento/project-community-edition": {
         "magento": "magento/project-community-edition",
         "php": 8.1,
         "composer": 2,
         "mysql": "mysql:8.0",
-        "elasticsearch": "elasticsearch:7.16.3",
+        "elasticsearch": "elasticsearch:7.17.5",
         "rabbitmq": "rabbitmq:3.9",
         "redis": "redis:6.2",
         "varnish": "varnish:7.0",
