@@ -39,7 +39,7 @@ runs:
     - name: "Cache Composer Packages"
       uses: actions/cache@v3
       with:
-        key: 'composer | v3 | "$(Agent.OS)"  | composer.lock | ${{ inputs.php_version }}' 
+        key: "composer | v3 | ${{ hashFiles('composer.lock') }} | ${{ runner.os }} | ${{ inputs.php_version }}"
         path: ${{ steps.composer-cache.outputs.dir }}
 
     - run: composer install
