@@ -123,7 +123,7 @@ jobs:
     - name: "Cache Composer Packages"
       uses: actions/cache@v3
       with:
-        key: "composer | v4 | ${{ inputs.composer_cache_key }} | ${{ hashFiles('composer.lock') }} | ${{ matrix.os }} | ${{ matrix.composer }} | ${{ matrix.php }} | ${{ matrix.magento }}"
+        key: "composer | v5 | ${{ inputs.composer_cache_key }} | ${{ hashFiles('composer.lock') }} | ${{ matrix.os }} | ${{ matrix.composer }} | ${{ matrix.php }} | ${{ matrix.magento }}"
         path: ${{ steps.composer-cache.outputs.dir }}
 
     - run: composer config repositories.local path ${{ inputs.source_folder }}

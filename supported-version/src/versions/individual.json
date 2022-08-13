@@ -11,6 +11,18 @@
         "nginx": "nginx:1.18",
         "os": "ubuntu-18.04"
     },
+    "magento/project-community-edition:2.3.7-p4": {
+        "magento": "magento/project-community-edition:2.3.7-p4",
+        "php": 7.4,
+        "composer": 1,
+        "mysql": "mysql:5.7",
+        "elasticsearch": "elasticsearch:7.16.3",
+        "rabbitmq": "rabbitmq:3.8",
+        "redis": "redis:6.0",
+        "varnish": "varnish:6.0",
+        "nginx": "nginx:1.18",
+        "os": "ubuntu-18.04"
+    },
     "magento/project-community-edition:2.4.0": {
         "magento": "magento/project-community-edition:2.4.0",
         "php": 7.4,
@@ -131,12 +143,48 @@
         "nginx": "nginx:1.18",
         "os": "ubuntu-latest"
     },
+    "magento/project-community-edition:2.4.3-p3": {
+        "magento": "magento/project-community-edition:2.4.3-p3",
+        "php": 7.4,
+        "composer": 2,
+        "mysql": "mysql:8.0",
+        "elasticsearch": "elasticsearch:7.16.3",
+        "rabbitmq": "rabbitmq:3.8",
+        "redis": "redis:6.0",
+        "varnish": "varnish:6.0",
+        "nginx": "nginx:1.18",
+        "os": "ubuntu-latest"
+    },
     "magento/project-community-edition:2.4.4": {
         "magento": "magento/project-community-edition:2.4.4",
         "php": 8.1,
         "composer": 2,
         "mysql": "mysql:8.0",
         "elasticsearch": "elasticsearch:7.16.3",
+        "rabbitmq": "rabbitmq:3.9",
+        "redis": "redis:6.2",
+        "varnish": "varnish:7.0",
+        "nginx": "nginx:1.18",
+        "os": "ubuntu-latest"
+    },
+    "magento/project-community-edition:2.4.4-p1": {
+        "magento": "magento/project-community-edition:2.4.4-p1",
+        "php": 8.1,
+        "composer": 2,
+        "mysql": "mysql:8.0",
+        "elasticsearch": "elasticsearch:7.16.3",
+        "rabbitmq": "rabbitmq:3.9",
+        "redis": "redis:6.2",
+        "varnish": "varnish:7.0",
+        "nginx": "nginx:1.18",
+        "os": "ubuntu-latest"
+    },
+    "magento/project-community-edition:2.4.5": {
+        "magento": "magento/project-community-edition:2.4.5",
+        "php": 8.1,
+        "composer": 2,
+        "mysql": "mysql:8.0",
+        "elasticsearch": "elasticsearch:7.17.5",
         "rabbitmq": "rabbitmq:3.9",
         "redis": "redis:6.2",
         "varnish": "varnish:7.0",
