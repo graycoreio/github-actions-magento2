@@ -6,20 +6,21 @@ A Github Workflow that runs the Integration Tests of a Magento Package
 
 See the [integration.yaml](./integration.yaml)
 
-| Input              | Description                                                   | Required | Default                       |
-| ------------------ | ------------------------------------------------------------- | -------- | ----------------------------- |
-| matrix             | JSON string of [version matrix for Magento](./#matrix-format) | true     | NULL                          |
-| fail-fast          | Same as Github's [fail-fast](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstrategyfail-fast)  | false     | true                          |
-| package_name       | The name of the package                                       | true     | NULL                          |
-| source_folder      | The source folder of the package                              | false    | $GITHUB_WORKSPACE             |
-| magento_directory  | The folder where Magento will be installed                    | false    | ../magento2                   |
-| magento_repository | Where to install Magento from                                 | false    | https://mirror.mage-os.org/   |
-| test_command       | The integration test command to run                           | false    | "../../../vendor/bin/phpunit" |
+| Input              | Description                                                                                                                                     | Required | Default                       |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------------------------- |
+| matrix             | JSON string of [version matrix for Magento](./#matrix-format)                                                                                   | true     | NULL                          |
+| fail-fast          | Same as Github's [fail-fast](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstrategyfail-fast) | false    | true                          |
+| package_name       | The name of the package                                                                                                                         | true     | NULL                          |
+| source_folder      | The source folder of the package                                                                                                                | false    | $GITHUB_WORKSPACE             |
+| magento_directory  | The folder where Magento will be installed                                                                                                      | false    | ../magento2                   |
+| magento_repository | Where to install Magento from                                                                                                                   | false    | https://mirror.mage-os.org/   |
+| test_command       | The integration test command to run                                                                                                             | false    | "../../../vendor/bin/phpunit" |
+| composer_cache_key | A key to version the composer cache. Can be incremented if you need to bust the cache.                                                          | false    | ""                            |
 
 ## Secrets
 | Input         | Description                                                                                                                             | Required | Default |
 | ------------- | --------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------- |
-| composer_auth | JSON string of [composer credentials]([#./matrix-format](https://devdocs.magento.com/guides/v2.4/install-gde/prereq/connect-auth.html)) | false     | NULL    |
+| composer_auth | JSON string of [composer credentials]([#./matrix-format](https://devdocs.magento.com/guides/v2.4/install-gde/prereq/connect-auth.html)) | false    | NULL    |
 
 ###  Matrix Format
 
