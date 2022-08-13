@@ -97,6 +97,16 @@ jobs:
         COMPOSER_AUTH: ${{ secrets.composer_auth }}
       name: Create Magento ${{ matrix.magento }} Project 
 
+    - run: |
+        echo "::set-output name=version::$(cat composer.json | jq '.require 
+        | with_entries( select(.key == "magento/product-community-edition" or .key == "magento/product-enterprise-edition") )
+        | to_entries 
+        | .[0].value')"
+      shell: bash
+      working-directory:  ${{ inputs.magento_directory }}
+      name: Compute Installable Magento version
+      id: magento-version
+
     - name: Get Composer Cache Directory
       shell: bash
       working-directory:  ${{ inputs.magento_directory }}
@@ -118,6 +128,8 @@ jobs:
     - run: composer require monolog/monolog:"<2.7.0" --no-update
       name: Fixup Monolog (https://github.com/magento/magento2/pull/35596)
       working-directory:  ${{ inputs.magento_directory }}
+      if: |
+        steps.magento-version.outputs.version == '"2.4.4"'
 
     - run: | 
         composer config --no-interaction allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
