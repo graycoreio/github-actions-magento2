@@ -41,6 +41,11 @@ inputs:
     required: true
     default: "https://mirror.mage-os.org/"
     description: "Where to install Magento from"
+
+  composer_cache_key:
+    required: false
+    default: ''
+    description: A key to version the composer cache. Can be incremented if you need to bust the cache.
   
   composer_auth:
     required: false
@@ -74,7 +79,7 @@ runs:
     - name: "Cache Composer Packages"
       uses: actions/cache@v3
       with:
-        key: 'composer | v3 | "$(Agent.OS)"  | composer.lock | ${{ inputs.composer_version }} | ${{ inputs.php_version }} | ${{ inputs.magento_version }}' 
+        key: "composer | v4 | ${{ inputs.composer_cache_key }} | ${{ hashFiles('composer.lock') }} | ${{ runner.os }} | ${{ inputs.composer_version }} | ${{ inputs.php_version }} | ${{ inputs.magento_version }}"
         path: ${{ steps.composer-cache.outputs.dir }}
 
     - run: composer config repositories.local path ${{ inputs.source_folder }}
