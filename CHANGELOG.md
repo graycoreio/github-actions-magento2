@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/graycoreio/github-actions-magento2/compare/v1.0.0...v1.1.0) (2022-08-14)
+
+
+### Features
+
+* make cache key consistent (and configurable) ([#38](https://github.com/graycoreio/github-actions-magento2/issues/38)) ([cbbba62](https://github.com/graycoreio/github-actions-magento2/commit/cbbba628dd290c81ed4708d3d3bb87abadb0c7ce))
+* **supported-version:** add all kind ([#36](https://github.com/graycoreio/github-actions-magento2/issues/36)) ([26c354d](https://github.com/graycoreio/github-actions-magento2/commit/26c354d8d4d1f7ce689f37236b7b0ee27b11221f))
+* **supported-version:** add support for v2.4.5 ([#35](https://github.com/graycoreio/github-actions-magento2/issues/35)) ([affb1ce](https://github.com/graycoreio/github-actions-magento2/commit/affb1ce1f942799647f57eb6b1096bf0e4afd560))
+
+
+### Bug Fixes
+
+* **integration:** only run monolog fixup on v2.4.4 ([#37](https://github.com/graycoreio/github-actions-magento2/issues/37)) ([841670a](https://github.com/graycoreio/github-actions-magento2/commit/841670a97fccd29d52b760bf0989ac5bb224ba3d))
+
 ## 1.0.0 (2022-08-06)
 
 
