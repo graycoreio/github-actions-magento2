@@ -9,7 +9,7 @@
         "redis": "redis:6.0",
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
-        "os": "ubuntu-18.04"
+        "os": "ubuntu-latest"
     },
     "magento/project-community-edition:2.3.7-p4": {
         "magento": "magento/project-community-edition:2.3.7-p4",
@@ -21,7 +21,7 @@
         "redis": "redis:6.0",
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
-        "os": "ubuntu-18.04"
+        "os": "ubuntu-latest"
     },
     "magento/project-community-edition:2.4.0": {
         "magento": "magento/project-community-edition:2.4.0",
