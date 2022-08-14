@@ -9,5 +9,8 @@
     "test": "jest"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.9.1"
+  }
 }
