@@ -5,7 +5,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "build": "esbuild --outfile=dist/index.js --platform=node --bundle --minify src/index.ts",
+    "build": "npx esbuild --outfile=dist/index.js --platform=node --bundle --minify src/index.ts",
     "test": "jest"
   },
   "author": "",
