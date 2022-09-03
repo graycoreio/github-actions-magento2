@@ -1,0 +1,41 @@
+name: Coding Standard
+
+on:
+  push:
+    branches:
+    - main
+    paths:
+    - "_test/demo-package/**"
+    - ".github/workflows/_internal-coding-standard.yaml"
+    - "coding-standard/**"
+    - "!(**/*.md)"
+  pull_request:
+    branches:
+    - main
+    paths:
+    - "_test/demo-package/**"
+    - ".github/workflows/_internal-coding-standard.yaml"
+    - "coding-standard/**"
+    - "!(**/*.md)"
+  workflow_dispatch:
+    inputs:
+      version:
+        type: string
+        default: '*'
+        description: The version of the coding standard to use.
+        required: false
+      path:
+        type: string
+        default: '_test/demo-package'
+        description: Path to run the coding standard on.
+        required: true
+
+jobs:
+  coding-standard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: './coding-standard'
+        with:
+          version: ${{ github.event.inputs.version || '*' }}
+          path: ${{ github.event.inputs.path || '_test/demo-package' }}
