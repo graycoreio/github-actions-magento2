@@ -5,6 +5,8 @@ export const KNOWN_KINDS = {
     'currently-supported': true,
     'latest': true,
     'custom': true,
+    'nightly': true,
+    'nightly-now': true,
     'all': true,
 }
 

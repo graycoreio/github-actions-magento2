@@ -29,6 +29,20 @@ describe('getMatrixForKind', () => {
         expect(result.include).toBeDefined();
     });
 
+    it('returns a matrix for the next release when using `nightly`', () => {
+        const result = getMatrixForKind("nightly", "magento/project-community-edition:next");
+
+        expect(result.magento).toBeDefined();
+        expect(result.include).toBeDefined();
+    });
+
+    it('returns a matrix for the next release when using `nightly-now`', () => {
+        const result = getMatrixForKind("nightly-now", "magento/project-community-edition:next");
+
+        expect(result.magento).toBeDefined();
+        expect(result.include).toBeDefined();
+    });
+
     it('returns a matrix for valid multiple `custom`', () => {
         const result = getMatrixForKind("custom", "magento/project-community-edition:2.3.7-p3,magento/project-community-edition:2.4.0");
 
