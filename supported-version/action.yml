@@ -5,7 +5,7 @@ description: "A Github Action that computes the Github Actions matrix for the ch
 inputs:
   kind:
     required: false
-    description: "The kind of versions you want to return. Allowed values are `currently-supported`, `latest`, `custom`, `nightly-now` and `nightly` and `all`"
+    description: "The kind of versions you want to return. Allowed values are `currently-supported`, `latest`, `custom`, `nightly` and `all`"
     default: "currently-supported"
   custom_versions:
     required: false

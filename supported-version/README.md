@@ -21,7 +21,6 @@ See the [action.yml](./action.yml)
 - `latest` - The latest version of Magento only.
 - `custom` - A custom subset of the versions, as specified by you. Requires `custom_versions` sibling key.
 - `nightly` - The nightly version of Magento (only available via `https://upstream-nightly.mage-os.org`)
-- `nightly-now` - A special nightly version of Magento (only available via `https://upstream-nightly.mage-os.org`). There's a 99.99% chance you can ignore this.
 - `all` - All versions of Magento (including patched/unpatched versions).
 ## Usage
 
