@@ -1,7 +1,12 @@
 on:
   workflow_call:
     inputs:
-      
+      use_local_source:
+        type: boolean
+        required: false
+        default: true
+        description: "Whether or not you want to test your local package or not."
+        
       source_folder:
         type: string
         required: false
@@ -130,6 +135,7 @@ jobs:
       name: Add Github Repo for Testing
       working-directory:  ${{ inputs.magento_directory }}
       shell: bash
+      if: ${{ inputs.use_local_source == true }}
 
     - run: composer require monolog/monolog:"<2.7.0" --no-update
       name: Fixup Monolog (https://github.com/magento/magento2/pull/35596)
