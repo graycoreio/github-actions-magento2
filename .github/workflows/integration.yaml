@@ -130,6 +130,7 @@ jobs:
       name: Add Github Repo for Testing
       working-directory:  ${{ inputs.magento_directory }}
       shell: bash
+      if: ${{ inputs.source_folder != "" }}
 
     - run: composer require monolog/monolog:"<2.7.0" --no-update
       name: Fixup Monolog (https://github.com/magento/magento2/pull/35596)
