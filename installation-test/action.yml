@@ -86,7 +86,7 @@ runs:
       name: Add Github Repo for Testing
       working-directory:  ${{ inputs.magento_directory }}
       shell: bash
-      if: ${{ inputs.source_folder != "" }}
+      if: ${{ inputs.source_folder != '' }}
 
     - run: |
         composer config --no-interaction allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
