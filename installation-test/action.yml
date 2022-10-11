@@ -18,6 +18,11 @@ inputs:
     default: "2"
     description: "The version of composer to use"
 
+  use_local_source:
+    required: false
+    default: "true"
+    description: "Whether or not you want to test your local package or not."
+
   source_folder:
     required: true
     default: $GITHUB_WORKSPACE
@@ -86,7 +91,7 @@ runs:
       name: Add Github Repo for Testing
       working-directory:  ${{ inputs.magento_directory }}
       shell: bash
-      if: ${{ inputs.source_folder != '' }}
+      if: ${{ inputs.use_local_source == true }}
 
     - run: |
         composer config --no-interaction allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
