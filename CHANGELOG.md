@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/graycoreio/github-actions-magento2/compare/v1.1.0...v1.2.0) (2022-10-11)
+
+
+### Features
+
+* add coding standard action ([#51](https://github.com/graycoreio/github-actions-magento2/issues/51)) ([2a102c2](https://github.com/graycoreio/github-actions-magento2/commit/2a102c253d319fc463b1006ea7cc020b2ffdcb6c))
+* add support for v2.4.4-p2 and v2.4.5-p1 ([#69](https://github.com/graycoreio/github-actions-magento2/issues/69)) ([3e4d3c1](https://github.com/graycoreio/github-actions-magento2/commit/3e4d3c1645ad3ed8b2b0134f4c012335421c5fcb))
+* allow using "next" version on supported version ([#58](https://github.com/graycoreio/github-actions-magento2/issues/58)) ([7431dcb](https://github.com/graycoreio/github-actions-magento2/commit/7431dcb7af723a6be20ef30db0f6978afacc572c))
+* **integration:** fix integration tests for v2.4.0 ([#46](https://github.com/graycoreio/github-actions-magento2/issues/46)) ([b4e7831](https://github.com/graycoreio/github-actions-magento2/commit/b4e7831c93ad82caa0abe3bdce52e4af2eda333b))
+* **supported-version:** package @actions/core:1.10.0 ([e4f0f85](https://github.com/graycoreio/github-actions-magento2/commit/e4f0f85e38ac6e342780d2bdaac28a19c1cab49d))
+
+
+### Bug Fixes
+
+* **supported-version:** pin-back MySQL to breaking change for tests ([#46](https://github.com/graycoreio/github-actions-magento2/issues/46)) ([4b9366f](https://github.com/graycoreio/github-actions-magento2/commit/4b9366fdf2ec72215c0e76dcabfe5e5bfee689de))
+
 ## [1.1.0](https://github.com/graycoreio/github-actions-magento2/compare/v1.0.0...v1.1.0) (2022-08-14)
 
 
