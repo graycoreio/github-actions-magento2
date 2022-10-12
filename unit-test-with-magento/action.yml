@@ -1,0 +1,119 @@
+name: "Unit Test with Magento"
+author: "Graycore"
+description: "A Github Action that runs the Unit Tests of a Magento Package installed inside Magento"
+inputs:
+  php_version: 
+    required: true
+    default: "8.1"
+    description: "PHP Version to use"
+
+  composer_version: 
+    required: true
+    default: "2"
+    description: "Composer Version to use"
+
+  magento_directory:
+    required: true
+    default: "../magento2"
+    description: "The folder where Magento will be installed"
+
+  magento_version:
+    required: true
+    default: "magento/project-community-edition"
+    description: "The version of Magento to test against"
+    
+  magento_repository:
+    required: true
+    default: "https://mirror.mage-os.org/"
+    description: "Where to install Magento from"
+
+  composer_cache_key:
+    required: false
+    default: ''
+    description: A key to version the composer cache. Can be incremented if you need to bust the cache.
+
+  source_folder:
+    required: true
+    default: .
+    description: "The source folder of the package"
+
+  package_name:
+    required: true
+    description: "The name of the package"
+
+  test_command:
+    required: true
+    default: composer run test
+    description: "The test command"
+
+  composer_auth:
+    required: false
+    description: "Composer Authentication Credentials"
+
+runs:
+  using: "composite"
+  steps: 
+    - uses: actions/checkout@v3
+    - name: Set PHP Version
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ inputs.php_version }}
+        tools: composer:v${{ inputs.composer_version }}
+        coverage: none
+
+    - run: composer create-project --repository-url="${{ inputs.magento_repository }}" "${{ inputs.magento_version }}" ${{ inputs.magento_directory }} --no-install
+      shell: bash
+      env:
+        COMPOSER_AUTH: ${{ secrets.composer_auth }}
+      name: Create Magento ${{ inputs.magento }} Project 
+
+    - name: Get Composer Cache Directory
+      shell: bash
+      working-directory:  ${{ inputs.magento_directory }}
+      id: composer-cache
+      run: |
+        echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+    - name: "Cache Composer Packages"
+      uses: actions/cache@v3
+      with:
+        key: "composer | ${{ hashFiles('composer.json') }} | ${{ inputs.magento_version }} | ${{ inputs.php_version }} | ${{ runner.os }} | ${{ inputs.composer_cache_key }}"
+        path: ${{ steps.composer-cache.outputs.dir }}
+
+    - run: composer config repositories.local path ${{ inputs.source_folder }}
+      name: Add Github Repo for Testing
+      working-directory:  ${{ inputs.magento_directory }}
+      shell: bash
+
+    - run: | 
+        composer config --no-interaction allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+        composer config --no-interaction allow-plugins.laminas/laminas-dependency-plugin true
+        composer config --no-interaction allow-plugins.magento/* true
+      shell: bash
+      name: Fixup Composer Plugins
+      working-directory:  ${{ inputs.magento_directory }}
+      if: ${{ !startsWith(inputs.composer_version, '1') }}
+
+    - run: | 
+        composer global require hirak/prestissimo
+      shell: bash
+      name: Install composer plugin for parallel downloads
+      working-directory:  ${{ inputs.magento_directory }}
+      if: ${{ startsWith(inputs.composer_version, '1') }}
+
+    - run: composer require ${{ inputs.package_name }} "@dev" --no-update && composer install
+      name: Require and attempt install
+      working-directory:  ${{ inputs.magento_directory }}
+      shell: bash
+      env:
+        COMPOSER_CACHE_DIR: ${{ steps.composer-cache.outputs.dir }}
+        COMPOSER_AUTH: ${{ secrets.composer_auth }}
+
+    - run: ${{ inputs.test_command }}
+      name: Run Unit Tests
+      working-directory:  ${{ inputs.magento_directory }}/dev/tests/unit
+      shell: bash
+
+branding:
+  icon: "code"
+  color: "green"
