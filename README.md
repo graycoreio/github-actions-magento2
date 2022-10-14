@@ -26,5 +26,6 @@ Opinionated Github Actions and Workflows to make building, testing, and maintain
 | Action Name                                      | Description                                                        |
 | ------------------------------------------------ | ------------------------------------------------------------------ |
 | [Unit Test](./unit-test/README.md)               | A Github Action that runs the Unit Tests a Magento Package         |
-| [Installation Test](installation-test/README.md) | A Github Action that tests the installability of a Magento Package |
-| [Supported Version](supported-version/README.md) | A Github Action that computes the currently supported Github Actions Matrix for Magento 2 |
+| [Get Magento Version](./get-magento-version/README.md) | A Github Action that computes the installed Magento version. |
+| [Installation Test](./installation-test/README.md) | A Github Action that tests the installability of a Magento Package |
+| [Supported Version](./supported-version/README.md) | A Github Action that computes the currently supported Github Actions Matrix for Magento 2 |

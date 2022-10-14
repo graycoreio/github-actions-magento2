@@ -1,0 +1,43 @@
+name: Get Magento Version
+
+on:
+  push:
+    branches:
+    - main
+    paths:
+    - ".github/workflows/_internal-get-magento-version.yaml"
+    - "get-magento-version/**"
+    - "!(**/*.md)"
+  pull_request:
+    branches:
+    - main
+    paths:
+    - ".github/workflows/_internal-get-magento-version.yaml"
+    - "get-magento-version/**"
+    - "!(**/*.md)"
+
+jobs:
+  get-magento-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set PHP Version
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          tools: composer:v2.4.2
+      
+      - run: composer create-project --repository-url="https://mirror.mage-os.org" "magento/project-community-edition:2.4.5-p1" ../magento2 --no-install
+        shell: bash
+        name: Create Magento ${{ matrix.magento }} Project 
+
+      - uses: ./get-magento-version
+        id: magento-version
+        with:
+          working-directory:  ../magento2
+
+      - name: Fail if key does not match
+        if: steps.magento-version.outputs.version != '"2.4.5-p1"'
+        shell: bash
+        run: echo "${{ steps.magento-version.outputs.version }}" && exit 1
+       

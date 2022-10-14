@@ -1,0 +1,31 @@
+name: "Get Magento Version"
+author: "Graycore"
+description: " A Github Action that determines the currently installed version of Magento"
+
+inputs: 
+  working-directory: 
+    default: $GITHUB_WORKSPACE
+    description: "The current working directory of the action"
+    required: false
+
+outputs:
+  version: # id of output
+    description: 'The determined version of Magento'
+    value: ${{ steps.get-magento-version.outputs.version }}
+
+runs:
+  using: "composite"
+  steps:
+  - run: |
+      echo "::set-output name=version::$(cat composer.json | jq '.require 
+      | with_entries( select(.key == "magento/product-community-edition" or .key == "magento/product-enterprise-edition") )
+      | to_entries 
+      | .[0].value')"
+    shell: bash
+    working-directory:  ${{ inputs.working-directory }}
+    name: Compute Installed Magento version
+    id: get-magento-version
+
+branding:
+  icon: "code"
+  color: "green"
