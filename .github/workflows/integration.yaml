@@ -108,15 +108,10 @@ jobs:
         COMPOSER_AUTH: ${{ secrets.composer_auth }}
       name: Create Magento ${{ matrix.magento }} Project 
 
-    - run: |
-        echo "::set-output name=version::$(cat composer.json | jq '.require 
-        | with_entries( select(.key == "magento/product-community-edition" or .key == "magento/product-enterprise-edition") )
-        | to_entries 
-        | .[0].value')"
-      shell: bash
-      working-directory:  ${{ inputs.magento_directory }}
-      name: Compute Installable Magento version
+    - uses: graycoreio/github-actions-magento2/get-magento-version@main
       id: magento-version
+      with:
+        working-directory:  ${{ inputs.magento_directory }}
 
     - name: Get Composer Cache Directory
       shell: bash
