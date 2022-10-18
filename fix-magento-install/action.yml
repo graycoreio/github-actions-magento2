@@ -1,6 +1,6 @@
 name: "Fix Magento Install"
 author: "Graycore"
-description: " A Github Action that fixes Magento before `composer install`"
+description: "A Github Action that fixes Magento before `composer install`"
 inputs:
   magento_directory:
     required: true

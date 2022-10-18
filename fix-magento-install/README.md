@@ -1,5 +1,6 @@
-# Magento 2 Supported Versions
+# Fix Magento
 
+A Github Action that fixes Magento before `composer install`
 
 ## Inputs
 
