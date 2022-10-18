@@ -1,0 +1,87 @@
+name: "Cache Magento 2 for Pipeline"
+author: "Graycore"
+description: "A Github Action that computes the Github Actions matrix for the chosen versions of Magento 2"
+
+inputs:
+  composer_cache_key:
+    required: false
+    default: "__graycore"
+    description: A key to version the composer cache. Can be incremented if you need to bust the cache.
+
+  snapshot:
+    required: false
+    default: "false"
+    description: "A boolean indicating whether or not to use a moment in time cache of Magento exactly as output by composer install. This will make installs faster, but will skip composer plugins. Use with caution."
+  
+  mode:
+    required: true
+    description: "The mode for setup, one of: `extension` or `store`."
+
+  working-directory:
+    required: true
+    description: "The working directory for the action to run in."
+
+outputs:
+  cache-hit:
+    description: "A boolean value to indicate an exact match was found for the key"
+    value: ${{ steps.cache-magento-cache.outputs.cache-hit }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Get Composer Cache Directory
+      shell: bash
+      id: cache-magento-composer-cache
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        echo "GRAYCORE_GA_COMPOSER_CACHE_DIR=$(composer config cache-files-dir)" >> $GITHUB_ENV
+
+      ## We dynamically compute the folder to cache based upon user settings.
+      ##  | Mode      | Snapshot | Directory          |
+      ##  |-----------|----------|--------------------|
+      ##  | store     | 0        | cache-files-dir    |
+      ##  | store     | 1        | vendor             |
+      ##  | extension | 0        | cache-files-dir    |
+      ##  | extension | 1        | Magento Repo       |
+    - name: Get composer cached folder
+      shell: bash
+      id: cache-magento-composer-compute-dir
+      run: | 
+        if [ "${{ inputs.snapshot }}" = 'false' ]; then
+          CACHE_DIR='${{ env.GRAYCORE_GA_COMPOSER_CACHE_DIR }}'
+        else
+            if [ "${{ inputs.mode }}" = 'extension' ]; then
+                CACHE_DIR=$(realpath '${{ inputs.working-directory }}')
+            else
+                CACHE_DIR=$(realpath '${{ inputs.working-directory }}/vendor')
+            fi
+        fi
+        echo "MAGENTO_CACHE_DIR=$CACHE_DIR" >> $GITHUB_ENV
+
+    - uses: graycoreio/github-actions-magento2/get-magento-version@main
+      id: cache-magento-get-magento-version
+      with:
+        working-directory: ${{ inputs.working-directory }}
+        
+    - run: echo "::set-output name=version::$(php -v | awk 'NR==1{print $2}')"
+      shell: bash
+      id: cache-magento-get-php-version
+      working-directory: ${{ inputs.working-directory }}
+
+    - run: echo "::set-output name=version::$(composer --version | awk '{print $3}')"
+      shell: bash
+      name: Compute Composer Version
+      id: cache-magento-get-composer-version
+      working-directory: ${{ inputs.working-directory }}
+
+    - name: "Cache Composer Packages"
+      uses: actions/cache@v3
+      id: cache-magento-cache
+      with:
+        key: "composer | v5.5${{ inputs.snapshot != 'false' && '-snap' || '' }} | ${{ inputs.composer_cache_key }} | ${{ steps.cache-magento-get-composer-version.outputs.version }} | ${{ steps.cache-magento-get-magento-version.outputs.version }} | ${{ steps.cache-magento-get-php-version.outputs.version }}"
+        path: ${{ env.MAGENTO_CACHE_DIR }}
+        
+
+branding:
+  icon: "code"
+  color: "green"
