@@ -34,7 +34,7 @@ runs:
       id: cache-magento-composer-cache
       working-directory: ${{ inputs.working-directory }}
       run: |
-        echo "GRAYCORE_GA_COMPOSER_CACHE_DIR=$(composer config cache-files-dir)" >> $GITHUB_ENV
+        echo "GRAYCORE_GA_COMPOSER_CACHE_DIR=$(composer config cache-files-dir --global)" >> $GITHUB_ENV
 
       ## We dynamically compute the folder to cache based upon user settings.
       ##  | Mode      | Snapshot | Directory          |
