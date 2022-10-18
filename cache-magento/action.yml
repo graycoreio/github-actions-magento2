@@ -57,11 +57,6 @@ runs:
             fi
         fi
         echo "MAGENTO_CACHE_DIR=$CACHE_DIR" >> $GITHUB_ENV
-
-    - uses: graycoreio/github-actions-magento2/get-magento-version@main
-      id: cache-magento-get-magento-version
-      with:
-        working-directory: ${{ inputs.working-directory }}
         
     - run: echo "::set-output name=version::$(php -v | awk 'NR==1{print $2}')"
       shell: bash
@@ -78,7 +73,7 @@ runs:
       uses: actions/cache@v3
       id: cache-magento-cache
       with:
-        key: "composer | v5.5${{ inputs.snapshot != 'false' && '-snap' || '' }} | ${{ inputs.composer_cache_key }} | ${{ steps.cache-magento-get-composer-version.outputs.version }} | ${{ steps.cache-magento-get-magento-version.outputs.version }} | ${{ steps.cache-magento-get-php-version.outputs.version }}"
+        key: "composer | v5.5${{ inputs.snapshot != 'false' && '-snap' || '' }} | ${{ inputs.composer_cache_key }} | ${{ steps.cache-magento-get-composer-version.outputs.version }} | ${{ steps.cache-magento-get-php-version.outputs.version }}"
         path: ${{ env.MAGENTO_CACHE_DIR }}
         
 
