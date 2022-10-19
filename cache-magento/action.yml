@@ -17,9 +17,9 @@ inputs:
     required: true
     description: "The mode for setup, one of: `extension` or `store`."
 
-  working-directory:
+  magento_directory:
     required: true
-    description: "The working directory for the action to run in."
+    description: "The Magento directory for the action to run against."
 
 outputs:
   cache-hit:
@@ -32,7 +32,7 @@ runs:
     - name: Get Composer Cache Directory
       shell: bash
       id: cache-magento-composer-cache
-      working-directory: ${{ inputs.working-directory }}
+      working-directory: ${{ inputs.magento_directory }}
       run: |
         echo "GRAYCORE_GA_COMPOSER_CACHE_DIR=$(composer config cache-files-dir --global)" >> $GITHUB_ENV
 
@@ -51,9 +51,9 @@ runs:
           CACHE_DIR='${{ env.GRAYCORE_GA_COMPOSER_CACHE_DIR }}'
         else
             if [ "${{ inputs.mode }}" = 'extension' ]; then
-                CACHE_DIR=$(realpath '${{ inputs.working-directory }}')
+                CACHE_DIR=$(realpath '${{ inputs.magento_directory }}')
             else
-                CACHE_DIR=$(realpath '${{ inputs.working-directory }}/vendor')
+                CACHE_DIR=$(realpath '${{ inputs.magento_directory }}/vendor')
             fi
         fi
         echo "MAGENTO_CACHE_DIR=$CACHE_DIR" >> $GITHUB_ENV
@@ -61,13 +61,13 @@ runs:
     - run: echo "::set-output name=version::$(php -v | awk 'NR==1{print $2}')"
       shell: bash
       id: cache-magento-get-php-version
-      working-directory: ${{ inputs.working-directory }}
+      working-directory: ${{ inputs.magento_directory }}
 
     - run: echo "::set-output name=version::$(composer --version | awk '{print $3}')"
       shell: bash
       name: Compute Composer Version
       id: cache-magento-get-composer-version
-      working-directory: ${{ inputs.working-directory }}
+      working-directory: ${{ inputs.magento_directory }}
 
     - name: "Cache Composer Packages"
       uses: actions/cache@v3
