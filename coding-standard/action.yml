@@ -56,7 +56,7 @@ runs:
       shell: bash
       working-directory: project
       id: changed-files
-      run: echo "::set-output name=files::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)"
+      run: echo "files=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)" >> $GITHUB_OUTPUT
       if: github.event_name == 'pull_request'
 
     - name: Coding Standard Check
