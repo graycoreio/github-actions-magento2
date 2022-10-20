@@ -17,10 +17,10 @@ runs:
   using: "composite"
   steps:
   - run: |
-      echo "::set-output name=version::$(cat composer.json | jq '.require 
+      echo "version=$(cat composer.json | jq '.require 
       | with_entries( select(.key == "magento/product-community-edition" or .key == "magento/product-enterprise-edition") )
       | to_entries 
-      | .[0].value')"
+      | .[0].value')" >> $GITHUB_OUTPUT
     shell: bash
     working-directory:  ${{ inputs.working-directory }}
     name: Compute Installed Magento version

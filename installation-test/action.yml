@@ -79,7 +79,8 @@ runs:
       working-directory:  ${{ inputs.magento_directory }}
       id: composer-cache
       run: |
-        echo "::set-output name=dir::$(composer config cache-files-dir)"
+        echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
 
     - name: "Cache Composer Packages"
       uses: actions/cache@v3

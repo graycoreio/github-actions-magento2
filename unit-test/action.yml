@@ -34,7 +34,7 @@ runs:
       working-directory:  ${{ inputs.source_folder }}
       id: composer-cache
       run: |
-        echo "::set-output name=dir::$(composer config cache-files-dir)"
+        echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
     - name: "Cache Composer Packages"
       uses: actions/cache@v3
