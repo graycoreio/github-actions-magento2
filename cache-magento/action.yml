@@ -29,7 +29,7 @@ runs:
       id: cache-magento-composer-cache
       working-directory: ${{ inputs.magento_directory }}
       run: |
-        echo "dir=$(composer config cache-dir --global)" >> $GITHUB_OUTPUT
+        echo "dir=$(composer config cache-files-dir --global)" >> $GITHUB_OUTPUT
         
     - run: echo "::set-output name=version::$(php -v | awk 'NR==1{print $2}')"
       shell: bash
@@ -46,7 +46,7 @@ runs:
       uses: actions/cache@v3
       id: cache-magento-cache
       with:
-        key: "composer | v5.7 | ${{ inputs.composer_cache_key }} | ${{ steps.cache-magento-get-composer-version.outputs.version }} | ${{ steps.cache-magento-get-php-version.outputs.version }}"
+        key: "composer | v5.8 | ${{ inputs.composer_cache_key }} | ${{ steps.cache-magento-get-composer-version.outputs.version }} | ${{ steps.cache-magento-get-php-version.outputs.version }}"
         path: ${{ steps.cache-magento-composer-cache.outputs.dir }}
         
 
