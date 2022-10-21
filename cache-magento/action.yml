@@ -8,11 +8,6 @@ inputs:
     default: "__graycore"
     description: A key to version the composer cache. Can be incremented if you need to bust the cache.
 
-  snapshot:
-    required: false
-    default: "false"
-    description: "A boolean indicating whether or not to use a moment in time cache of Magento exactly as output by composer install. This will make installs faster, but will skip composer plugins. Use with caution."
-  
   mode:
     required: true
     description: "The mode for setup, one of: `extension` or `store`."
@@ -34,29 +29,7 @@ runs:
       id: cache-magento-composer-cache
       working-directory: ${{ inputs.magento_directory }}
       run: |
-        echo "GRAYCORE_GA_COMPOSER_CACHE_DIR=$(composer config cache-dir --global)" >> $GITHUB_ENV
-
-      ## We dynamically compute the folder to cache based upon user settings.
-      ##  | Mode      | Snapshot | Directory          |
-      ##  |-----------|----------|--------------------|
-      ##  | store     | 0        | cache-files-dir    |
-      ##  | store     | 1        | vendor             |
-      ##  | extension | 0        | cache-files-dir    |
-      ##  | extension | 1        | Magento Repo       |
-    - name: Get composer cached folder
-      shell: bash
-      id: cache-magento-composer-compute-dir
-      run: | 
-        if [ "${{ inputs.snapshot }}" = 'false' ]; then
-          CACHE_DIR='${{ env.GRAYCORE_GA_COMPOSER_CACHE_DIR }}'
-        else
-            if [ "${{ inputs.mode }}" = 'extension' ]; then
-                CACHE_DIR=$(realpath '${{ inputs.magento_directory }}')
-            else
-                CACHE_DIR=$(realpath '${{ inputs.magento_directory }}/vendor')
-            fi
-        fi
-        echo "MAGENTO_CACHE_DIR=$CACHE_DIR" >> $GITHUB_ENV
+        echo "dir=$(composer config cache-dir --global)" >> $GITHUB_OUTPUT
         
     - run: echo "::set-output name=version::$(php -v | awk 'NR==1{print $2}')"
       shell: bash
@@ -73,8 +46,8 @@ runs:
       uses: actions/cache@v3
       id: cache-magento-cache
       with:
-        key: "composer | v5.7${{ inputs.snapshot != 'false' && '-snap' || '' }} | ${{ inputs.composer_cache_key }} | ${{ steps.cache-magento-get-composer-version.outputs.version }} | ${{ steps.cache-magento-get-php-version.outputs.version }}"
-        path: ${{ env.MAGENTO_CACHE_DIR }}
+        key: "composer | v5.7 | ${{ inputs.composer_cache_key }} | ${{ steps.cache-magento-get-composer-version.outputs.version }} | ${{ steps.cache-magento-get-php-version.outputs.version }}"
+        path: ${{ steps.cache-magento-composer-cache.outputs.dir }}
         
 
 branding:
