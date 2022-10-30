@@ -1,6 +1,8 @@
 # Fix Magento
 
-A Github Action that fixes Magento before `composer install`
+A Github Action that fixes Magento before `composer install`. 
+
+> You probably only need this action if you're working on a Magento extension. However, if you're working on a Magento store and your CI pipeline breaks, this is probably a good first place to look for corrective measures to take.
 
 ## Inputs
 
@@ -9,7 +11,7 @@ See the [action.yml](./action.yml)
 ## Usage
 
 ```yml
-name: Use Supported Versions
+name: Fix Magento Install
 
 on:
   push:
@@ -20,12 +22,11 @@ on:
     - main
 
 jobs:
-  compute_matrix:
+  fix:
     runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.supported-version.outputs.matrix }}
     steps:
-      - uses: graycoreio/github-actions-magento2/supported-version@main
-        id: supported-version
-      - run: echo ${{ steps.supported-version.outputs.matrix }}
+    - uses: actions/checkout@v3
+    - uses: graycoreio/github-actions-magento2/fix-magento-install@main
+      with:
+        magento_directory: path/to/magento
 ```
