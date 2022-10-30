@@ -1,0 +1,47 @@
+name: "Cache Magento 2 for Pipeline"
+author: "Graycore"
+description: "A Github Action that creates a composer cache for a Magento extension or store."
+
+inputs:
+  composer_cache_key:
+    required: false
+    default: "__graycore"
+    description: A key to version the composer cache. Can be incremented if you need to bust the cache.
+
+  mode:
+    required: true
+    description: "The mode for setup, one of: `extension` or `store`."
+
+outputs:
+  cache-hit:
+    description: "A boolean value to indicate an exact match was found for the key"
+    value: ${{ steps.cache-magento-cache.outputs.cache-hit }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Get Composer Cache Directory
+      shell: bash
+      id: cache-magento-composer-cache
+      run: |
+        echo "dir=$(composer config cache-files-dir --global)" >> $GITHUB_OUTPUT
+
+    - run: echo "::set-output name=version::$(php -v | awk 'NR==1{print $2}')"
+      shell: bash
+      id: cache-magento-get-php-version
+
+    - run: echo "::set-output name=version::$(composer --version | awk '{print $3}')"
+      shell: bash
+      name: Compute Composer Version
+      id: cache-magento-get-composer-version
+
+    - name: "Cache Composer Packages"
+      uses: actions/cache@v3
+      id: cache-magento-cache
+      with:
+        key: "composer | v5.8 | ${{ inputs.composer_cache_key }} | ${{ steps.cache-magento-get-composer-version.outputs.version }} | ${{ steps.cache-magento-get-php-version.outputs.version }}"
+        path: ${{ steps.cache-magento-composer-cache.outputs.dir }}
+
+branding:
+  icon: "code"
+  color: "green"
