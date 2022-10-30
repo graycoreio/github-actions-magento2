@@ -84,7 +84,7 @@ runs:
       name: Create Magento ${{ inputs.magento_version }} Project
       if: inputs.mode == 'extension'
 
-    - uses: graycoreio/github-actions-magento2/fix-magento-install@fix_magento_action
+    - uses: graycoreio/github-actions-magento2/fix-magento-install@main
       name: Fix Magento Out of Box Install Issues
       with:
         magento_directory: ${{ steps.setup-magento-compute-directory.outputs.MAGENTO_DIRECTORY }}
