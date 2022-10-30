@@ -86,6 +86,7 @@ jobs:
       shell: bash
 
     - uses: ./setup-magento
+      id: setup-magento
       with:
         php-version: ${{ matrix.php }}
         tools: composer:v${{ matrix.composer }}
