@@ -1,0 +1,100 @@
+name: "Setup Magento"
+author: "Graycore"
+description: "This action sets up a Magento instance for further actions like running tests, etc."
+
+inputs:
+  php-version:
+    description: "Setup PHP version."
+    default: "8.1"
+    required: true
+
+  tools:
+    description: "Setup popular tools globally."
+    required: false
+
+  extensions:
+    description: "Setup PHP extensions."
+    required: false
+
+  coverage:
+    description: "Setup code coverage driver."
+    required: false
+
+  magento_repository:
+    required: false
+    default: "https://mirror.mage-os.org/"
+    description: "Where to install Magento from"
+
+  magento_version: 
+    required: false
+    default: '~2.4.5'
+    description: "The version of Magento to use. This is only relevant if you are testing an extension."
+
+  apply_fixes: 
+    required: false
+    default: 'false'
+    description: "Whether or not to apply fixes during setup."
+
+  mode:
+    required: true
+    default: 'extension'
+    description: "The mode for setup, one of: `extension` or `store`."
+
+  working-directory:
+    required: false
+    default: "."
+    description: "The working directory to run the action in."
+
+outputs:
+  path:
+    description: "The absolute path to where Magento was set up."
+    value: ${{ steps.setup-magento-get-magento-path.outputs.path }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set PHP Version
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ inputs.php-version }}
+        tools: ${{ inputs.tools }}
+        coverage: ${{ inputs.coverage }}
+        extensions: ${{ inputs.coverage }}
+
+    - run: |
+        MAGENTO_DIRECTORY=""
+        if [ "${{ inputs.mode }}" = 'extension' ]; then
+            MAGENTO_DIRECTORY="../magento2"
+        else
+            MAGENTO_DIRECTORY="${{ inputs.working_directory }}"
+        fi
+        echo "MAGENTO_DIRECTORY=$MAGENTO_DIRECTORY" >> $GITHUB_OUTPUT
+      id: setup-magento-compute-directory
+      shell: bash
+
+    - run: | 
+        mkdir -p ${{ steps.setup-magento-compute-directory.outputs.MAGENTO_DIRECTORY }}
+      name: Make a directory that may not exist.
+      shell: bash
+      if: inputs.mode == 'extension'
+
+    - run: composer create-project --repository-url="${{ inputs.magento_repository }}" "${{ inputs.magento_version }}" ${{ steps.setup-magento-compute-directory.outputs.MAGENTO_DIRECTORY }} --no-install
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      name: Create Magento ${{ inputs.magento_version }} Project
+      if: inputs.mode == 'extension'
+
+    - uses: graycoreio/github-actions-magento2/fix-magento-install@fix_magento_action
+      name: Fix Magento Out of Box Install Issues
+      with:
+        magento_directory: ${{ steps.setup-magento-compute-directory.outputs.MAGENTO_DIRECTORY }}
+      if: inputs.mode == 'extension' || inputs.apply_fixes == 'true' 
+
+    - run: |
+        echo "path=$(realpath ${{ steps.setup-magento-compute-directory.outputs.MAGENTO_DIRECTORY }})" >> $GITHUB_OUTPUT
+      shell: bash
+      id: setup-magento-get-magento-path
+      
+branding:
+  icon: "code"
+  color: "green"
