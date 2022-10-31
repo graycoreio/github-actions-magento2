@@ -1,0 +1,127 @@
+name: Setup Magento Test
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches:
+    - main
+    paths:
+    - "setup-magento/**"
+    - ".github/workflows/_internal-setup-magento.yaml"
+    - "supported-version/**"
+    - "!(**/*.md)"
+  pull_request:
+    branches:
+    - main
+    paths:
+    - "setup-magento/**"
+    - ".github/workflows/_internal-setup-magento.yaml"
+    - "supported-version/**"
+    - "!(**/*.md)"
+
+env:
+  PSEUDO_REPO_FOLDER: ../magento_repo
+  magento_folder: ../magento2
+
+jobs:
+  compute_matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.supported-version.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./supported-version
+        with:
+          kind: currently-supported
+        id: supported-version
+      - run: echo ${{ steps.supported-version.outputs.matrix }}
+
+  setup-magento-store:
+    needs: compute_matrix
+    strategy:
+      matrix: ${{ fromJSON(needs.compute_matrix.outputs.matrix) }}
+      fail-fast: false
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - run: |
+        PSEUDO_STORE_FULL_PATH=$(realpath "${{ env.PSEUDO_REPO_FOLDER }}")
+        echo "PSEUDO_STORE_FULL_PATH=$PSEUDO_STORE_FULL_PATH" >> $GITHUB_ENV
+      name: Generate Full Pseudo Store Path
+      shell: bash
+
+    - name: Set PHP Version
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php }}
+        tools: composer:v${{ matrix.composer }}
+
+    - uses: actions/cache@v3
+      id: setup-magento-store-cache
+      with:
+        key: setup-magento-ci | ${{ runner.os }} | ${{ matrix.magento }}
+        path: ${{ env.PSEUDO_STORE_FULL_PATH }}
+
+    - run: composer create-project --repository-url="https://mirror.mage-os.org" "${{ matrix.magento }}" "${{ env.PSEUDO_REPO_FOLDER }}" --no-install
+      name: Create Store to simulate a real Magento store in a real repo.
+      if: steps.setup-magento-store-cache.outputs.cache-hit != 'true'
+
+    - uses: ./fix-magento-install
+      name: Fix Magento Out of Box Install Issues
+      with:
+        magento_directory: ${{ env.PSEUDO_REPO_FOLDER }}
+      if: steps.setup-magento-store-cache.outputs.cache-hit != 'true'
+
+    - run: composer install
+      shell: bash
+      working-directory: "${{ env.PSEUDO_REPO_FOLDER }}"
+      if: steps.setup-magento-store-cache.outputs.cache-hit != 'true'
+
+    - run: git init && git config user.email "you@example.com" && git config user.name "Your Name" && git add . && git commit -m "init" && git clean -fdx
+      working-directory: "${{ env.PSEUDO_REPO_FOLDER }}"
+      if: steps.setup-magento-store-cache.outputs.cache-hit != 'true'
+
+    - run: cp -R ${{ env.PSEUDO_REPO_FOLDER }} ${{ env.magento_folder }}
+      shell: bash
+
+    - uses: ./setup-magento
+      id: setup-magento
+      with:
+        php-version: ${{ matrix.php }}
+        tools: composer:v${{ matrix.composer }}
+        mode: store
+        working-directory: ${{ env.magento_folder }}
+    
+    - uses: graycoreio/github-actions-magento2/cache-magento@main
+      with:
+        mode: 'store'
+        composer_cache_key:  '${{ matrix.magento }}'
+
+    - run: composer install
+      name: Composer install
+      shell: bash
+      working-directory: ${{ steps.setup-magento.outputs.path }}
+
+  setup-magento-extension:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3 
+
+    - uses: ./setup-magento
+      id: setup-magento
+      with:
+        php-version: 8.1
+        tools: composer:v2
+        mode: extension
+        magento_version: magento/project-community-edition:2.4.5-p1
+
+    - uses: graycoreio/github-actions-magento2/cache-magento@main
+      with:
+        mode: 'extension'
+        composer_cache_key: 'magento/project-community-edition:2.4.5-p1'
+    
+    - run: composer install
+      name: Composer install
+      shell: bash
+      working-directory: ${{ steps.setup-magento.outputs.path }}
