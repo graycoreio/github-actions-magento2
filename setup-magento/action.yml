@@ -66,7 +66,7 @@ runs:
         if [ "${{ inputs.mode }}" = 'extension' ]; then
             MAGENTO_DIRECTORY="../magento2"
         else
-            MAGENTO_DIRECTORY="${{ inputs.working_directory }}"
+            MAGENTO_DIRECTORY="${{ inputs.working-directory }}"
         fi
         echo "MAGENTO_DIRECTORY=$MAGENTO_DIRECTORY" >> $GITHUB_OUTPUT
       id: setup-magento-compute-directory
