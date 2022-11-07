@@ -25,7 +25,8 @@ Opinionated Github Actions and Workflows to make building, testing, and maintain
 
 | Action Name                                            | Description                                                                               |
 | ------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
-| [Unit Test](./unit-test/README.md)                     | A Github Action that runs the Unit Tests a Magento Package                                |
+| [Unit Test](./unit-test/README.md)                     | A Github Action that runs the Unit Tests of a Magento Package                             |
+| [Static Test](./static-test/README.md)                 | A Github Action that runs the Static Tests of a Magento Package                           |
 | [Fix Magento Install](./fix-magento-install/README.md) | A Github Action that fixes Magento before `composer install`                              |
 | [Cache Magento](./cache-magento/README.md)             | A Github Action that creates a composer cache for a Magento extension or store.           |
 | [Setup Magento](./setup-magento/README.md)             | A Github Action that sets up Magento before `composer install` for an extension or store. |
