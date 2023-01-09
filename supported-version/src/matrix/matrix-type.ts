@@ -8,7 +8,8 @@ export interface MagentoMatrixVersion {
     redis: string,
     varnish: string,
     nginx: string,
-    os: string
+    os: string,
+    eol: string
 }
 
 export interface GithubActionsMatrix {
