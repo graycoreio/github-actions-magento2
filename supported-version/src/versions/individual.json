@@ -9,7 +9,8 @@
         "redis": "redis:6.0",
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
-        "os": "ubuntu-18.04"
+        "os": "ubuntu-18.04",
+        "eol": "2022-08-09T00:00:00+0000"
     },
     "magento/project-community-edition:2.3.7-p4": {
         "magento": "magento/project-community-edition:2.3.7-p4",
@@ -21,7 +22,8 @@
         "redis": "redis:6.0",
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
-        "os": "ubuntu-18.04"
+        "os": "ubuntu-18.04",
+        "eol": "2022-09-30T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.0": {
         "magento": "magento/project-community-edition:2.4.0",
@@ -33,7 +35,8 @@
         "redis": "redis:5.0",
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
-        "os": "ubuntu-20.04"
+        "os": "ubuntu-20.04",
+        "eol": "2020-10-15T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.0-p1": {
         "magento": "magento/project-community-edition:2.4.0-p1",
@@ -45,7 +48,8 @@
         "redis": "redis:5.0",
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
-        "os": "ubuntu-20.04"
+        "os": "ubuntu-20.04",
+        "eol": "2022-11-28T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.1": {
         "magento": "magento/project-community-edition:2.4.1",
@@ -57,7 +61,8 @@
         "redis": "redis:5.0",
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
-        "os": "ubuntu-20.04"
+        "os": "ubuntu-20.04",
+        "eol": "2021-02-09T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.1-p1": {
         "magento": "magento/project-community-edition:2.4.1-p1",
@@ -69,7 +74,8 @@
         "redis": "redis:5.0",
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
-        "os": "ubuntu-20.04"
+        "os": "ubuntu-20.04",
+        "eol": "2022-11-28T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.2": {
         "magento": "magento/project-community-edition:2.4.2",
@@ -81,7 +87,8 @@
         "redis": "redis:6.0",
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
-        "os": "ubuntu-20.04"
+        "os": "ubuntu-20.04",
+        "eol": "2021-05-11T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.2-p1": {
         "magento": "magento/project-community-edition:2.4.2-p1",
@@ -93,7 +100,8 @@
         "redis": "redis:6.0",
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
-        "os": "ubuntu-20.04"
+        "os": "ubuntu-20.04",
+        "eol": "2021-08-10T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.2-p2": {
         "magento": "magento/project-community-edition:2.4.2-p2",
@@ -105,7 +113,8 @@
         "redis": "redis:6.0",
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
-        "os": "ubuntu-20.04"
+        "os": "ubuntu-20.04",
+        "eol": "2022-11-28T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.3": {
         "magento": "magento/project-community-edition:2.4.3",
@@ -117,7 +126,8 @@
         "redis": "redis:6.0",
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
-        "os": "ubuntu-20.04"
+        "os": "ubuntu-20.04",
+        "eol": "2021-10-12T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.3-p1": {
         "magento": "magento/project-community-edition:2.4.3-p1",
@@ -129,7 +139,8 @@
         "redis": "redis:6.0",
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
-        "os": "ubuntu-20.04"
+        "os": "ubuntu-20.04",
+        "eol": "2022-04-12T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.3-p2": {
         "magento": "magento/project-community-edition:2.4.3-p2",
@@ -141,7 +152,8 @@
         "redis": "redis:6.0",
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
-        "os": "ubuntu-20.04"
+        "os": "ubuntu-20.04",
+        "eol": "2022-08-09T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.3-p3": {
         "magento": "magento/project-community-edition:2.4.3-p3",
@@ -153,7 +165,8 @@
         "redis": "redis:6.0",
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
-        "os": "ubuntu-20.04"
+        "os": "ubuntu-20.04",
+        "eol": "2022-11-28T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.4": {
         "magento": "magento/project-community-edition:2.4.4",
@@ -165,7 +178,8 @@
         "redis": "redis:6.2",
         "varnish": "varnish:7.0",
         "nginx": "nginx:1.18",
-        "os": "ubuntu-latest"
+        "os": "ubuntu-latest",
+        "eol": "2022-08-09T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.4-p1": {
         "magento": "magento/project-community-edition:2.4.4-p1",
@@ -177,7 +191,8 @@
         "redis": "redis:6.2",
         "varnish": "varnish:7.0",
         "nginx": "nginx:1.18",
-        "os": "ubuntu-latest"
+        "os": "ubuntu-latest",
+        "eol": "2022-10-11T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.4-p2": {
         "magento": "magento/project-community-edition:2.4.4-p2",
@@ -189,7 +204,8 @@
         "redis": "redis:6.2",
         "varnish": "varnish:7.0",
         "nginx": "nginx:1.18",
-        "os": "ubuntu-latest"
+        "os": "ubuntu-latest",
+        "eol": "2024-11-25T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.5": {
         "magento": "magento/project-community-edition:2.4.5",
@@ -201,7 +217,8 @@
         "redis": "redis:6.2",
         "varnish": "varnish:7.0",
         "nginx": "nginx:1.18",
-        "os": "ubuntu-latest"
+        "os": "ubuntu-latest",
+        "eol": "2022-08-09T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.5-p1": {
         "magento": "magento/project-community-edition:2.4.5-p1",
@@ -213,6 +230,7 @@
         "redis": "redis:6.2",
         "varnish": "varnish:7.0",
         "nginx": "nginx:1.18",
-        "os": "ubuntu-latest"
+        "os": "ubuntu-latest",
+        "eol": "2024-11-25T00:00:00+0000"
     }
 }
