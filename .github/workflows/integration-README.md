@@ -20,7 +20,7 @@ See the [integration.yaml](./integration.yaml)
 ## Secrets
 | Input         | Description                                                                                                                             | Required | Default |
 | ------------- | --------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------- |
-| composer_auth | JSON string of [composer credentials]([#./matrix-format](https://devdocs.magento.com/guides/v2.4/install-gde/prereq/connect-auth.html)) | false    | NULL    |
+| composer_auth | JSON string of [composer credentials](https://devdocs.magento.com/guides/v2.4/install-gde/prereq/connect-auth.html) | false    | NULL    |
 
 ###  Matrix Format
 
