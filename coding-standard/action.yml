@@ -21,6 +21,21 @@ inputs:
   version:
     required: false
     description: "The version of the coding standard to use. If not provided, will use the latest version."
+    
+  severity:
+    required: false
+    default: ""
+    description: "The minimum severity required to display an error or warning (default: 5)"
+  
+  warning_severity:
+    required: false
+    default: ""
+    description: "The minimum severity required to display a warning"
+  
+  error_severity:
+    required: false
+    default: ""
+    description: "The minimum severity required to display an error"
 
 runs:
   using: composite
@@ -61,5 +76,10 @@ runs:
 
     - name: Coding Standard Check
       shell: bash
-      run: ../standard/vendor/bin/phpcs --standard=Magento2 ${{ github.event_name == 'pull_request' && steps.changed-files.outputs.files || inputs.path }}
+      run: |
+        ../standard/vendor/bin/phpcs --standard=Magento2 \
+        $([ -n "${{ inputs.severity }}" ] && echo "--severity=${{ inputs.severity }}") \
+        $([ -n "${{ inputs.warning_severity }}" ] && echo "--warning-severity=${{ inputs.warning_severity }}") \
+        $([ -n "${{ inputs.error_severity }}" ] && echo "--error-severity=${{ inputs.error_severity }}") \
+        ${{ github.event_name == 'pull_request' && steps.changed-files.outputs.files || inputs.path }}
       working-directory: project
