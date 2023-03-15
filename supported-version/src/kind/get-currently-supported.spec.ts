@@ -6,19 +6,43 @@ describe('getCurrentlySupportedVersions', () => {
         expect(getCurrentlySupportedVersions(date)).not.toContain('magento/project-community-edition:2.4.0');
     });
 
-    it('should say that v2.4.5 is supported in 2023 and most of 2024.', () => {
-        const firstDayOf2023: Date = new Date('2023-01-01T00:00:00Z');
-        const firstDayOf2024: Date = new Date('2024-01-01T00:00:00Z');
-        const lastDayOf2024: Date = new Date('2024-12-31T00:00:00Z');
-        const dayBeforeEol: Date = new Date('2024-11-24T00:00:00Z');
-        const dayOfEol: Date = new Date('2024-11-25T00:00:00Z');
-        const dayAfterEol: Date = new Date('2024-11-26T00:00:00Z');
-
-        expect(getCurrentlySupportedVersions(firstDayOf2023)).toContain('magento/project-community-edition:2.4.5-p1');
-        expect(getCurrentlySupportedVersions(firstDayOf2024)).toContain('magento/project-community-edition:2.4.5-p1');
-        expect(getCurrentlySupportedVersions(lastDayOf2024)).not.toContain('magento/project-community-edition:2.4.5-p1');
-        expect(getCurrentlySupportedVersions(dayBeforeEol)).toContain('magento/project-community-edition:2.4.5-p1');
-        expect(getCurrentlySupportedVersions(dayOfEol)).toContain('magento/project-community-edition:2.4.5-p1');
-        expect(getCurrentlySupportedVersions(dayAfterEol)).not.toContain('magento/project-community-edition:2.4.5-p1');
-    })
+    test.each([
+        //TODO: add a release-date so that past dates do not incur non-contemporaneous
+        // versions.
+        ['2023-01-01T00:00:00Z', 'First day of 2023', [
+            'magento/project-community-edition:2.4.4-p2',
+            'magento/project-community-edition:2.4.4-p3',
+            'magento/project-community-edition:2.4.5-p1',
+            'magento/project-community-edition:2.4.5-p2',
+            'magento/project-community-edition:2.4.6',
+        ]],
+        ['2024-01-01T00:00:00Z', 'First day of 2024', [
+            'magento/project-community-edition:2.4.4-p3',
+            'magento/project-community-edition:2.4.5-p2',
+            'magento/project-community-edition:2.4.6',
+        ]],
+        ['2024-12-31T00:00:00Z', 'End of 2024', [
+            'magento/project-community-edition:2.4.4-p3',
+            'magento/project-community-edition:2.4.5-p2',
+            'magento/project-community-edition:2.4.6',
+        ]],
+        ['2025-08-08T00:00:00Z', 'Day Before v2.4.5 EoL', [
+            'magento/project-community-edition:2.4.5-p2',
+            'magento/project-community-edition:2.4.6',
+        ]],
+        ['2025-08-09T00:00:00Z', 'Day of v2.4.5 EoL', [
+            'magento/project-community-edition:2.4.5-p2',
+            'magento/project-community-edition:2.4.6',
+        ]],
+        ['2025-08-10T00:00:00Z', 'Day after v2.4.5 EoL', [
+            'magento/project-community-edition:2.4.6',
+        ]],
+    ])(
+        'supportedVersions for %s',
+        (date, description ,result) => {
+            expect(
+                getCurrentlySupportedVersions(new Date(date))
+            ).toEqual(result);
+        }
+    );
 })
