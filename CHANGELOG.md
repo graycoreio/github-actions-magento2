@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/graycoreio/github-actions-magento2/compare/v1.2.0...v1.3.0) (2023-03-15)
+
+
+### Features
+
+* add `cache-magento` action ([#87](https://github.com/graycoreio/github-actions-magento2/issues/87)) ([f5d43a5](https://github.com/graycoreio/github-actions-magento2/commit/f5d43a5184d20dc60b5e45d47b9d14300eb14754))
+* add `fix-magento` action ([#86](https://github.com/graycoreio/github-actions-magento2/issues/86)) ([856d2df](https://github.com/graycoreio/github-actions-magento2/commit/856d2df4819a5d0cdff6087a005ca966c7d409c0))
+* add rabbitmq images with management plugin ([#125](https://github.com/graycoreio/github-actions-magento2/issues/125)) ([0f31e40](https://github.com/graycoreio/github-actions-magento2/commit/0f31e401b775c085720176a4ac7626c45d2b07d0))
+* **get-magento-version:** add get-magento-version action ([#72](https://github.com/graycoreio/github-actions-magento2/issues/72)) ([fd858c3](https://github.com/graycoreio/github-actions-magento2/commit/fd858c30633e97bdc93cc8c2fe7adaef99a6bf7c))
+* **setup-magento:** add a new action to setup Magento ([#76](https://github.com/graycoreio/github-actions-magento2/issues/76)) ([7b74ff7](https://github.com/graycoreio/github-actions-magento2/commit/7b74ff738699d86aafed7690464302b1f07e59d0))
+* **supported-version:** dynamically compute ([#120](https://github.com/graycoreio/github-actions-magento2/issues/120)) ([dbc889f](https://github.com/graycoreio/github-actions-magento2/commit/dbc889f7cea548d319a5cd206269b007319d53ec))
+* **supported-version:** Magento v2.4.6 ([d3b1ab6](https://github.com/graycoreio/github-actions-magento2/commit/d3b1ab6b344b6a1ff705d2e57ad400ab506456be))
+
+
+### Bug Fixes
+
+* **installation-test:** handle non-range composer versions ([c136c11](https://github.com/graycoreio/github-actions-magento2/commit/c136c111d923fa3c9d4f3fbeb38cd81d593168da))
+* **supported-versions:** GA Ubuntu-22.04 release ([#110](https://github.com/graycoreio/github-actions-magento2/issues/110)) ([b0e1a0a](https://github.com/graycoreio/github-actions-magento2/commit/b0e1a0a9439be892062a6f05161d83e7ae2c7cbf))
+
 ## [1.2.0](https://github.com/graycoreio/github-actions-magento2/compare/v1.1.0...v1.2.0) (2022-10-11)
 
 
