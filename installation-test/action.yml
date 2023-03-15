@@ -64,8 +64,14 @@ runs:
       with:
         php-version: ${{ inputs.php_version }}
 
-    - run: composer self-update --${{ inputs.composer_version }}
+    - run: composer self-update ${{ inputs.composer_version }}
       name: Pin to Composer Version ${{ inputs.composer_version }}
+      if: contains(inputs.composer_version, '.') == true
+      shell: bash
+
+    - run: composer self-update --${{ inputs.composer_version }}
+      name: Pin to Composer Version ${{ inputs.composer_version }} (Range)
+      if: contains(inputs.composer_version, '.') == false
       shell: bash
 
     - run: composer create-project --repository-url="${{ inputs.magento_repository }}" "${{ inputs.magento_version }}" ${{ inputs.magento_directory }} --no-install
