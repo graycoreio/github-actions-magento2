@@ -8,7 +8,7 @@ export async function run(): Promise<void> {
     const kind = core.getInput("kind");
     const customVersions = core.getInput("custom_versions");
 
-    validateKind(<any>kind, customVersions.split(','));
+    validateKind(<any>kind, customVersions ? customVersions.split(',') : undefined);
 
     core.setOutput('matrix', getMatrixForKind(kind, customVersions));
   } 
