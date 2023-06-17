@@ -26,7 +26,7 @@ jobs:
       matrix: ${{ steps.supported-version.outputs.matrix }}
     steps:
       - uses: actions/checkout@v2
-      - uses: graycoreio/github-actions-magento2/supported-version@main
+      - uses: mage-os/github-actions/supported-version@main
         id: supported-version
       - run: echo ${{ steps.supported-version.outputs.matrix }}
 
@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: graycoreio/github-actions-magento2/installation-test@main
+    - uses: mage-os/github-actions/installation-test@main
       with:
         composer_version: ${{ matrix.composer }}
         php_version: ${{ matrix.php }}

@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: graycoreio/github-actions-magento2/fix-magento-install@main
+    - uses: mage-os/github-actions/fix-magento-install@main
       with:
         magento_directory: path/to/magento
 ```

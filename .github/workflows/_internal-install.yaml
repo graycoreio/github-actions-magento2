@@ -47,5 +47,5 @@ jobs:
         composer_version: ${{ matrix.composer }}
         php_version: ${{ matrix.php }}
         magento_version: ${{ matrix.magento }}
-        package_name: graycore/magento2-demo-package
+        package_name: mage-os/magento2-demo-package
         source_folder: $GITHUB_WORKSPACE/_test/demo-package

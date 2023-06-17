@@ -9,7 +9,7 @@ See the [action.yml](./action.yml)
 
 | Input              | Description                                                                            | Required | Default      |
 | ------------------ | -------------------------------------------------------------------------------------- | -------- | ------------ |
-| composer_cache_key | A key to version the composer cache. Can be incremented if you need to bust the cache. | false    | '__graycore' |
+| composer_cache_key | A key to version the composer cache. Can be incremented if you need to bust the cache. | false    | '__mageos' |
 | mode               | "The mode for setup, one of: `extension` or `store`."                                  | true     | N/A          |
 | magento_directory  | The Magento directory for the action to run against.                                   | true     | N/A          |
 
@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: graycoreio/github-actions-magento2/cache-magento@main
+    - uses: mage-os/github-actions/cache-magento@main
       with:
         magento_directory: $GITHUB_WORKSPACE 
         mode: 'store'

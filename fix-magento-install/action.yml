@@ -9,7 +9,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: graycoreio/github-actions-magento2/get-magento-version@main
+    - uses: mage-os/github-actions/get-magento-version@main
       id: init-magento-get-magento-version
       with:
         working-directory: ${{ inputs.magento_directory }}

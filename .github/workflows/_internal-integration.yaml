@@ -37,8 +37,8 @@ jobs:
     needs: compute_matrix
     uses: ./.github/workflows/integration.yaml
     with:
-      package_name: graycore/magento2-demo-package
+      package_name: mage-os/magento2-demo-package
       source_folder: $GITHUB_WORKSPACE/_test/demo-package
       matrix: ${{ needs.compute_matrix.outputs.matrix }}
-      test_command: ../../../vendor/bin/phpunit ../../../vendor/graycore/magento2-demo-package/Test/Integration
+      test_command: ../../../vendor/bin/phpunit ../../../vendor/mage-os/magento2-demo-package/Test/Integration
       fail-fast: false

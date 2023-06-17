@@ -41,7 +41,7 @@ jobs:
     outputs:
       matrix: ${{ steps.supported-version.outputs.matrix }}
     steps:
-      - uses: graycoreio/github-actions-magento2/supported-version@main
+      - uses: mage-os/github-actions/supported-version@main
         id: supported-version
       - run: echo ${{ steps.supported-version.outputs.matrix }}
 ```

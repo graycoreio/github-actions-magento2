@@ -5,7 +5,7 @@ description: "A Github Action that creates a composer cache for a Magento extens
 inputs:
   composer_cache_key:
     required: false
-    default: "__graycore"
+    default: "__mageos"
     description: A key to version the composer cache. Can be incremented if you need to bust the cache.
 
   mode:
