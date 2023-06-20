@@ -23,7 +23,7 @@ jobs:
   coding-standard:
     runs-on: ubuntu-latest
     steps:
-    - uses: graycoreio/github-actions-magento2/coding-standard@main
+    - uses: mage-os/github-actions/coding-standard@main
       with:
         version: 25 # Optional, will use the latest if omitted.
         path: app/code # Optional, will be used when event is not a pull request.

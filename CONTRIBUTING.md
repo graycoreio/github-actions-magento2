@@ -16,9 +16,9 @@ Help us keep "Github Actions for Magento 2" open and inclusive. Please read and 
 
 ## <a name="question"></a> Got a Question or Problem?
 
-Do not open issues for general support questions as we want to keep GitHub issues for bug reports and feature requests. You've got much better chances of getting your question answered on [Discussions](https://github.com/graycoreio/github-actions-magento2/discussions).
+Do not open issues for general support questions as we want to keep GitHub issues for bug reports and feature requests. You've got much better chances of getting your question answered on [Discussions](https://github.com/mage-os/github-actions/discussions).
 
-To save your and our time, we will systematically close all issues that are requests for general support and redirect people to [Discussions](https://github.com/graycoreio/github-actions-magento2/discussions).
+To save your and our time, we will systematically close all issues that are requests for general support and redirect people to [Discussions](https://github.com/mage-os/github-actions/discussions).
 
 ## <a name="issue"></a> Found a Bug?
 If you find a bug in the source code, you can help us by
@@ -54,15 +54,15 @@ We will be insisting on a minimal reproduce scenario in order to save maintainer
 
 Unfortunately, we are not able to investigate / fix bugs without a minimal reproduction, so if we don't hear back from you we are going to close an issue that doesn't have enough info to be reproduced.
 
-You can file new issues by filling out our [new issue form](https://github.com/graycoreio/github-actions-magento2/issues/new/choose).
+You can file new issues by filling out our [new issue form](https://github.com/mage-os/github-actions/issues/new/choose).
 
 
 ### <a name="submit-pr"></a> Submitting a Pull Request (PR)
 Before you submit your Pull Request (PR) consider the following guidelines:
 
-1. Search [GitHub](https://github.com/graycoreio/github-actions-magento2/pulls) for an open or closed PR
+1. Search [GitHub](https://github.com/mage-os/github-actions/pulls) for an open or closed PR
   that relates to your submission. You don't want to duplicate effort.
-1. Fork the [graycoreio/github-actions-magento2](https://github.com/graycoreio/github-actions-magento2) repo.
+1. Fork the [mage-os/github-actions](https://github.com/mage-os/github-actions) repo.
 1. Make your changes in a new git branch:
 
      ```shell
@@ -161,7 +161,7 @@ to read on GitHub as well as in various git tools.
 
 The footer should contain a [closing reference to an issue](https://help.github.com/articles/closing-issues-via-commit-messages/) if any.
 
-Samples: (even more [samples](https://github.com/graycoreio/github-actions-magento2/commits/main))
+Samples: (even more [samples](https://github.com/mage-os/github-actions/commits/main))
 
 ```
 docs(changelog): update changelog to beta.5
@@ -217,7 +217,7 @@ reference GitHub issues that this commit **Closes**.
 A detailed explanation can be found in this [document][commit-message-format].
 
 
-[coc]: https://github.com/graycoreio/github-actions-magento2/code-of-conduct/blob/main/CODE_OF_CONDUCT.md
+[coc]: https://github.com/mage-os/github-actions/code-of-conduct/blob/main/CODE_OF_CONDUCT.md
 [commit-message-format]: https://www.conventionalcommits.org/en/v1.0.0/
-[github]: https://github.com/graycoreio/github-actions-magento2
-[discussions]: https://github.com/graycoreio/github-actions-magento2/discussions
+[github]: https://github.com/mage-os/github-actions
+[discussions]: https://github.com/mage-os/github-actions/discussions

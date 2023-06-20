@@ -1,5 +1,5 @@
 {
-    "name": "graycore/magento2-demo-package",
+    "name": "mage-os/magento2-demo-package",
     "description": "A Magento 2 Demostration Package",
     "type": "magento2-module",
     "license": "MIT",

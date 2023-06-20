@@ -1,5 +1,5 @@
 {
-  "name": "@graycore/github-actions-magento",
+  "name": "@mage-os/github-actions",
   "version": "1.3.0",
   "description": "Github Actions for Magento 2",
   "scripts": {
@@ -9,14 +9,14 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/graycoreio/github-actions-magento2.git"
+    "url": "git+https://github.com/mage-os/github-actions.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/graycoreio/github-actions-magento2/issues"
+    "url": "https://github.com/mage-os/github-actions/issues"
   },
-  "homepage": "https://github.com/graycoreio/github-actions-magento2#readme",
+  "homepage": "https://github.com/mage-os/github-actions#readme",
   "dependencies": {
     "@actions/core": "^1.10.0"
   },

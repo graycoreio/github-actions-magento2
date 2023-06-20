@@ -24,7 +24,7 @@ See the [integration.yaml](./integration.yaml)
 
 ###  Matrix Format
 
-The Magento matrix format outlined by the [supported versions action.](https://github.com/graycoreio/github-actions-magento2/tree/main/supported-version/supported.json) 
+The Magento matrix format outlined by the [supported versions action.](https://github.com/mage-os/github-actions/tree/main/supported-version/supported.json) 
 
 
 ## Usage
@@ -47,12 +47,12 @@ jobs:
         matrix: ${{ steps.supported-version.outputs.matrix }}
       steps:
         - uses: actions/checkout@v2
-        - uses: graycoreio/github-actions-magento2/supported-version@main
+        - uses: mage-os/github-actions/supported-version@main
           id: supported-version
         - run: echo ${{ steps.supported-version.outputs.matrix }}
   integration-workflow:
     needs: compute_matrix
-    uses: graycoreio/github-actions-magento2/.github/workflows/integration.yaml@main
+    uses: mage-os/github-actions/.github/workflows/integration.yaml@main
     with:
       package_name: my-vendor/package
       matrix: ${{ needs.compute_matrix.outputs.matrix }}
