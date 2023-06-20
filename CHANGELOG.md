@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/mage-os/github-actions/compare/v1.3.0...v1.4.0) (2023-06-20)
+
+
+### Features
+
+* make phpcs severity level configurable ([#130](https://github.com/mage-os/github-actions/issues/130)) ([81a1eb2](https://github.com/mage-os/github-actions/commit/81a1eb2273864842286a4427519c9d29146c5ac8))
+* **supported-version:** validate custom_versions ([5c19804](https://github.com/mage-os/github-actions/commit/5c198049f7002fff785d07f344f3773ce92e2c0f))
+
+
+### Bug Fixes
+
+* **supported-version:** falsiness of custom_versions ([c9b7f41](https://github.com/mage-os/github-actions/commit/c9b7f41525923edd1fc40b635d776ad5c2ebf6ec))
+
 ## [1.3.0](https://github.com/graycoreio/github-actions-magento2/compare/v1.2.0...v1.3.0) (2023-03-15)
 
 
