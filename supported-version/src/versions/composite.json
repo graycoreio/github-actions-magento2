@@ -9,7 +9,7 @@
         "redis": "redis:6.0",
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
-        "os": "ubuntu-18.04",
+        "os": "ubuntu-20.04",
         "eol": "2022-09-30T00:00:00+0000"
     },
     "magento/project-community-edition:>=2.4.0 <2.4.1": {
