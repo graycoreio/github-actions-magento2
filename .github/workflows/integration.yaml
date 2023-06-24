@@ -187,3 +187,12 @@ jobs:
     - run: ${{ inputs.test_command }}
       working-directory:  ${{ inputs.magento_directory }}/dev/tests/integration
       name: Run Integration Tests
+
+    - name: Upload test sandbox dir
+      uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: sandbox-data
+        path: /home/runner/work/infrastructure/magento2/dev/tests/integration/tmp/sandbox-*
+        retention-days: 3
+
