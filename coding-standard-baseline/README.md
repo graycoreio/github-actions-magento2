@@ -27,7 +27,6 @@ jobs:
           php_version: 8.1 # Optional, will be used for Php version
           composer_version: 2
           version: 31 # Optional, will use the latest if omitted.
-          path: app/code # Optional, will be used when event is not a pull request.
           severity: 8 # Optional, will use phpcs default of 5 if not specified.
           warning_severity: 4 # Optional, will use warning severity value if not specified.
           error_severity: 7 # Optional, will use error severity value if not specified.

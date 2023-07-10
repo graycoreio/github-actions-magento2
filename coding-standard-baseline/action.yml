@@ -15,12 +15,6 @@ inputs:
     default: "2"
     description: "The version of composer to use."
 
-  path:
-    type: string
-    required: true
-    default: 'app/code'
-    description: "The directory (relative to the project root) in which the coding standard will be checked. Used when the event is not a pull request."
-
   version:
     type: string
     required: false
@@ -89,7 +83,7 @@ runs:
       shell: bash
       run: |
         sed "s/ /\n/g" ${{ github.workspace }}/modified_files.txt > ${{ github.workspace }}/newline_file.txt
-        grep -iE "\.php|\.phtml" ${{ github.workspace }}/newline_file.txt > ${{ github.workspace }}/phpcs_files.txt
+        grep -iE "\.php|\.phtml|\.html|\.xml" ${{ github.workspace }}/newline_file.txt > ${{ github.workspace }}/phpcs_files.txt
 
     - name: Checkout - Before Merge
       shell: bash
