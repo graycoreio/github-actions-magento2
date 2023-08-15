@@ -6,44 +6,44 @@ inputs:
   php_version:
     type: string
     required: true
-    default: "8.1"
-    description: "PHP version used to do the coding standard check."
+    default: "8.2"
+    description: "PHP version used to do the coding standard check (default: 8.2)."
 
   composer_version:
     type: string
     required: true
     default: "2"
-    description: "The version of composer to use."
+    description: "The version of composer to use (default: 2)."
 
   version:
     type: string
     required: false
-    default: "31"
-    description: "The version of the coding standard to use. If not provided, will use the latest version."
+    default: "*"
+    description: "The version of the coding standard to use (default: latest)."
 
   severity:
     type: string
     required: false
-    default: "8"
+    default: "5"
     description: "The minimum severity required to display an error or warning (default: 5)"
 
   warning_severity:
     type: string
     required: false
     default: "8"
-    description: "The minimum severity required to display a warning"
+    description: "The minimum severity required to display a warning (default: 8)."
 
   error_severity:
     type: string
     required: false
     default: "8"
-    description: "The minimum severity required to display an error"
+    description: "The minimum severity required to display an error (default: 8)."
 
   baseline_version:
     type: string
     required: false
-    default: "1.1.2"
-    description: "version of phpcs baseline"
+    default: "*"
+    description: "The version of phpcs baseline to use (default: latest)."
 
 runs:
   using: composite

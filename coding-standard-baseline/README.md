@@ -25,11 +25,11 @@ jobs:
     steps:
     - uses: mage-os/github-actions/coding-standard-baseline@main
       with:
-        php_version: "8.1" # Optional, will be used for Php version
+        php_version: "8.2"
         composer_version: "2"
-        version: "31" # Optional, will use the latest if omitted.
-        severity: "8" # Optional, will use phpcs default of 5 if not specified.
-        warning_severity: "4" # Optional, will use warning severity value if not specified.
-        error_severity: "7" # Optional, will use error severity value if not specified.
-        baseline_version: "1.1.2" # Optional, will use for php codesniffer baseline version
+        version: "*"
+        severity: "5"
+        warning_severity: "8"
+        error_severity: "8"
+        baseline_version: "*"
 ```
