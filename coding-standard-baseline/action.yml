@@ -87,6 +87,7 @@ runs:
 
     - name: Checkout - Before Merge
       shell: bash
+      if: ${{ hashFiles('phpcs_files.txt') != '' }}
       run: |
         if ${{ github.event_name == 'pull_request' }}; then
           git checkout ${{ github.event.pull_request.base.ref }}
@@ -96,6 +97,7 @@ runs:
 
     - name: Filter php files and execute phpcs - Before Merge
       shell: bash
+      if: ${{ hashFiles('phpcs_files.txt') != '' }}
       run: |
         php vendor/bin/phpcs --standard=Magento2 \
         $([ -n "${{ inputs.severity }}" ] && echo "--severity=${{ inputs.severity }}") \
@@ -105,6 +107,7 @@ runs:
 
     - name: Checkout after Merge and execute phpcs
       shell: bash
+      if: ${{ hashFiles('phpcs_files.txt') != '' }}
       run: |
         if ${{ github.event_name == 'pull_request' }}; then
           git checkout ${{ github.event.pull_request.head.ref }}
