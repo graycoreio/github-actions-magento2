@@ -185,6 +185,7 @@ jobs:
         sed -i "s/'amqp-host' => 'localhost'/'amqp-host' => '127.0.0.1'/" etc/install-config-mysql.php.dist
 
     # mysql server 5.7 doesn't have the column-statistics expected by mysql client 8 (failing 2.3.7-p* builds)
+    # ref: https://gist.github.com/tobias-khs/8dcf82f719a2b3a7c3b9604b4df53bbf
     - name: Switch from mysql-client 8 to mysql-client 5.7
       if: |
         steps.magento-version.outputs.version == '"2.3.7-p3"' || steps.magento-version.outputs.version == '"2.3.7-p4"'
