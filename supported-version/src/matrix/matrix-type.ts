@@ -9,6 +9,7 @@ export interface MagentoMatrixVersion {
     varnish: string,
     nginx: string,
     os: string,
+    release: string,
     eol: string
 }
 

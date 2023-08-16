@@ -11,16 +11,7 @@ describe('getCurrentlySupportedVersions', () => {
         // versions.
         ['2023-01-01T00:00:00Z', 'First day of 2023', [
             'magento/project-community-edition:2.4.4-p2',
-            'magento/project-community-edition:2.4.4-p3',
-            'magento/project-community-edition:2.4.4-p4',
-            'magento/project-community-edition:2.4.4-p5',
-            'magento/project-community-edition:2.4.5-p1',
-            'magento/project-community-edition:2.4.5-p2',
-            'magento/project-community-edition:2.4.5-p3', 
-            'magento/project-community-edition:2.4.5-p4', 
-            'magento/project-community-edition:2.4.6',
-            'magento/project-community-edition:2.4.6-p1',
-            'magento/project-community-edition:2.4.6-p2',
+            'magento/project-community-edition:2.4.5-p1', 
         ]],
         ['2024-01-01T00:00:00Z', 'First day of 2024', [
             'magento/project-community-edition:2.4.4-p5',
@@ -35,6 +26,15 @@ describe('getCurrentlySupportedVersions', () => {
         ['2025-08-08T00:00:00Z', 'Day Before v2.4.5 EoL', [
             'magento/project-community-edition:2.4.5-p4',
             'magento/project-community-edition:2.4.6-p2',
+        ]],
+        ['2023-03-14T00:00:00Z', 'Day of v2.4.6 Release', [
+            'magento/project-community-edition:2.4.4-p2',
+            'magento/project-community-edition:2.4.5-p1'
+        ]],
+        ['2023-03-15T00:00:00Z', 'Day after v2.4.6 Release', [
+            'magento/project-community-edition:2.4.4-p3',
+            'magento/project-community-edition:2.4.5-p2',
+            'magento/project-community-edition:2.4.6'
         ]],
         ['2025-08-09T00:00:00Z', 'Day of v2.4.5 EoL', [
             'magento/project-community-edition:2.4.5-p4',

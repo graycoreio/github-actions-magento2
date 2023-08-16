@@ -10,6 +10,7 @@
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
         "os": "ubuntu-20.04",
+        "release": "2022-04-12T00:00:00+0000",
         "eol": "2022-08-09T00:00:00+0000"
     },
     "magento/project-community-edition:2.3.7-p4": {
@@ -23,6 +24,7 @@
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
         "os": "ubuntu-20.04",
+        "release": "2022-08-09T00:00:00+0000",
         "eol": "2022-09-30T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.0": {
@@ -36,6 +38,7 @@
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
         "os": "ubuntu-20.04",
+        "release": "2020-07-28T00:00:00+0000",
         "eol": "2020-10-15T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.0-p1": {
@@ -49,6 +52,7 @@
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
         "os": "ubuntu-20.04",
+        "release": "2020-10-15T00:00:00+0000",
         "eol": "2022-11-28T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.1": {
@@ -62,6 +66,7 @@
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
         "os": "ubuntu-20.04",
+        "release": "2020-10-15T00:00:00+0000",
         "eol": "2021-02-09T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.1-p1": {
@@ -75,6 +80,7 @@
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
         "os": "ubuntu-20.04",
+        "release": "2021-02-09T00:00:00+0000",
         "eol": "2022-11-28T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.2": {
@@ -88,6 +94,7 @@
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
         "os": "ubuntu-20.04",
+        "release": "2021-02-09T00:00:00+0000",
         "eol": "2021-05-11T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.2-p1": {
@@ -101,6 +108,7 @@
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
         "os": "ubuntu-20.04",
+        "release": "2021-05-11T00:00:00+0000",
         "eol": "2021-08-10T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.2-p2": {
@@ -114,6 +122,7 @@
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
         "os": "ubuntu-20.04",
+        "release": "2021-08-10T00:00:00+0000",
         "eol": "2022-11-28T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.3": {
@@ -127,6 +136,7 @@
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
         "os": "ubuntu-20.04",
+        "release": "2021-08-10T00:00:00+0000",
         "eol": "2021-10-12T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.3-p1": {
@@ -140,6 +150,7 @@
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
         "os": "ubuntu-20.04",
+        "release": "2021-10-12T00:00:00+0000",
         "eol": "2022-04-12T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.3-p2": {
@@ -153,6 +164,7 @@
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
         "os": "ubuntu-20.04",
+        "release": "2022-04-12T00:00:00+0000",
         "eol": "2022-08-09T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.3-p3": {
@@ -166,6 +178,7 @@
         "varnish": "varnish:6.0",
         "nginx": "nginx:1.18",
         "os": "ubuntu-20.04",
+        "release": "2022-08-09T00:00:00+0000",
         "eol": "2022-11-28T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.4": {
@@ -179,6 +192,7 @@
         "varnish": "varnish:7.0",
         "nginx": "nginx:1.22",
         "os": "ubuntu-latest",
+        "release": "2022-04-12T00:00:00+0000",
         "eol": "2022-08-09T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.4-p1": {
@@ -192,6 +206,7 @@
         "varnish": "varnish:7.0",
         "nginx": "nginx:1.22",
         "os": "ubuntu-latest",
+        "release": "2022-08-09T00:00:00+0000",
         "eol": "2022-10-11T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.4-p2": {
@@ -205,6 +220,7 @@
         "varnish": "varnish:7.0",
         "nginx": "nginx:1.22",
         "os": "ubuntu-latest",
+        "release": "2022-10-11T00:00:00+0000",
         "eol": "2023-03-14T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.4-p3": {
@@ -218,6 +234,7 @@
         "varnish": "varnish:7.1",
         "nginx": "nginx:1.22",
         "os": "ubuntu-latest",
+        "release": "2023-03-14T00:00:00+0000",
         "eol": "2023-06-13T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.4-p4": {
@@ -231,6 +248,7 @@
         "varnish": "varnish:7.3",
         "nginx": "nginx:1.22",
         "os": "ubuntu-latest",
+        "release": "2023-06-13T00:00:00+0000",
         "eol": "2023-08-08T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.4-p5": {
@@ -244,6 +262,7 @@
         "varnish": "varnish:7.3",
         "nginx": "nginx:1.22",
         "os": "ubuntu-latest",
+        "release": "2023-08-08T00:00:00+0000",
         "eol": "2025-04-24T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.5": {
@@ -257,6 +276,7 @@
         "varnish": "varnish:7.0",
         "nginx": "nginx:1.22",
         "os": "ubuntu-latest",
+        "release": "2022-08-09T00:00:00+0000",
         "eol": "2022-08-09T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.5-p1": {
@@ -270,6 +290,7 @@
         "varnish": "varnish:7.0",
         "nginx": "nginx:1.22",
         "os": "ubuntu-latest",
+        "release": "2022-10-11T00:00:00+0000",
         "eol": "2023-03-14T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.5-p2": {
@@ -283,6 +304,7 @@
         "varnish": "varnish:7.1",
         "nginx": "nginx:1.22",
         "os": "ubuntu-latest",
+        "release": "2023-03-14T00:00:00+0000",
         "eol": "2023-06-13T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.5-p3": {
@@ -296,6 +318,7 @@
         "varnish": "varnish:7.1",
         "nginx": "nginx:1.22",
         "os": "ubuntu-latest",
+        "release": "2023-06-13T00:00:00+0000",
         "eol": "2023-08-08T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.5-p4": {
@@ -309,6 +332,7 @@
         "varnish": "varnish:7.1",
         "nginx": "nginx:1.22",
         "os": "ubuntu-latest",
+        "release": "2023-08-08T00:00:00+0000",
         "eol": "2025-08-09T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.6": {
@@ -322,6 +346,7 @@
         "varnish": "varnish:7.1",
         "nginx": "nginx:1.22",
         "os": "ubuntu-latest",
+        "release": "2023-03-14T00:00:00+0000",
         "eol": "2023-06-13T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.6-p1": {
@@ -335,6 +360,7 @@
         "varnish": "varnish:7.3",
         "nginx": "nginx:1.22",
         "os": "ubuntu-latest",
+        "release": "2023-06-13T00:00:00+0000",
         "eol": "2023-08-08T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.6-p2": {
@@ -348,6 +374,7 @@
         "varnish": "varnish:7.3",
         "nginx": "nginx:1.22",
         "os": "ubuntu-latest",
+        "release": "2023-08-08T00:00:00+0000",
         "eol": "2026-03-14T00:00:00+0000"
     }
 }
