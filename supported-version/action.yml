@@ -1,5 +1,5 @@
-name: "Compute Supported Magento 2 Versions"
-author: "Graycore"
+name: "Compute Supported Mage-OS and Magento 2 Versions"
+author: "Mage-OS"
 description: "A Github Action that computes the Github Actions matrix for the chosen versions of Magento 2"
 
 inputs:
@@ -7,6 +7,11 @@ inputs:
     required: false
     description: "The kind of versions you want to return. Allowed values are `currently-supported`, `latest`, `custom`, `nightly` and `all`"
     default: "currently-supported"
+  project:
+    required: false
+    description: "The project to return the supported versions for. Allowed values are `mage-os` and `magento-open-source`"
+    # The default value is what it is to keep backward compatibility
+    default: "magento-open-source"
   custom_versions:
     required: false
     description: "The specific custom versions of Magento that you want to use. Only applies when `kind` is `custom`"

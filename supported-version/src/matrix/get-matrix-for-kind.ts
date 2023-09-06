@@ -1,24 +1,24 @@
 import { getMatrixForVersions } from "./get-matrix-for-versions";
-
-import latestJson from '../kind/latest.json';
-import allVersions from '../versions/individual.json';
-import nightly from '../kind/nightly.json';
+import { getIndividualVersionsForProject } from "../versions/get-versions-for-project";
+import latestJson from '../kind/special-versions/latest.json';
+import nightlyJson from '../kind/special-versions/nightly.json';
 import { amendMatrixForNext } from "../nightly/get-next-version";
 import { getDayBefore } from '../nightly/get-day-before';
 import { getCurrentlySupportedVersions } from "../kind/get-currently-supported";
 
-export const getMatrixForKind = (kind: string, versions = "") => {
+export const getMatrixForKind = (kind: string, project: string, versions = "") => {
+    
     switch(kind){
         case 'latest': 
-          return getMatrixForVersions(latestJson);
+          return getMatrixForVersions(project, latestJson[project]);
         case 'currently-supported':
-          return getMatrixForVersions(getCurrentlySupportedVersions(new Date()));
+          return getMatrixForVersions(project, getCurrentlySupportedVersions(project, new Date()));
         case 'nightly':
-          return amendMatrixForNext(getMatrixForVersions(nightly), 'https://upstream-mirror.mage-os.org', getDayBefore());
+          return amendMatrixForNext(getMatrixForVersions(project, nightlyJson[project]), 'https://upstream-mirror.mage-os.org', getDayBefore());
         case 'all':
-          return getMatrixForVersions(Object.keys(allVersions));
+          return getMatrixForVersions(project, Object.keys(getIndividualVersionsForProject(project)));
         case 'custom':
-          return getMatrixForVersions(versions.split(","))
+          return getMatrixForVersions(project, versions.split(","))
         default:
           throw new Error(`Unreachable kind: ${kind} discovered, please report to the maintainers.`);
       }

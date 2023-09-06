@@ -1,14 +1,15 @@
 import { getCurrentlySupportedVersions } from "./get-currently-supported";
+import { Project } from "../project/projects";
 
-describe('getCurrentlySupportedVersions', () => {
+describe('getCurrentlySupportedVersions for magento-open-source', () => {
+    const project: Project = "magento-open-source";
+    
     it('should say that v2.4.0 is not supported in 2025', () => {
         const date: Date = new Date('2025-01-01T00:00:00Z');
-        expect(getCurrentlySupportedVersions(date)).not.toContain('magento/project-community-edition:2.4.0');
+        expect(getCurrentlySupportedVersions(project, date)).not.toContain('magento/project-community-edition:2.4.0');
     });
 
     test.each([
-        //TODO: add a release-date so that past dates do not incur non-contemporaneous
-        // versions.
         ['2023-01-01T00:00:00Z', 'First day of 2023', [
             'magento/project-community-edition:2.4.4-p2',
             'magento/project-community-edition:2.4.5-p1', 
@@ -49,7 +50,31 @@ describe('getCurrentlySupportedVersions', () => {
         'supportedVersions for %s',
         (date, description ,result) => {
             expect(
-                getCurrentlySupportedVersions(new Date(date))
+                getCurrentlySupportedVersions(project, new Date(date))
+            ).toEqual(result);
+        }
+    );
+})
+
+describe('getCurrentlySupportedVersions for mage-os', () => {
+    const project: Project = "mage-os";
+
+    it('should say that v1.0.0 is not supported in 2027', () => {
+        const date: Date = new Date('2027-01-01T00:00:00Z');
+        expect(getCurrentlySupportedVersions(project, date)).not.toContain('mage-os/project-community-edition:1.0.0');
+    });
+
+    test.each([
+        ['2023-01-01T00:00:00Z', 'First day of 2023', [
+        ]],
+        ['2024-01-01T00:00:00Z', 'First day of 2024', [
+            'mage-os/project-community-edition:1.0.0',
+        ]],
+        ])(
+        'supportedVersions for %s',
+        (date, description ,result) => {
+            expect(
+                getCurrentlySupportedVersions(project, new Date(date))
             ).toEqual(result);
         }
     );

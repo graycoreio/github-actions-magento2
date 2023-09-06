@@ -1,4 +1,4 @@
-export interface MagentoMatrixVersion {
+export interface PackageMatrixVersion {
     magento: string,
     php: string | number,
     composer: string | number,
@@ -15,5 +15,5 @@ export interface MagentoMatrixVersion {
 
 export interface GithubActionsMatrix {
     magento: string[],
-    include: MagentoMatrixVersion[]
+    include: PackageMatrixVersion[]
 } 

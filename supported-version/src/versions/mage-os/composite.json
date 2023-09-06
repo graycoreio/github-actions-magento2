@@ -1,0 +1,30 @@
+{
+  "mage-os/project-community-edition": {
+    "magento": "mage-os/project-community-edition",
+    "php": 8.1,
+    "composer": "2.2.21",
+    "mysql": "mysql:8.0",
+    "elasticsearch": "elasticsearch:8.5.3",
+    "rabbitmq": "rabbitmq:3.9-management",
+    "redis": "redis:7.0",
+    "varnish": "varnish:7.3",
+    "nginx": "nginx:1.22",
+    "os": "ubuntu-latest",
+    "release": "2023-09-15T00:00:00+0000",
+    "eol": "2026-09-15T00:00:00+0000"
+  },
+  "mage-os/project-community-edition:next": {
+    "magento": "mage-os/project-community-edition:next",
+    "php": 8.2,
+    "composer": "2",
+    "mysql": "mysql:8.0",
+    "elasticsearch": "elasticsearch:8.5.3",
+    "rabbitmq": "rabbitmq:3.11-management",
+    "redis": "redis:7.0",
+    "varnish": "varnish:7.3",
+    "nginx": "nginx:1.22",
+    "os": "ubuntu-latest",
+    "release": "2023-09-15T00:00:00+0000",
+    "eol": "2026-09-15T00:00:00+0000"
+  }
+}

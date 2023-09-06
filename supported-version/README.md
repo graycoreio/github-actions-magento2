@@ -1,6 +1,6 @@
 # Magento 2 Supported Versions
 
-A Github Action that computes the currently supported Github Actions Matrix for Magento 2 Versions
+A GitHub Action that computes the currently supported GitHub Actions Matrix for Magento 2 Versions
 
 All data comes from:
 
@@ -11,10 +11,11 @@ All data comes from:
 
 See the [action.yml](./action.yml)
 
-| Input           | Description                                                                                                                                                  | Required | Default     |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | ----------- |
+| Input           | Description                                                                                                                                                  | Required | Default               |
+|-----------------| ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- |-----------------------|
 | kind            | The "kind" of support you're targeting for your package. Allowed values are `currently-supported`, `latest`, `custom`, `nightly` and `all`                                     | false    | 'currently-supported' |
-| custom_versions | The versions you want to support, as a comma-separated string, i.e. 'magento/project-community-edition:2.3.7-p3, magento/project-community-edition:2.4.2-p2' | false    | ''          |
+| project         | The project to return the supported versions for. Allowed values are `mage-os` and `magento-open-source`                                     | false    | 'magento-open-source' |
+| custom_versions | The versions you want to support, as a comma-separated string, i.e. 'magento/project-community-edition:2.3.7-p3, magento/project-community-edition:2.4.2-p2' | false    | ''                    |
 
 ## Kinds
 - `currently-supported` - The currently supported Magento Open Source versions by Adobe.
@@ -22,6 +23,11 @@ See the [action.yml](./action.yml)
 - `custom` - A custom subset of the versions, as specified by you. Requires `custom_versions` sibling key.
 - `nightly` - The nightly version of Magento (only available via `https://upstream-nightly.mage-os.org`)
 - `all` - All versions of Magento (including patched/unpatched versions).
+
+## Projects
+- `mage-os`
+- `magento-open-source` (default)
+
 ## Usage
 
 ```yml
