@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/mage-os/github-actions-magento2)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/mage-os/github-actions)
 [![Unit Test](https://github.com/mage-os/github-actions/actions/workflows/_internal-unit.yaml/badge.svg)](https://github.com/mage-os/github-actions/actions/workflows/_internal-unit.yaml)
 [![Integration Test](https://github.com/mage-os/github-actions/actions/workflows/_internal-integration.yaml/badge.svg)](https://github.com/mage-os/github-actions/actions/workflows/_internal-integration.yaml)
 [![Installation Test](https://github.com/mage-os/github-actions/actions/workflows/_internal-install.yaml/badge.svg)](https://github.com/mage-os/github-actions/actions/workflows/_internal-install.yaml)
