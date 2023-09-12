@@ -48,12 +48,43 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Checkout Project
-      uses: actions/checkout@v3
+    - name: Checkout head
+      uses: actions/checkout@v4
       with:
-        fetch-depth: 0
+        ref: ${{github.event.pull_request.head.ref}}
+        repository: ${{github.event.pull_request.head.repo.full_name}}
 
-    - name: Set PHP Version
+    - name: Get all changed files
+      uses: tj-actions/changed-files@v39
+      id: changed-files-phpcs
+      with:
+        files_yaml: |
+          app:
+            - '**/*.php'
+            - '**/*.phtml'
+            - '**/*.graphqls'
+            - '**/*.less'
+            - '**/*.css'
+            - '**/*.html'
+            - '**/*.xml'
+            - '**/*.js'
+
+    - name: Inform if no files have changed
+      if: steps.changed-files-phpcs.outputs.app_any_changed == 'false'
+      shell: bash
+      run: |
+        echo "No files relevant to PHPCS have changed. Skipping PHPCS run."
+        echo "List all the files that have changed: ${{ steps.changed-files-phpcs.outputs.app_all_changed_files }}"
+
+    - name: Inform if relevant files have changed
+      if: steps.changed-files-phpcs.outputs.app_any_changed == 'true'
+      shell: bash
+      run: |
+        echo "One or more files relevant to PHPCS have changed."
+        echo "List all the files that have changed: ${{ steps.changed-files-phpcs.outputs.app_all_changed_files }}"
+
+    - name: Setup PHP
+      if: steps.changed-files-phpcs.outputs.app_any_changed == 'true'
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ inputs.php_version }}
@@ -61,6 +92,7 @@ runs:
         coverage: none
 
     - name: Install Coding Standard && Codesniffer baseline
+      if: steps.changed-files-phpcs.outputs.app_any_changed == 'true'
       shell: bash
       run: |
         git config --global advice.detachedHead false
@@ -68,54 +100,53 @@ runs:
         composer config --no-plugins allow-plugins.digitalrevolution/php-codesniffer-baseline true
         composer require --dev "digitalrevolution/php-codesniffer-baseline: ${{ github.event.inputs.baseline_version || '*' }}"
 
-    - name: Register Coding Standard
+    - name: Register coding standards
+      if: steps.changed-files-phpcs.outputs.app_any_changed == 'true'
       shell: bash
-      run: vendor/bin/phpcs --config-set installed_paths ${{ github.workspace }}/vendor/magento/magento-coding-standard,${{ github.workspace }}/vendor/phpcompatibility/php-compatibility
+      run: |
+        ${{ github.workspace }}/vendor/bin/phpcs --config-set installed_paths \
+        ${{ github.workspace }}/vendor/magento/magento-coding-standard,${{ github.workspace }}/vendor/phpcompatibility/php-compatibility
 
-    - name: Get all changed files
-      uses: tj-actions/changed-files@v37
+    - name: Checkout base to generate baseline
+      if: steps.changed-files-phpcs.outputs.app_any_changed == 'true'
+      uses: actions/checkout@v4
       with:
-        write_output_files: true
-        output_dir: ${{ github.workspace }}
-        separator: " "
+        ref: ${{github.event.pull_request.base.ref}}
+        repository: ${{github.event.pull_request.base.repo.full_name}}
+        path: base
 
-    - name: Verify the contents of the modified_files.txt file
+    - name: Create phpcs.baseline.xml from base
       shell: bash
+      working-directory: base
+      if: steps.changed-files-phpcs.outputs.app_any_changed == 'true'
       run: |
-        sed "s/ /\n/g" ${{ github.workspace }}/modified_files.txt > ${{ github.workspace }}/newline_file.txt
-        grep -iE "\.php|\.phtml|\.html|\.xml" ${{ github.workspace }}/newline_file.txt > ${{ github.workspace }}/phpcs_files.txt || /bin/true
-
-    - name: Checkout - Before Merge
-      shell: bash
-      if: test -s ${{ github.workspace }}/phpcs_files.txt
-      run: |
-        if ${{ github.event_name == 'pull_request' }}; then
-          git checkout ${{ github.event.pull_request.base.ref }}
-        else
-          git checkout ${{ github.event.before }}
-        fi
-
-    - name: Filter php files and execute phpcs - Before Merge
-      shell: bash
-      if: test -s ${{ github.workspace }}/phpcs_files.txt
-      run: |
-        php vendor/bin/phpcs --standard=Magento2 \
+        php ${{ github.workspace }}/vendor/bin/phpcs --standard=Magento2 \
         $([ -n "${{ inputs.severity }}" ] && echo "--severity=${{ inputs.severity }}") \
         $([ -n "${{ inputs.warning_severity }}" ] && echo "--warning-severity=${{ inputs.warning_severity }}") \
         $([ -n "${{ inputs.error_severity }}" ] && echo "--error-severity=${{ inputs.error_severity }}") \
-        --report=\\DR\\CodeSnifferBaseline\\Reports\\Baseline --report-file=${{ github.workspace }}/phpcs.baseline.xml --file-list=${{ github.workspace }}/phpcs_files.txt || /bin/true
+        --report=\\DR\\CodeSnifferBaseline\\Reports\\Baseline --report-file=phpcs.baseline.xml \
+        ${{ steps.changed-files-phpcs.outputs.app_all_changed_files }} || /bin/true
 
-    - name: Checkout after Merge and execute phpcs
+    - name: Copy baseline to head
+      if: steps.changed-files-phpcs.outputs.app_any_changed == 'true'
       shell: bash
-      if: test -s ${{ github.workspace }}/phpcs_files.txt
       run: |
-        if ${{ github.event_name == 'pull_request' }}; then
-          git checkout ${{ github.event.pull_request.head.ref }}
-        else
-          git checkout ${{ github.event.after }}
-        fi
-        php vendor/bin/phpcs --standard=Magento2 \
+        cp ${{ github.workspace }}/base/phpcs.baseline.xml ${{ github.workspace }}/phpcs.baseline.xml
+
+    # Since we ran phpcs in the base folder, the files in phpcs.baseline.xml contain the base folder in the path.
+    # We need to remove /base/ so that the phpcs can locate the correct files.
+    - name: Remove base dir from phpcs baseline
+      if: steps.changed-files-phpcs.outputs.app_any_changed == 'true'
+      shell: bash
+      run: |
+        sed -i "s|/base/|/|" ${{ github.workspace }}/phpcs.baseline.xml
+
+    - name: Execute phpcs on head for changed files
+      shell: bash
+      if: steps.changed-files-phpcs.outputs.app_any_changed == 'true'
+      run: |        
+        php ${{ github.workspace }}/vendor/bin/phpcs --standard=Magento2 \
         $([ -n "${{ inputs.severity }}" ] && echo "--severity=${{ inputs.severity }}") \
         $([ -n "${{ inputs.warning_severity }}" ] && echo "--warning-severity=${{ inputs.warning_severity }}") \
         $([ -n "${{ inputs.error_severity }}" ] && echo "--error-severity=${{ inputs.error_severity }}") \
-        --file-list=${{ github.workspace }}/phpcs_files.txt
+        ${{ steps.changed-files-phpcs.outputs.app_all_changed_files }}
