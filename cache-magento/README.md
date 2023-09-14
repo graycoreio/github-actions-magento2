@@ -11,7 +11,6 @@ See the [action.yml](./action.yml)
 | ------------------ | -------------------------------------------------------------------------------------- | -------- | ------------ |
 | composer_cache_key | A key to version the composer cache. Can be incremented if you need to bust the cache. | false    | '__mageos' |
 | mode               | "The mode for setup, one of: `extension` or `store`."                                  | true     | N/A          |
-| magento_directory  | The Magento directory for the action to run against.                                   | true     | N/A          |
 
 ### Usage
 
@@ -33,7 +32,6 @@ jobs:
     - uses: actions/checkout@v3
     - uses: mage-os/github-actions/cache-magento@main
       with:
-        magento_directory: $GITHUB_WORKSPACE 
         mode: 'store'
       id: cache-magento
 
