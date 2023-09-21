@@ -1,0 +1,20 @@
+name: "Get Composer Version"
+author: "Graycore"
+description: " A Github Action that determines the currently installed version of Composer"
+
+outputs:
+  version: # id of output
+    description: 'The determined version of Composer'
+    value: ${{ steps.get-composer-version.outputs.version }}
+
+runs:
+  using: "composite"
+  steps:
+  - run: echo "version=$(composer --version | awk '{print $3}')" >> $GITHUB_OUTPUT
+    shell: bash
+    name: Compute Installed Composer version
+    id: get-composer-version
+
+branding:
+  icon: "code"
+  color: "green"
