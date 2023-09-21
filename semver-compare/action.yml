@@ -1,0 +1,29 @@
+name: "Semver Compare"
+author: "Graycore"
+description: "A Github Action that compares two versions, semantically"
+
+inputs:
+  version:
+    required: true
+    description: "Original version"
+
+  compare_against:
+    required: true
+    description: "The version to compare against"
+
+outputs:
+  result: # id of output
+    description: "The result of comparison. By default, this returns -1 if the first version is lower than the second, 0 if they are equal, and 1 if the second is lower."
+    value: ${{ steps.semver-compare.outputs.result }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Semantically compare two versions
+      run: php -r "echo 'result=' . version_compare('${{ inputs.version }}', '${{ inputs.compare_against }}');" >> $GITHUB_OUTPUT
+      shell: bash
+      id: semver-compare
+
+branding:
+  icon: "code"
+  color: "green"

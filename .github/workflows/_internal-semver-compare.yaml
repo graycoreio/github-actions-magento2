@@ -1,0 +1,69 @@
+name: Test semvar-compare action
+
+on:
+  push:
+    branches:
+    - main
+    paths:
+    - ".github/workflows/_internal-semver-compare.yaml"
+    - "semver-compare/**"
+    - "!(**/*.md)"
+  pull_request:
+    branches:
+    - main
+    paths:
+    - ".github/workflows/_internal-semver-compare.yaml"
+    - "semver-compare/**"
+    - "!(**/*.md)"
+
+jobs:
+  semver-compare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: ./semver-compare
+        id: version-compare-1
+        with:
+          version: 2.2.3
+          compare_against: 2.3
+
+      - uses: ./semver-compare
+        id: version-compare-2
+        with:
+          version: 2
+          compare_against: 2.0.1
+
+      - uses: ./semver-compare
+        id: version-compare-3
+        with:
+          version: 2.2.1
+          compare_against: 2.2
+
+
+      - uses: ./semver-compare
+        id: version-compare-4
+        with:
+          version: 2.2.0
+          compare_against: 2.2.0
+
+      - name: Fail if 2.3 is not higher than 2.2.3
+        if: steps.version-compare-1.outputs.result != -1
+        shell: bash
+        run: echo "FAIL because 2.3 must be higher than 2.2.3 Compare 2.2.3 to 2.3 renders ${{ steps.version-compare-1.outputs.result }}" && exit 1
+
+
+      - name: Fail if 2.0.1 is not higher than 2
+        if: steps.version-compare-2.outputs.result != -1
+        shell: bash
+        run: echo "FAIL because 2.0.1 must be higher than 2 Compare 2 to 2.0.1 renders ${{ steps.version-compare-2.outputs.result }}" && exit 1
+
+      - name: Fail if 2.2.1 is not higher than 2.2
+        if: steps.version-compare-3.outputs.result != 1
+        shell: bash
+        run: echo "FAIL because 2.2.1 must be higher than 2.2 Compare 2.2.1 to 2.2 renders ${{ steps.version-compare-3.outputs.result }}" && exit 1
+
+      - name: Fail if 2.2.0 is not equals to 2.2.0
+        if: steps.version-compare-4.outputs.result != 0
+        shell: bash
+        run: echo "FAIL because 2.2.0 must be equal to 2.2.0 Compare 2.2.0 to 2.2.0 renders ${{ steps.version-compare-4.outputs.result }}" && exit 1
