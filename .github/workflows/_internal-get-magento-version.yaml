@@ -20,7 +20,7 @@ jobs:
   get-magento-version:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set PHP Version
         uses: shivammathur/setup-php@v2
         with:

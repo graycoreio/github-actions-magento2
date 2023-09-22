@@ -29,7 +29,7 @@ jobs:
     outputs:
       matrix: ${{ steps.supported-version.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./supported-version
         with:
           kind: currently-supported
@@ -43,7 +43,7 @@ jobs:
       fail-fast: false
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - run: |
         PSEUDO_STORE_FULL_PATH=$(realpath "${{ env.PSEUDO_REPO_FOLDER }}")
@@ -106,7 +106,7 @@ jobs:
   setup-magento-extension:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3 
+    - uses: actions/checkout@v4 
 
     - uses: ./setup-magento
       id: setup-magento

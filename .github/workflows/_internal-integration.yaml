@@ -27,7 +27,7 @@ jobs:
       outputs:
         matrix: ${{ steps.supported-version.outputs.matrix }}
       steps:
-        - uses: actions/checkout@v3
+        - uses: actions/checkout@v4
         - uses: ./supported-version
           with:
             kind: all

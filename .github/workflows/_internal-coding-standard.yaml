@@ -36,7 +36,7 @@ jobs:
     outputs:
       matrix: ${{ steps.supported-version.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./supported-version
         with:
           kind: all
@@ -50,7 +50,7 @@ jobs:
       fail-fast: false
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: './coding-standard'
         with:
           version: ${{ github.event.inputs.version || '*' }}
