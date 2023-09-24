@@ -1,7 +1,6 @@
 import { getNextVersion } from "./get-next-version"
 
 describe('getNextVersion', () => {
-
     it('should get the next nightly version for Magento Open Source', () => {
         expect(getNextVersion('https://upstream-nightly.mage-os.org', new Date('2022-09-29T17:47:00')), ).toEqual('@alpha');
     });

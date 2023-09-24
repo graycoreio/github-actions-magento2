@@ -32,6 +32,12 @@ describe('getMatrixForKind for mage-os', () => {
         expect(result.include).toBeDefined();
     });
 
+    it('returns a matrix nightly`', () => {
+        const result = getMatrixForKind("nightly", project);
+        expect(result.magento).toBeDefined();
+        expect(result.include).toBeDefined();
+    });
+
     it('returns a matrix for the next release when using `nightly`', () => {
         const result = getMatrixForKind("nightly", project, "mage-os/project-community-edition:next");
 
@@ -47,6 +53,12 @@ describe('getMatrixForKind for mage-os', () => {
 
 describe('getMatrixForKind for magento-open-source', () => {
     const project = "magento-open-source";
+
+    it('returns a matrix nightly`', () => {
+        const result = getMatrixForKind("nightly", project);
+        expect(result.magento).toBeDefined();
+        expect(result.include).toBeDefined();
+    });
 
     it('returns a matrix for `latest`', () => {
         const result = getMatrixForKind("latest", project);

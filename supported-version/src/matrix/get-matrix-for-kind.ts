@@ -2,9 +2,9 @@ import { getMatrixForVersions } from "./get-matrix-for-versions";
 import { getIndividualVersionsForProject } from "../versions/get-versions-for-project";
 import latestJson from '../kind/special-versions/latest.json';
 import nightlyJson from '../kind/special-versions/nightly.json';
-import { amendMatrixForNext } from "../nightly/get-next-version";
 import { getDayBefore } from '../nightly/get-day-before';
 import { getCurrentlySupportedVersions } from "../kind/get-currently-supported";
+import { amendMatrixForNext } from "../nightly/amend-matrix-for-next";
 
 export const getMatrixForKind = (kind: string, project: string, versions = "") => {
     
