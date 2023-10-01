@@ -14,7 +14,7 @@ export const getMatrixForKind = (kind: string, project: string, versions = "") =
         case 'currently-supported':
           return getMatrixForVersions(project, getCurrentlySupportedVersions(project, new Date()));
         case 'nightly':
-          return amendMatrixForNext(getMatrixForVersions(project, nightlyJson[project]), 'https://upstream-mirror.mage-os.org', getDayBefore());
+          return amendMatrixForNext(getMatrixForVersions(project, nightlyJson[project]), 'https://upstream-nightly.mage-os.org', getDayBefore());
         case 'all':
           return getMatrixForVersions(project, Object.keys(getIndividualVersionsForProject(project)));
         case 'custom':

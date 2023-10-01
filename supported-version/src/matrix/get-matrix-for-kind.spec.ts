@@ -36,6 +36,7 @@ describe('getMatrixForKind for mage-os', () => {
         const result = getMatrixForKind("nightly", project);
         expect(result.magento).toBeDefined();
         expect(result.include).toBeDefined();
+        expect(result.magento[0]).toBe('mage-os/project-community-edition:@alpha');
     });
 
     it('returns a matrix for the next release when using `nightly`', () => {
