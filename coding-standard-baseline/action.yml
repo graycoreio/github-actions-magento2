@@ -91,21 +91,21 @@ runs:
         tools: composer:v${{ inputs.composer_version }}
         coverage: none
 
-    - name: Install Coding Standard && Codesniffer baseline
+    - name: Create composer project
       if: steps.changed-files-phpcs.outputs.app_any_changed == 'true'
       shell: bash
       run: |
-        git config --global advice.detachedHead false
-        composer require "magento/magento-coding-standard: ${{ github.event.inputs.version || '*' }}" -W
-        composer config --no-plugins allow-plugins.digitalrevolution/php-codesniffer-baseline true
-        composer require --dev "digitalrevolution/php-codesniffer-baseline: ${{ github.event.inputs.baseline_version || '*' }}"
+        composer create-project --no-plugins --no-dev \
+        magento/magento-coding-standard \
+        magento-coding-standard "${{ github.event.inputs.version || '*' }}"
 
     - name: Register coding standards
       if: steps.changed-files-phpcs.outputs.app_any_changed == 'true'
+      working-directory: magento-coding-standard
       shell: bash
       run: |
-        ${{ github.workspace }}/vendor/bin/phpcs --config-set installed_paths \
-        ${{ github.workspace }}/vendor/magento/magento-coding-standard,${{ github.workspace }}/vendor/phpcompatibility/php-compatibility
+        composer config --no-plugins allow-plugins.digitalrevolution/php-codesniffer-baseline true
+        composer require --dev "digitalrevolution/php-codesniffer-baseline: ${{ github.event.inputs.baseline_version || '*' }}"
 
     - name: Checkout base to generate baseline
       if: steps.changed-files-phpcs.outputs.app_any_changed == 'true'
@@ -120,7 +120,7 @@ runs:
       working-directory: base
       if: steps.changed-files-phpcs.outputs.app_any_changed == 'true'
       run: |
-        php ${{ github.workspace }}/vendor/bin/phpcs --standard=Magento2 \
+        php ${{ github.workspace }}/magento-coding-standard/vendor/bin/phpcs --standard=Magento2 \
         $([ -n "${{ inputs.severity }}" ] && echo "--severity=${{ inputs.severity }}") \
         $([ -n "${{ inputs.warning_severity }}" ] && echo "--warning-severity=${{ inputs.warning_severity }}") \
         $([ -n "${{ inputs.error_severity }}" ] && echo "--error-severity=${{ inputs.error_severity }}") \
@@ -145,7 +145,7 @@ runs:
       shell: bash
       if: steps.changed-files-phpcs.outputs.app_any_changed == 'true'
       run: |        
-        php ${{ github.workspace }}/vendor/bin/phpcs --standard=Magento2 \
+        php ${{ github.workspace }}/magento-coding-standard/vendor/bin/phpcs --standard=Magento2 \
         $([ -n "${{ inputs.severity }}" ] && echo "--severity=${{ inputs.severity }}") \
         $([ -n "${{ inputs.warning_severity }}" ] && echo "--warning-severity=${{ inputs.warning_severity }}") \
         $([ -n "${{ inputs.error_severity }}" ] && echo "--error-severity=${{ inputs.error_severity }}") \
