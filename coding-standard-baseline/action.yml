@@ -131,7 +131,7 @@ runs:
       if: steps.changed-files-phpcs.outputs.app_any_changed == 'true'
       shell: bash
       run: |
-        cp ${{ github.workspace }}/base/phpcs.baseline.xml ${{ github.workspace }}/phpcs.baseline.xml
+        cp ${{ github.workspace }}/base/phpcs.baseline.xml ${{ github.workspace }}/magento-coding-standard/phpcs.baseline.xml
 
     # Since we ran phpcs in the base folder, the files in phpcs.baseline.xml contain the base folder in the path.
     # We need to remove /base/ so that the phpcs can locate the correct files.
@@ -139,7 +139,7 @@ runs:
       if: steps.changed-files-phpcs.outputs.app_any_changed == 'true'
       shell: bash
       run: |
-        sed -i "s|/base/|/|" ${{ github.workspace }}/phpcs.baseline.xml
+        sed -i "s|/base/|/|" ${{ github.workspace }}/magento-coding-standard/phpcs.baseline.xml
 
     - name: Execute phpcs on head for changed files
       shell: bash
