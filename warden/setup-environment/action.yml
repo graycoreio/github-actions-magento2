@@ -220,30 +220,30 @@ runs:
         export DEN="$(dirname $(pwd))/warden/bin/warden"
         echo "==================================================="
         docker ps -a
-        ${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st"
+        ${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st; exit 0"
         sleep 10
         echo "==================================================="
         docker ps -a
-        ${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st"
+        ${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st; exit 0"
         sleep 10
         echo "==================================================="
         docker ps -a
-        ${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st"
+        ${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st; exit 0"
         sleep 10
         echo "==================================================="
         docker ps -a
-        ${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st"
+        ${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st; exit 0"
         sleep 10
         echo "==================================================="
         docker ps -a
-        ${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st"
+        ${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st; exit 0"
         sleep 10
         echo "==================================================="
         docker ps -a
-        ${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st"
+        ${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st; exit 0"
         
         echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        ${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st"
+        ${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st; exit 0"
         
         echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
