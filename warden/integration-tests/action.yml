@@ -2,8 +2,6 @@ name: "Integration Tests Mage-OS in Warden"
 author: "Vladyslav Podorozhnyi"
 description: "A Github Action that run Integration Tests of Mage-OS in warden."
 
-## TODO: use inputs as list of tests to be executed
-
 inputs:
   search:
     required: true
@@ -134,11 +132,6 @@ runs:
 
         echo "configuration"
         cat ${CONFIG_FILE}
-
-
-#        bash build_scripts/build_integration_tests_config.sh "$SEARCH" "$RABBITMQ" "$REDIS" > dev/tests/integration/etc/install-config-mysql.php
-#        echo "Debug integration tests config:"
-#        cat dev/tests/integration/etc/install-config-mysql.php
 
     - name: Run Memory Test
       if: ${{ inputs.run_memory_test == 1 }}
