@@ -10,8 +10,8 @@
     "varnish": "varnish:7.3",
     "nginx": "nginx:1.22",
     "os": "ubuntu-latest",
-    "release": "2023-09-15T00:00:00+0000",
-    "eol": "2026-09-15T00:00:00+0000"
+    "release": "2023-10-10T00:00:00+0000",
+    "eol": "2026-10-10T00:00:00+0000"
   },
   "mage-os/project-community-edition:next": {
     "magento": "mage-os/project-community-edition:next",
@@ -24,7 +24,7 @@
     "varnish": "varnish:7.3",
     "nginx": "nginx:1.22",
     "os": "ubuntu-latest",
-    "release": "2023-09-15T00:00:00+0000",
-    "eol": "2026-09-15T00:00:00+0000"
+    "release": "2023-10-10T00:00:00+0000",
+    "eol": "2026-10-10T00:00:00+0000"
   }
 }

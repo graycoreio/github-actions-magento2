@@ -30,6 +30,7 @@ describe('getMatrixForKind for mage-os', () => {
 
         expect(result.magento).toBeDefined();
         expect(result.include).toBeDefined();
+        expect(result.magento[0]).toBe('mage-os/project-community-edition:1.0.0');
     });
 
     it('returns a matrix nightly`', () => {

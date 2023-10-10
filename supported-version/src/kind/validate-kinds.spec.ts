@@ -12,4 +12,8 @@ describe('validateKind', () => {
     it('throws a helpful exception if custom versions are provided with the wrong kind', () => {
         expect(() => validateKind(<any>"latest", [])).toThrowError();
     })
+    
+    it('returns `true` for kind `custom` with a custom versions', () => {
+        expect(validateKind("custom", "mage-os/project-community-edition:1.0.0".split(","))).toBe(true);
+    })
 })
