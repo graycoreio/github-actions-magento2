@@ -218,46 +218,43 @@ runs:
         SEARCH: ${{ inputs.search }}
       run: |
         export DEN="$(dirname $(pwd))/warden/bin/warden"
+        case "${SEARCH}" in
+          elasticsearch:*)
+            SEARCH_HOST="elasticsearch"
+            ;;
+          *)
+            SEARCH_HOST="opensearch"
+            ;;
+        esac
+        echo "search host: ${SEARCH_HOST}"
         echo "==================================================="
-        docker ps -a
-        ${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st; exit 0"
+        SEARCH_STATUS=$(${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st; exit 0")
+        echo "search status: ${SEARCH_STATUS}"
         sleep 10
         echo "==================================================="
-        docker ps -a
-        ${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st; exit 0"
+        SEARCH_STATUS=$(${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st; exit 0")
+        echo "search status: ${SEARCH_STATUS}"
         sleep 10
         echo "==================================================="
-        docker ps -a
-        ${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st; exit 0"
+        SEARCH_STATUS=$(${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st; exit 0")
+        echo "search status: ${SEARCH_STATUS}"
         sleep 10
         echo "==================================================="
-        docker ps -a
-        ${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st; exit 0"
+        SEARCH_STATUS=$(${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st; exit 0")
+        echo "search status: ${SEARCH_STATUS}"
         sleep 10
         echo "==================================================="
-        docker ps -a
-        ${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st; exit 0"
+        SEARCH_STATUS=$(${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st; exit 0")
+        echo "search status: ${SEARCH_STATUS}"
         sleep 10
         echo "==================================================="
-        docker ps -a
-        ${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st; exit 0"
-        
-        echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        ${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st; exit 0"
-        
-        echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        SEARCH_STATUS=$(${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st; exit 0")
+        echo "search status: ${SEARCH_STATUS}"
 
         # curl --write-out %{http_code} --silent --output /dev/null http://mageos-elasticsearch-1:9200/_cat/health?h=st
         echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 #          export DEN="$(dirname $(pwd))/warden/bin/warden"
-#          case "${SEARCH}" in
-#            elasticsearch:*)
-#              SEARCH_HOST="elasticsearch"
-#            ;;
-#            *)
-#              SEARCH_HOST="opensearch"
-#            ;;
-#          esac
+         
 
 #          # TODO
 #        
