@@ -238,7 +238,7 @@ runs:
         
         echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         export DEN="$(dirname $(pwd))/warden/bin/warden"
-        ${DEN} env exec -T php-fpm bash -c "curl http://elasticsearch:9200/_cat/health?h=st"
+        ${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://elasticsearch:9200/_cat/health?h=st"
         
         echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
