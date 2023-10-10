@@ -226,7 +226,18 @@ runs:
             SEARCH_HOST="opensearch"
             ;;
         esac
-        echo "search host: ${SEARCH_HOST}"
+        HEALTHY=1
+        for ((i=1; i<=24; i++)); do
+          SEARCH_STATUS=$(${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://${SEARCH_HOST}:9200/_cat/health?h=st; exit 0")
+          echo "search status: ${SEARCH_STATUS}"
+          if [ ${SEARCH_STATUS} -eq "200" ]; then
+            HEALTHY=0
+            break
+          fi
+          sleep 5
+        done
+        echo "HEALTHY: ${HEALTHY}"
+        exit ${HEALTHY}
         echo "==================================================="
         SEARCH_STATUS=$(${DEN} env exec -T php-fpm bash -c "curl --write-out %{http_code} --silent --output /dev/null http://${SEARCH_HOST}:9200/_cat/health?h=st; exit 0")
         echo "search status: ${SEARCH_STATUS}"
