@@ -108,8 +108,8 @@ runs:
         # Splitting database input to distribution and version
         DB_DISTRIBUTION=${DATABASE%%:*}
         DB_DISTRIBUTION_VERSION=${DATABASE##*:}
-        echo "DB_DISTRIBUTION: ${DB_DISTRIBUTION}"
 
+        # Splitting search input and setting corresponding flags and versions
         if [[ $SEARCH == elasticsearch* ]]; then
           WARDEN_ELASTICSEARCH=1
           WARDEN_OPENSEARCH=0
@@ -121,8 +121,81 @@ runs:
           ELASTICSEARCH_VERSION=""
           OPENSEARCH_VERSION=${SEARCH##*:}
         fi
-        echo "ELASTICSEARCH_VERSION: ${ELASTICSEARCH_VERSION}"
-        echo "OPENSEARCH_VERSION: ${OPENSEARCH_VERSION}"
+
+        # Setting version variables based on the usage flags
+        RABBITMQ_VERSION=""
+        if [[ $RABBITMQ != null ]]; then
+          RABBITMQ_VERSION=${RABBITMQ##*:}
+          RABBITMQ=1
+        else
+          RABBITMQ=0
+        fi
+
+        REDIS_VERSION=""
+        if [[ $REDIS != null ]]; then
+          REDIS_VERSION=${REDIS##*:}
+          REDIS=1
+        else
+          REDIS=0
+        fi
+
+        VARNISH_VERSION=""
+        if [[ $VARNISH != null ]]; then
+          VARNISH_VERSION=${VARNISH##*:}
+          VARNISH=1
+        else
+          VARNISH=0
+        fi
+
+        # Creating .env file by substituting variables directly in the template
+        cat << EOF > .env
+        WARDEN_ENV_NAME=mageos
+        WARDEN_ENV_TYPE=magento2
+        WARDEN_WEB_ROOT=/
+
+        TRAEFIK_DOMAIN=mageos.test
+        TRAEFIK_SUBDOMAIN=app
+
+        WARDEN_DB=1
+        WARDEN_ELASTICSEARCH=${WARDEN_ELASTICSEARCH}
+        WARDEN_OPENSEARCH=${WARDEN_OPENSEARCH}
+        WARDEN_ELASTICHQ=0
+        WARDEN_VARNISH=${VARNISH}
+        WARDEN_RABBITMQ=${RABBITMQ}
+        WARDEN_REDIS=${REDIS}
+
+        ELASTICSEARCH_VERSION=${ELASTICSEARCH_VERSION}
+        OPENSEARCH_VERSION=${OPENSEARCH_VERSION}
+        DB_DISTRIBUTION=${DB_DISTRIBUTION}
+        DB_DISTRIBUTION_VERSION=${DB_DISTRIBUTION_VERSION}
+        NODE_VERSION=12
+        COMPOSER_VERSION=${COMPOSER_VERSION}
+        PHP_VERSION=${PHP_VERSION}
+        PHP_XDEBUG_3=1
+        RABBITMQ_VERSION=${RABBITMQ_VERSION}
+        REDIS_VERSION=${REDIS_VERSION}
+        VARNISH_VERSION=${VARNISH_VERSION}
+
+        WARDEN_SYNC_IGNORE=
+
+        WARDEN_ALLURE=0
+        WARDEN_SELENIUM=0
+        WARDEN_SELENIUM_DEBUG=0
+        WARDEN_BLACKFIRE=0
+        WARDEN_SPLIT_SALES=0
+        WARDEN_SPLIT_CHECKOUT=0
+        WARDEN_TEST_DB=1
+        WARDEN_MAGEPACK=0
+
+        BLACKFIRE_CLIENT_ID=
+        BLACKFIRE_CLIENT_TOKEN=
+        BLACKFIRE_SERVER_ID=
+        BLACKFIRE_SERVER_TOKEN=
+        EOF
+
+        echo ".env created"
+        cat .env
+
 #        bash build_scripts/generate_warden_env.sh  "$PHP_VERSION" "$COMPOSER_VERSION" "$DATABASE" "$SEARCH" "$VARNISH" "$RABBITMQ" "$REDIS" > .env
 #        echo "DEBUG .env\n" && cat .env
 
