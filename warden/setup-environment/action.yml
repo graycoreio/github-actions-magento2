@@ -196,9 +196,6 @@ runs:
         echo ".env created"
         cat .env
 
-#        bash build_scripts/generate_warden_env.sh  "$PHP_VERSION" "$COMPOSER_VERSION" "$DATABASE" "$SEARCH" "$VARNISH" "$RABBITMQ" "$REDIS" > .env
-#        echo "DEBUG .env\n" && cat .env
-
     - name: Warden svc up && Warden env up
       working-directory: ${{ inputs.base_directory }}
       shell: bash
@@ -220,7 +217,24 @@ runs:
       env:
         SEARCH: ${{ inputs.search }}
       run: |
-        sleep 60
+        echo "==================================================="
+        docker ps -a
+        sleep 10
+        echo "==================================================="
+        docker ps -a
+        sleep 10
+        echo "==================================================="
+        docker ps -a
+        sleep 10
+        echo "==================================================="
+        docker ps -a
+        sleep 10
+        echo "==================================================="
+        docker ps -a
+        sleep 10
+        echo "==================================================="
+        docker ps -a
+        sleep 10
 #          export DEN="$(dirname $(pwd))/warden/bin/warden"
 #          case "${SEARCH}" in
 #            elasticsearch:*)
