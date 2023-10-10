@@ -1,0 +1,190 @@
+name: "Integration Tests Mage-OS in Warden"
+author: "Vladyslav Podorozhnyi"
+description: "A Github Action that run Integration Tests of Mage-OS in warden."
+
+## TODO: use inputs as list of tests to be executed
+
+inputs:
+  search:
+    required: true
+    default: "elasticsearch:7.15.1"
+    description: "The search engine to use."
+
+  rabbitmq:
+    required: true
+    default: "rabbitmq:3.9"
+    description: "Rabbit MQ version to use."
+
+  redis:
+    required: true
+    default: "redis:7.0"
+    description: "Redis version to use."
+
+  run_memory_test:
+    required: true
+    default: "0"
+    description: "Run Memory Test."
+
+  run_magento_integration_tests:
+    required: true
+    default: "1"
+    description: "Run Magento Integration Tests."
+
+  run_magento_integration_tests_real_suite:
+    required: true
+    default: "1"
+    description: "Run Magento Integration Tests Real Suite."
+
+  base_directory:
+    required: true
+    default: "./"
+    description: "Base directory for the Mage-OS codebase."
+
+runs:
+  using: composite
+  steps:
+
+    - name: Prepare config for Integration tests
+      working-directory: ${{ inputs.base_directory }}
+      shell: bash
+      env:
+        SEARCH: ${{ inputs.search }}
+        RABBITMQ: ${{ inputs.rabbitmq }}
+        REDIS: ${{ inputs.redis }}
+      run: |
+        CONFIG_FILE=dev/tests/integration/etc/install-config-mysql.php
+
+        SEARCH_ENGINE_TYPE=${SEARCH%%:*}
+        SEARCH_ENGINE_VERSION=${SEARCH##:*}
+
+        case "$SEARCH" in
+          elasticsearch:*)
+            SEARCH_HOST="elasticsearch"
+          ;;&
+          elasticsearch:5*)
+            SEARCH_ENGINE="elasticsearch5"
+            SEARCH_PARAMS="'search-engine' => '$SEARCH_ENGINE', 'elasticsearch-host' => '$SEARCH_HOST', 'elasticsearch-port' => 9200,"
+            ;;
+          elasticsearch:6*)
+            SEARCH_ENGINE="elasticsearch6"
+            SEARCH_PARAMS="'search-engine' => '$SEARCH_ENGINE', 'elasticsearch-host' => '$SEARCH_HOST', 'elasticsearch-port' => 9200,"
+            ;;
+          elasticsearch:7* | elasticsearch:8*)
+            SEARCH_ENGINE="elasticsearch7"
+            SEARCH_PARAMS="'search-engine' => '$SEARCH_ENGINE', 'elasticsearch-host' => '$SEARCH_HOST', 'elasticsearch-port' => 9200,"
+            ;;
+          opensearch:*)
+            SEARCH_ENGINE="opensearch"
+            SEARCH_HOST="opensearch"
+            SEARCH_PARAMS="'search-engine' => '$SEARCH_ENGINE', 'opensearch-host' => '$SEARCH_HOST', 'opensearch-port' => 9200, 'opensearch-index-prefix' => 'magento2', 'opensearch-enable-auth' => 0, 'opensearch-timeout' => 15,"
+            ;;
+          *)
+            SEARCH_ENGINE="elasticsearch7"
+            SEARCH_HOST="UKNOWN"
+            SEARCH_PARAMS="'search-engine' => '$SEARCH_ENGINE', 'elasticsearch-host' => '$SEARCH_HOST', 'elasticsearch-port' => 9200,"
+            ;;
+        esac
+
+        cat << EOL > ${CONFIG_FILE}
+        <?php
+        return [
+          'db-host' => 'tmp-mysql',
+          'db-user' => 'root',
+          'db-password' => 'magento',
+          'db-name' => 'magento_integration_tests',
+          'backend-frontname' => 'backend',
+          $SEARCH_PARAMS
+          'admin-user' => \Magento\TestFramework\Bootstrap::ADMIN_NAME,
+          'admin-password' => \Magento\TestFramework\Bootstrap::ADMIN_PASSWORD,
+          'admin-email' => \Magento\TestFramework\Bootstrap::ADMIN_EMAIL,
+          'admin-firstname' => \Magento\TestFramework\Bootstrap::ADMIN_FIRSTNAME,
+          'admin-lastname' => \Magento\TestFramework\Bootstrap::ADMIN_LASTNAME,
+        EOL
+
+        if [[ -n $RABBITMQ ]]; then
+          cat << EOL >> ${CONFIG_FILE}
+          'amqp-host' => 'rabbitmq',
+          'amqp-port' => '5672',
+          'amqp-user' => 'guest',
+          'amqp-password' => 'guest',
+        EOL
+        fi
+
+        if [[ -n $REDIS ]]; then
+          cat << EOL >> ${CONFIG_FILE}
+          'session-save' => 'redis',
+          'session-save-redis-host' => 'redis',
+          'session-save-redis-port' => 6379,
+          'session-save-redis-db' => 2,
+          'session-save-redis-max-concurrency' => 20,
+          'cache-backend' => 'redis',
+          'cache-backend-redis-server' => 'redis',
+          'cache-backend-redis-db' => 0,
+          'cache-backend-redis-port' => 6379,
+          'page-cache' => 'redis',
+          'page-cache-redis-server' => 'redis',
+          'page-cache-redis-db' => 1,
+          'page-cache-redis-port' => 6379,
+        EOL
+        fi
+
+        cat << EOL >> ${CONFIG_FILE}
+        ];
+        EOL
+
+        echo "configuration"
+        cat ${CONFIG_FILE}
+
+
+#        bash build_scripts/build_integration_tests_config.sh "$SEARCH" "$RABBITMQ" "$REDIS" > dev/tests/integration/etc/install-config-mysql.php
+#        echo "Debug integration tests config:"
+#        cat dev/tests/integration/etc/install-config-mysql.php
+
+    - name: Run Memory Test
+      if: ${{ inputs.run_memory_test == 1 }}
+      working-directory: ${{ inputs.base_directory }}
+      shell: bash
+      run: |
+        export DEN="$(dirname $(pwd))/warden/bin/warden"
+        ${DEN} env exec -T php-fpm /bin/bash -c "cd ./dev/tests/integration
+          echo -e '\033[32mRun Memory Tests\033[0m'
+          php ../../../vendor/bin/phpunit
+            --configuration phpunit.xml.dist
+            --coverage-clover=coverage.xml
+            --log-junit=test-results.xml
+            --coverage-html=coverage
+            --testsuite 'Memory Usage Tests'
+            --filter 'AdminAnalytics'
+        "
+
+    - name: Run Magento Integration Tests
+      if: ${{ inputs.run_magento_integration_tests == 1 }}
+      working-directory: ${{ inputs.base_directory }}
+      shell: bash
+      run: |
+        export DEN="$(dirname $(pwd))/warden/bin/warden"
+        ${DEN} env exec -T php-fpm /bin/bash -c "cd ./dev/tests/integration
+          echo -e '\033[32mRun Magento Integration Tests\033[0m'
+          php ../../../vendor/bin/phpunit
+              --configuration phpunit.xml.dist
+              --coverage-clover=coverage.xml
+              --log-junit=test-results.xml
+              --coverage-html=coverage
+              --testsuite 'Magento Integration Tests'
+        "
+
+    - name: Run Magento Integration Tests Real Suite
+      if: ${{ inputs.run_magento_integration_tests_real_suite == 1 }}
+      working-directory: ${{ inputs.base_directory }}
+      shell: bash
+      run: |
+        export DEN="$(dirname $(pwd))/warden/bin/warden"
+        ${DEN} env exec -T php-fpm /bin/bash -c "cd ./dev/tests/integration
+              echo -e '\033[32mRun Magento Integration Tests Real Suite\033[0m'
+              php ../../../vendor/bin/phpunit
+              --configuration phpunit.xml.dist
+              --coverage-clover=coverage.xml
+              --log-junit=test-results.xml
+              --coverage-html=coverage
+              --testsuite 'Magento Integration Tests Real Suite'
+        "
