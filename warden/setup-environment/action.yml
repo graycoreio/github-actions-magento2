@@ -235,7 +235,7 @@ runs:
         echo "==================================================="
         docker ps -a
         sleep 10
-        curl --write-out %{http_code} --silent --output /dev/null http://mageos-elasticsearch-1:9200/_cat/health?h=st)
+        curl --write-out %{http_code} --silent --output /dev/null http://mageos-elasticsearch-1:9200/_cat/health?h=st
 #          export DEN="$(dirname $(pwd))/warden/bin/warden"
 #          case "${SEARCH}" in
 #            elasticsearch:*)
