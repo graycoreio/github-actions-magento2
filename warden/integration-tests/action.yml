@@ -10,7 +10,7 @@ inputs:
 
   rabbitmq:
     required: true
-    default: "rabbitmq:3.9"
+    default: "rabbitmq:3.11"
     description: "Rabbit MQ version to use."
 
   redis:
@@ -138,8 +138,8 @@ runs:
       working-directory: ${{ inputs.base_directory }}
       shell: bash
       run: |
-        export DEN="$(dirname $(pwd))/warden/bin/warden"
-        ${DEN} env exec -T php-fpm /bin/bash -c "cd ./dev/tests/integration
+        export WARDEN="$(dirname $(pwd))/warden/bin/warden"
+        ${WARDEN} env exec -T php-fpm /bin/bash -c "cd ./dev/tests/integration
           echo -e '\033[32mRun Memory Tests\033[0m'
           php ../../../vendor/bin/phpunit
             --configuration phpunit.xml.dist
@@ -147,7 +147,6 @@ runs:
             --log-junit=test-results.xml
             --coverage-html=coverage
             --testsuite 'Memory Usage Tests'
-            --filter 'AdminAnalytics'
         "
 
     - name: Run Magento Integration Tests
@@ -155,8 +154,8 @@ runs:
       working-directory: ${{ inputs.base_directory }}
       shell: bash
       run: |
-        export DEN="$(dirname $(pwd))/warden/bin/warden"
-        ${DEN} env exec -T php-fpm /bin/bash -c "cd ./dev/tests/integration
+        export WARDEN="$(dirname $(pwd))/warden/bin/warden"
+        ${WARDEN} env exec -T php-fpm /bin/bash -c "cd ./dev/tests/integration
           echo -e '\033[32mRun Magento Integration Tests\033[0m'
           php ../../../vendor/bin/phpunit
               --configuration phpunit.xml.dist
@@ -171,8 +170,8 @@ runs:
       working-directory: ${{ inputs.base_directory }}
       shell: bash
       run: |
-        export DEN="$(dirname $(pwd))/warden/bin/warden"
-        ${DEN} env exec -T php-fpm /bin/bash -c "cd ./dev/tests/integration
+        export WARDEN="$(dirname $(pwd))/warden/bin/warden"
+        ${WARDEN} env exec -T php-fpm /bin/bash -c "cd ./dev/tests/integration
               echo -e '\033[32mRun Magento Integration Tests Real Suite\033[0m'
               php ../../../vendor/bin/phpunit
               --configuration phpunit.xml.dist
