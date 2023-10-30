@@ -1,22 +1,22 @@
 name: "Setup Mage-OS in Warden"
-author: "Vladyslav Podorozhnyi"
-description: "A Github Action that pull and set-up Magen-OS in warden env."
+author: "Mage-OS"
+description: "A Github Action that pull and set-up Mage-OS in Warden env."
 
 inputs:
   warden_version:
     required: true
     default: "0.14.1"
-    description: "The version of warden to use."
+    description: "The version of Warden to use."
 
   php_version:
     required: true
     default: "8.2"
-    description: "PHP version used in warden container."
+    description: "PHP version used in Warden container."
 
   composer_version:
     required: true
     default: "2.2.22"
-    description: "The version of composer to use."
+    description: "The version of Composer to use."
 
   database:
     required: true

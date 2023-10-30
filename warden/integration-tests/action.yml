@@ -1,6 +1,6 @@
 name: "Integration Tests Mage-OS in Warden"
-author: "Vladyslav Podorozhnyi"
-description: "A Github Action that run Integration Tests of Mage-OS in warden."
+author: "Mage-OS"
+description: "A Github Action that run Integration Tests of Mage-OS in Warden."
 
 inputs:
   search:
