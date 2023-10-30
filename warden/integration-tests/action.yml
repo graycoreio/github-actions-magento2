@@ -5,7 +5,7 @@ description: "A Github Action that run Integration Tests of Mage-OS in warden."
 inputs:
   search:
     required: true
-    default: "elasticsearch:7.15.1"
+    default: "opensearch:2.5"
     description: "The search engine to use."
 
   rabbitmq:
