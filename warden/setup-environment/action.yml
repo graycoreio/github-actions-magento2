@@ -248,7 +248,6 @@ runs:
         if [ $RUN_INSTALL == "1" ]; then
           export WARDEN="$(dirname $(pwd))/warden/bin/warden"
           wget https://getcomposer.org/download/${{ inputs.composer_version }}/composer.phar -O composer.phar 1>/dev/null 2>&1 && chmod +x composer.phar
-          ${WARDEN} env exec -T php-fpm ls -la | grep composer
           ${WARDEN} env exec -T php-fpm php composer.phar -v
           ${WARDEN} env exec -T php-fpm php composer.phar install --no-interaction --no-progress
         else
