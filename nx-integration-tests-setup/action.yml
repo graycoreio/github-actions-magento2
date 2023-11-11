@@ -1,0 +1,120 @@
+name: "Nx Integration Tests Setup"
+author: "Mage-OS"
+description: "Setup and cache Nx project, this can then be reused with all service combinations."
+
+inputs:
+  repository:
+    type: string 
+    description: "Repository"
+    required: true
+  ref:
+    type: string
+    description: "head SHA"
+    required: true
+  pr_base:
+    type: string
+    description: "pr base SHA"
+    required: true
+
+# permissions:
+#   contents: write
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout PR commit
+      uses: actions/checkout@v3
+      with:
+        repository: ${{ inputs.repository }}
+        ref: ${{ inputs.ref }}
+        path: main
+        # Need to do this otherwise Nx cant determine diff
+        fetch-depth: 0
+
+    - name: Fetch base
+      working-directory: ./main
+      shell: bash
+      run: git fetch origin ${{ inputs.pr_base }}
+
+    - name: Cache Composer dependencies
+      uses: actions/cache@v3
+      with:
+        path: /tmp/composer-cache
+        key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+
+    - id: get-composer-and-php-version
+      name: Get Composer & PHP Version
+      working-directory: ./main
+      shell: bash
+      run: |
+        echo "php_version=$(jq -c .services.php[0] supported-services.json)" >> "$GITHUB_OUTPUT"
+        echo "composer_version=$(jq -rc .services.composer[0] supported-services.json)" >> "$GITHUB_OUTPUT"
+    - name: Composer Install
+      uses: php-actions/composer@v6
+      with:
+        version: ${{ steps.get-composer-and-php-version.outputs.composer_version }}
+        php_version: ${{ steps.get-composer-and-php-version.outputs.php_version }}
+        args: "--ignore-platform-reqs --optimize-autoloader"
+        working_dir: main
+
+    # could probably swap this to a docker container in future
+    - name: Install NX
+      working-directory: ./main
+      shell: bash
+      run: |
+        npm install -g nx@15.4.1
+        
+    # should be able to cache this in future also
+    - name: Checkout Nx Repo
+      uses: actions/checkout@v3
+      with:
+        repository: adamzero1/nx-for-php
+        ref: docker-wrapper-2
+        path: nx
+
+    - name: Copy in NX files
+      working-directory: ./main
+      shell: bash
+      run: |
+        NXDIR="../nx"
+        cp -r ${NXDIR}/nx ./
+        cp ${NXDIR}/nx.json ./
+        cp ${NXDIR}/package.json ./
+        cp ${NXDIR}/package-lock.json ./
+
+    - name: Install NPM Deps
+      working-directory: ./main
+      shell: bash
+      run: |
+        npm ci
+
+    - name: Generate Nx Workspace
+      working-directory: ./main
+      shell: bash
+      run: |
+        npm run generate-workspace -- --commands=test:unit,test:integration \
+          --test:unit='if [ -d {{ MODULE_PATH }}Test/Unit ]; then ${WARDEN} env exec -T php-fpm ./vendor/bin/phpunit -c dev/tests/unit/phpunit.xml {{ MODULE_PATH }}Test/Unit; else echo "{{ MODULE_NAME }} has no unit test; fi' \
+          --test:integration='${WARDEN} env exec -T --workdir /var/www/html/dev/tests/integration php-fpm ../../../vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite '"'"'Magento Integration Tests Real Suite'"'"' --filter='"'"'/Magento/{{ MODULE_DIRECTORY }}/|Magento\\{{ MODULE_DIRECTORY }}'"'"' --log-junit=../../../phpunit-output/junit/{{ MODULE_DIRECTORY }}.xml --coverage-html=../../../phpunit-output/coverage-html/{{ MODULE_DIRECTORY }}'
+
+    - name: Print Affected
+      working-directory: ./main
+      shell: bash
+      run: |
+        AFFECTED_OUTPUT=/tmp/affect.json
+        nx print-affected --head=HEAD --base=remotes/origin/${{ inputs.pr_base }} > ${AFFECTED_OUTPUT}
+        echo "Affected Projects: $(jq .projects ${AFFECTED_OUTPUT})"
+
+    # just to get some timings
+    - name: Print Affected2
+      working-directory: ./main
+      shell: bash
+      run: |
+        AFFECTED_OUTPUT=/tmp/affect.json
+        nx print-affected --head=HEAD --base=remotes/origin/${{ inputs.pr_base }} > ${AFFECTED_OUTPUT}
+        echo "Affected Projects: $(jq .projects ${AFFECTED_OUTPUT})"
+    
+    - name: Project Cache
+      uses: actions/cache/save@v3
+      with:
+        path: main
+        key: ${{ runner.os }}-project-${{ inputs.ref }}
