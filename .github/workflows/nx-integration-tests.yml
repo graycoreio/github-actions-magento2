@@ -107,16 +107,6 @@ jobs:
         http_cache_version: ${{ fromJSON(needs.matrix-calculator.outputs.http_cache_versions) }}
     runs-on: ubuntu-latest
     steps:
-      # - name: Running With
-      #   shell: bash
-      #   run: |
-      #     echo "PHP Versions: ${{ matrix.php_version }}"
-      #     echo "database Versions: ${{ matrix.database_version }}"
-      #     echo "search Versions: ${{ matrix.search_version }}"
-      #     echo "message_queue Versions: ${{ matrix.message_queue_version }}"
-      #     echo "cache Versions: ${{ matrix.cache_version }}"
-      #     echo "http_cache Versions: ${{ matrix.http_cache_version }}"
-
       - name: Project Cache
         uses: actions/cache/restore@v3
         with:
