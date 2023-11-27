@@ -16,14 +16,12 @@ inputs:
     description: "pr base SHA"
     required: true
 
-# permissions:
-#   contents: write
 
 runs:
   using: "composite"
   steps:
     - name: Checkout PR commit
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         repository: ${{ inputs.repository }}
         ref: ${{ inputs.ref }}
@@ -66,7 +64,7 @@ runs:
         
     # should be able to cache this in future also
     - name: Checkout Nx Repo
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         repository: adamzero1/nx-for-php
         ref: docker-wrapper-2
