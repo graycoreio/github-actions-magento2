@@ -60,7 +60,7 @@ runs:
       working-directory: ./main
       shell: bash
       run: |
-        npm install -g nx@15.4.1
+        npm install -g nx@^15.4
         
     # should be able to cache this in future also
     - name: Checkout Nx Repo
