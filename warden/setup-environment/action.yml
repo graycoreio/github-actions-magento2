@@ -5,7 +5,7 @@ description: "A Github Action that pull and set-up Mage-OS in Warden env."
 inputs:
   warden_version:
     required: true
-    default: "0.14.1"
+    default: "0.14.2"
     description: "The version of Warden to use."
 
   php_version:
