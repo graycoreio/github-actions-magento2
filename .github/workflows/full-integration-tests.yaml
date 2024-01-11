@@ -188,8 +188,8 @@ jobs:
       - name: Run Integration Tests for Modules
         working-directory: ./main
         run: |
-          export DEN="$(dirname $(pwd))/warden/bin/warden"
-          ${DEN} env exec -T --workdir /var/www/html/dev/tests/integration php-fpm ../../../vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite 'Mage-OS Suite' --log-junit=../../../phpunit-output/junit/res-log.xml --coverage-html=../../../phpunit-output/coverage-html/res.html
+          export WARDEN="$(dirname $(pwd))/warden/bin/warden"
+          ${WARDEN} env exec -T --workdir /var/www/html/dev/tests/integration php-fpm ../../../vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite 'Mage-OS Suite' --log-junit=../../../phpunit-output/junit/res-log.xml --coverage-html=../../../phpunit-output/coverage-html/res.html
 
   rum-memory-integration-tests:
     needs: [ matrix-calculator ]
