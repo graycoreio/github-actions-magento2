@@ -215,11 +215,17 @@ jobs:
         working-directory: ./main/dev/tests/integration
         run: |
           FILE="phpunit.xml.dist"
+          
+          # Remove Memory Usage Tests and Magento Integration Tests Real Suite test suites
+          sed -i '/<testsuite name="Memory Usage Tests">/,/<\/testsuite>/d' "$FILE"
+          sed -i '/<testsuite name="Magento Integration Tests Real Suite">/,/<\/testsuite>/d' "$FILE"
+          
           DIRS="${{ matrix.testsuite_dirs }}"
           echo "Debug: $DIRS"
           NEW_TESTSUITE_ENTRY=$(
             echo "<testsuite name=\"Mage-OS Suite\">"
             IFS=','; for dir in $DIRS; do echo "  <directory>$dir</directory>"; done
+            echo "  <exclude>testsuite/Magento/IntegrationTest.php</exclude>"
             echo "</testsuite>"
           )
           echo "Debug: $NEW_TESTSUITE_ENTRY"
@@ -231,7 +237,8 @@ jobs:
         working-directory: ./main
         run: |
           export WARDEN="$(dirname $(pwd))/warden/bin/warden"
-          ${WARDEN} env exec -T --workdir /var/www/html/dev/tests/integration php-fpm ../../../vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite 'Mage-OS Suite' --log-junit=../../../phpunit-output/junit/res-log.xml --coverage-html=../../../phpunit-output/coverage-html/res.html
+          # Important: Run the custom "Magento Integration Tests" test suite, which runs all other test suites
+          ${WARDEN} env exec -T --workdir /var/www/html/dev/tests/integration php-fpm ../../../vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite 'Magento Integration Tests' --log-junit=../../../phpunit-output/junit/res-log.xml --coverage-html=../../../phpunit-output/coverage-html/res.html
 
   rum-memory-integration-tests:
     needs: [ matrix-calculator ]
