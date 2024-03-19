@@ -231,6 +231,11 @@ jobs:
           echo "Debug: $NEW_TESTSUITE_ENTRY"
           awk -v new_testsuite="$NEW_TESTSUITE_ENTRY" '/<\/testsuites>/ { print new_testsuite; found=1 } {print} END { if (!found) print new_testsuite }' "$FILE" > tmpfile && mv tmpfile "$FILE"
           echo "\nMage-OS suite has been added to $FILE \n"
+          
+          ## TODO: I want to have a possibility to NOT ignore those test if I wish to - by adding additional input to github actions, for example
+          sed -i '/<testsuites>/i\<groups>\<exclude>\<group>integrationIgnore<\/group><\/exclude><\/groups>' "$FILE"
+          echo "\nIgnore group `integrationIgnore` has been added to $FILE \n"
+          
           cat $FILE;
 
       - name: Run Integration Tests for Modules
