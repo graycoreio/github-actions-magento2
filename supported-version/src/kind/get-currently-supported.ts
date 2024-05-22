@@ -6,7 +6,7 @@ export const getCurrentlySupportedVersions = (project: string, date: Date): stri
     return Object.entries(<Record<string,PackageMatrixVersion>>allVersions)
         .filter(([key, value]) => {
             const dayOfRelease = new Date(value.release);
-            dayOfRelease.setMinutes(dayOfRelease.getMinutes() + 1);
+            dayOfRelease.setSeconds(dayOfRelease.getSeconds() + 1);
             return date >= dayOfRelease && new Date(value.eol) >= date;
         })
         .map(([key, value]) => key);
