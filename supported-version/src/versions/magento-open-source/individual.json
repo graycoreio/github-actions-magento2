@@ -333,6 +333,20 @@
         "nginx": "nginx:1.22",
         "os": "ubuntu-latest",
         "release": "2024-08-13T00:00:00+0000",
+        "eol": "2024-10-07T00:00:00+0000"
+    },
+    "magento/project-community-edition:2.4.4-p11": {
+        "magento": "magento/project-community-edition:2.4.4-p11",
+        "php": 8.1,
+        "composer": "2.2.21",
+        "mysql": "mysql:8.0",
+        "elasticsearch": "elasticsearch:7.17.5",
+        "rabbitmq": "rabbitmq:3.9-management",
+        "redis": "redis:6.2",
+        "varnish": "varnish:7.3",
+        "nginx": "nginx:1.22",
+        "os": "ubuntu-latest",
+        "release": "2024-10-08T00:00:00+0000",
         "eol": "2025-04-24T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.5": {
@@ -473,6 +487,20 @@
         "nginx": "nginx:1.22",
         "os": "ubuntu-latest",
         "release": "2024-08-13T00:00:00+0000",
+        "eol": "2024-10-07T00:00:00+0000"
+    },
+    "magento/project-community-edition:2.4.5-p10": {
+        "magento": "magento/project-community-edition:2.4.5-p10",
+        "php": 8.1,
+        "composer": "2.2.21",
+        "mysql": "mysql:8.0",
+        "elasticsearch": "elasticsearch:7.17.5",
+        "rabbitmq": "rabbitmq:3.11-management",
+        "redis": "redis:6.2",
+        "varnish": "varnish:7.1",
+        "nginx": "nginx:1.22",
+        "os": "ubuntu-latest",
+        "release": "2024-10-08T00:00:00+0000",
         "eol": "2025-08-09T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.6": {
@@ -585,6 +613,20 @@
         "nginx": "nginx:1.22",
         "os": "ubuntu-latest",
         "release": "2024-08-13T00:00:00+0000",
+        "eol": "2024-10-07T00:00:00+0000"
+    },
+    "magento/project-community-edition:2.4.6-p8": {
+        "magento": "magento/project-community-edition:2.4.6-p8",
+        "php": 8.1,
+        "composer": "2.2.21",
+        "mysql": "mysql:8.0",
+        "elasticsearch": "elasticsearch:8.5.3",
+        "rabbitmq": "rabbitmq:3.9-management",
+        "redis": "redis:7.0",
+        "varnish": "varnish:7.3",
+        "nginx": "nginx:1.22",
+        "os": "ubuntu-latest",
+        "release": "2024-10-08T00:00:00+0000",
         "eol": "2026-03-14T00:00:00+0000"
     },
     "magento/project-community-edition:2.4.7": {
@@ -627,6 +669,20 @@
         "nginx": "nginx:1.26",
         "os": "ubuntu-latest",
         "release": "2024-08-13T00:00:00+0000",
+        "eol": "2024-10-07T00:00:00+0000"
+    },
+    "magento/project-community-edition:2.4.7-p3": {
+        "magento": "magento/project-community-edition:2.4.7-p3",
+        "php": 8.3,
+        "composer": "2.7.4",
+        "mysql": "mariadb:10.6",
+        "elasticsearch": "elasticsearch:8.11.4",
+        "rabbitmq": "rabbitmq:3.13-management",
+        "redis": "redis:7.2",
+        "varnish": "varnish:7.5",
+        "nginx": "nginx:1.26",
+        "os": "ubuntu-latest",
+        "release": "2024-10-08T00:00:00+0000",
         "eol": "2027-04-09T00:00:00+0000"
     }
 }
