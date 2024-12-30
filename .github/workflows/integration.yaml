@@ -210,7 +210,7 @@ jobs:
       name: Run Integration Tests
 
     - name: Upload test sandbox dir
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: failure()
       with:
         name: sandbox-data-${{ steps.magento-version.outputs.version }}
