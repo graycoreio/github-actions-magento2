@@ -35,7 +35,7 @@ jobs:
       testsuite_dirs: ${{ steps.set-matrix-testsuite.outputs.testsuite_dirs }}
     steps:
       - name: Checkout commit
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: ${{ github.event.inputs.repository }}
           ref: ${{ github.event.inputs.head }}
@@ -181,7 +181,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout commit
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: ${{ github.event.inputs.repository }}
           ref: ${{ github.event.inputs.head }}
@@ -259,7 +259,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout commit
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: ${{ github.event.inputs.repository }}
           ref: ${{ github.event.inputs.head }}
