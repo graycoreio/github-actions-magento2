@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/mage-os/github-actions/compare/v1.4.0...v1.5.0) (2024-12-30)
+
+
+### Features
+
+* add magento releases 2.4.4-p9, 2.4.5-p8, 2.4.6-p6, and 2.4.7-p1 ([#226](https://github.com/mage-os/github-actions/issues/226)) ([a326271](https://github.com/mage-os/github-actions/commit/a3262710f1f605bf468b6fe70d5f1a5bd47b6bb4))
+* add new releases to the version matrix ([#232](https://github.com/mage-os/github-actions/issues/232)) ([b633b21](https://github.com/mage-os/github-actions/commit/b633b2120a2157aa13c3e7dd71b1cdbc0045e5d9))
+* add project versions ([#110](https://github.com/mage-os/github-actions/issues/110)) ([f7f0504](https://github.com/mage-os/github-actions/commit/f7f0504691b19689227b4db17d333bca62f80cc0))
+* add releases 2.4.4-p6, 2.4.5-p5 and 2.4.6-p3 ([#169](https://github.com/mage-os/github-actions/issues/169)) ([2086708](https://github.com/mage-os/github-actions/commit/2086708ffc708b7685b579027163340a4ddfa44f))
+* add support for v2.3.7 on new vms ([#67](https://github.com/mage-os/github-actions/issues/67)) ([2824849](https://github.com/mage-os/github-actions/commit/28248496e0979dff3cb255abbfff84cdebd5697b))
+* add upcoming release for mage-os 1.0.2 ([#223](https://github.com/mage-os/github-actions/issues/223)) ([f1b13e8](https://github.com/mage-os/github-actions/commit/f1b13e8984ec13e1a154e737c8494470f88b9a21))
+* add upcoming release Mage-OS 1.0.3 to supported-version matrix ([#229](https://github.com/mage-os/github-actions/issues/229)) ([6e50d0d](https://github.com/mage-os/github-actions/commit/6e50d0d8de09da49ce12473b2577a2277e4d701e))
+* **coding-standard:** add `ignore_warnings` flag ([#147](https://github.com/mage-os/github-actions/issues/147)) ([4e21b18](https://github.com/mage-os/github-actions/commit/4e21b18ee9187253fc5d172d0ad1439bf304872e))
+* **get-composer-version:** create new action ([#145](https://github.com/mage-os/github-actions/issues/145)) ([bc840e1](https://github.com/mage-os/github-actions/commit/bc840e13727b4273aa9c22e4116a05cde58b046d))
+* **semver-compare:** add new Github action ([#146](https://github.com/mage-os/github-actions/issues/146)) ([01e4ccb](https://github.com/mage-os/github-actions/commit/01e4ccbc54ebe8996c3f25d777a0b4fdc1288e13))
+* **supported-versions:** add release date ([#100](https://github.com/mage-os/github-actions/issues/100)) ([5599a0d](https://github.com/mage-os/github-actions/commit/5599a0d2e790952fbdfbbc23b9a1c92aa26eed35))
+
+
+### Bug Fixes
+
+* add missing build for 1.4.0 of supported versions ([#64](https://github.com/mage-os/github-actions/issues/64)) ([e48a346](https://github.com/mage-os/github-actions/commit/e48a3463c5054012f748bb64eca2bab51220cdc0))
+* coding-standard-baseline: Run baseline test on modified files only (fixes [#227](https://github.com/mage-os/github-actions/issues/227)) ([#228](https://github.com/mage-os/github-actions/issues/228)) ([e29ea44](https://github.com/mage-os/github-actions/commit/e29ea44597d69cf743bc172fd84b8f9f238ff3b6))
+* continue to use elasticsearch instead of opensearch for now ([#224](https://github.com/mage-os/github-actions/issues/224)) ([dd47d22](https://github.com/mage-os/github-actions/commit/dd47d22478c7fae917f48261d9a32b0ca04aec3c))
+* make es8 run correctly in integration tests ([#66](https://github.com/mage-os/github-actions/issues/66)) ([85d11af](https://github.com/mage-os/github-actions/commit/85d11af76e15b6728c3cd1e4d8fb45289b2b1c8c))
+* pass correct repo url for nightly ([#158](https://github.com/mage-os/github-actions/issues/158)) ([b645c23](https://github.com/mage-os/github-actions/commit/b645c2327debb49615e1110064c35732aa1b59f4))
+* PHPcs baseline composer conflicts ([bf34ec4](https://github.com/mage-os/github-actions/commit/bf34ec4964e683e47b442f82d1cdb0d74b01de69))
+* **supported-versions:** nightly build matrix tag ([#152](https://github.com/mage-os/github-actions/issues/152)) ([7f1821f](https://github.com/mage-os/github-actions/commit/7f1821f6ac3faff2e2384212f33fcfdcc8cf4573))
+* switch from tj-actions/changed-files to dorny/paths-filter ([87fe77f](https://github.com/mage-os/github-actions/commit/87fe77f8a8dcf6828317894c4b849c4be041853f))
+* use exact version of elasticsearch since there is no 8.11 tag ([#225](https://github.com/mage-os/github-actions/issues/225)) ([b4f27f1](https://github.com/mage-os/github-actions/commit/b4f27f19e5196ba6be3b6007cd3e71a40471aa4f))
+
 ## [1.4.0](https://github.com/mage-os/github-actions/compare/v1.3.0...v1.4.0) (2023-06-20)
 
 
