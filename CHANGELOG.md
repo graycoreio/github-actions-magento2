@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/mage-os/github-actions/compare/v1.5.0...v1.6.0) (2025-03-07)
+
+
+### Features
+
+* run setup:di:compile on push ([#116](https://github.com/mage-os/github-actions/issues/116)) ([22aca78](https://github.com/mage-os/github-actions/commit/22aca78cc8c648549b7a139fd2739ac9e8db916d))
+
 ## [1.5.0](https://github.com/mage-os/github-actions/compare/v1.4.0...v1.5.0) (2024-12-30)
 
 

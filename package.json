@@ -1,6 +1,6 @@
 {
   "name": "@mage-os/github-actions",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Github Actions for Magento 2",
   "scripts": {
     "test": "cd supported-version && npm run test && cd -",
