@@ -1,0 +1,58 @@
+name: "Magento compilation (setup:di:compile)"
+author: "MageOS"
+description: "A Github Action that runs bin/magento setup:di:compile."
+
+inputs:
+  php_version:
+    required: true
+    default: "8.3"
+    description: "PHP version used to run setup:di:compile."
+
+  composer_version:
+    required: true
+    default: "2"
+    description: "The version of composer to use."
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout Project
+      uses: actions/checkout@v3
+
+    - name: Get changed files that could break compilation
+      uses: tj-actions/changed-files@v39
+      id: changed-files
+      with:
+        files_yaml: |
+          magento:
+            - 'composer.lock'
+            - 'composer.json'
+            - '**/*.php'
+            - '**/*.xml'
+
+    - name: Set PHP Version
+      if: steps.changed-files.outputs.magento_any_changed == 'true'
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ inputs.php_version }}
+        tools: composer:v${{ inputs.composer_version }}
+        coverage: none
+
+    - uses: mage-os/github-actions/cache-magento@main
+      with:
+        mode: 'store'
+
+    - name: Install composer dependencies
+      if: steps.changed-files.outputs.magento_any_changed == 'true'
+      shell: bash
+      run: composer install
+
+    - name: Enable all modules
+      if: steps.changed-files.outputs.magento_any_changed == 'true'
+      shell: bash
+      run: php bin/magento module:enable --all
+
+    - name: Compile
+      if: steps.changed-files.outputs.magento_any_changed == 'true'
+      shell: bash
+      run: php bin/magento setup:di:compile
