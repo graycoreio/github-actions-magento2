@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: mage-os/github-actions/unit-test@main
+    - uses: graycoreio/github-actions-magento2/unit-test@main
       with:
         php_version: ${{ matrix.php_version }}
         composer_auth: ${{ secrets.COMPOSER_AUTH }}

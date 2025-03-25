@@ -22,7 +22,7 @@ jobs:
   setup-di-compile:
     runs-on: ubuntu-latest
     steps:
-    - uses: mage-os/github-actions/setup-di-compile@main
+    - uses: graycoreio/github-actions-magento2/setup-di-compile@main
       with:
         php_version: "8.3"
         composer_version: "2"

@@ -25,7 +25,7 @@ jobs:
     name: A job to compute an installed Composer version.
     steps:
       - uses: actions/checkout@v3
-      - uses: mage-os/github-actions/get-composer-version@main
+      - uses: graycoreio/github-actions-magento2/get-composer-version@main
         id: get-composer-version
       - run: echo version ${{ steps.get-composer-version.outputs.version }}
         shell: bash

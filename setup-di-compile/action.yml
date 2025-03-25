@@ -38,7 +38,7 @@ runs:
         tools: composer:v${{ inputs.composer_version }}
         coverage: none
 
-    - uses: mage-os/github-actions/cache-magento@main
+    - uses: graycoreio/github-actions-magento2/cache-magento@main
       with:
         mode: 'store'
 

@@ -63,11 +63,11 @@ runs:
         coverage: none
 
     - name: Get Composer Version
-      uses: mage-os/github-actions/get-composer-version@main
+      uses: graycoreio/github-actions-magento2/get-composer-version@main
       id: get-composer-version
 
     - name: Check if allow-plugins option is available for this version of composer
-      uses: mage-os/github-actions/semver-compare@main
+      uses: graycoreio/github-actions-magento2/semver-compare@main
       with:
         version: 2.2
         compare_against: ${{ steps.get-composer-version.outputs.version }}

@@ -31,7 +31,7 @@ jobs:
   coding-standard:
     runs-on: ubuntu-latest
     steps:
-    - uses: mage-os/github-actions/coding-standard-baseline@main
+    - uses: graycoreio/github-actions-magento2/coding-standard-baseline@main
       with:
         head_repo: "mage-os/mageos-magento2"
         head_ref: "main"

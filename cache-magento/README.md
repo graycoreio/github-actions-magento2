@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: mage-os/github-actions/cache-magento@main
+    - uses: graycoreio/github-actions-magento2/cache-magento@main
       with:
         mode: 'store'
       id: cache-magento

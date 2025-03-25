@@ -1,5 +1,5 @@
 {
-  "name": "@mage-os/github-actions-supported-version",
+  "name": "@graycoreio/github-actions-magento2-supported-version",
   "version": "1.0.0",
   "description": "A Github Action that computes the currently supported Github Actions Matrix for Magento 2 Versions",
   "main": "index.js",
