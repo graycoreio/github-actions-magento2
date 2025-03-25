@@ -93,7 +93,7 @@ jobs:
         mode: store
         working-directory: ${{ env.magento_folder }}
     
-    - uses: mage-os/github-actions/cache-magento@main
+    - uses: graycoreio/github-actions-magento2/cache-magento@main
       with:
         mode: 'store'
         composer_cache_key:  '${{ matrix.magento }}'
@@ -116,7 +116,7 @@ jobs:
         mode: extension
         magento_version: magento/project-community-edition:2.4.5-p1
 
-    - uses: mage-os/github-actions/cache-magento@main
+    - uses: graycoreio/github-actions-magento2/cache-magento@main
       with:
         mode: 'extension'
         composer_cache_key: 'magento/project-community-edition:2.4.5-p1'
