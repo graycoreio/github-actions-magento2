@@ -21,6 +21,9 @@ on:
     - "supported-version/**"
     - "!(**/*.md)"
 
+env:
+  MAGENTO_COMPOSER_REPO: "https://mirror.mage-os.org/"
+
 jobs:
   compute_matrix:
       runs-on: ubuntu-latest
@@ -42,3 +45,6 @@ jobs:
       matrix: ${{ needs.compute_matrix.outputs.matrix }}
       test_command: ../../../vendor/bin/phpunit ../../../vendor/mage-os/magento2-demo-package/Test/Integration
       fail-fast: false
+      magento_repository: ${{ env.MAGENTO_COMPOSER_REPO }}
+    secrets:
+      composer_auth: ${{ secrets.COMPOSER_AUTH }}
