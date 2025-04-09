@@ -5,7 +5,7 @@ description: "A Github Action that computes the Github Actions matrix for the ch
 inputs:
   kind:
     required: false
-    description: "The kind of versions you want to return. Allowed values are `currently-supported`, `latest`, `custom`, `nightly` and `all`"
+    description: "The kind of versions you want to return. Allowed values are `currently-supported`, `latest`, `custom`, `nightly`, `recent` and `all`"
     default: "currently-supported"
   project:
     required: false
@@ -16,6 +16,11 @@ inputs:
     required: false
     description: "The specific custom versions of Magento that you want to use. Only applies when `kind` is `custom`"
     default: ""
+
+  recent_time_frame:
+    required: false
+    default: "2y"
+    description: "The time frame (from today). Only used in `recent` kind. String that defines a time duration using a combination of years (y), months (m), and days (d). Each unit is optional and can appear in any order, separated by spaces. For example `2y 2m 2d`. "
 
 outputs:
   matrix:
