@@ -124,6 +124,7 @@ jobs:
         php-version: 8.1
         tools: composer:v2
         mode: extension
+        magento_version: magento/project-community-edition:2.4.5-p1
         magento_repository: ${{ env.MAGENTO_COMPOSER_REPO }}
         composer_auth: ${{ secrets.COMPOSER_AUTH }}
 
