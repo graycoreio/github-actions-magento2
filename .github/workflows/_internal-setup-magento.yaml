@@ -121,17 +121,17 @@ jobs:
     - uses: ./setup-magento
       id: setup-magento
       with:
-        php-version: 8.1
+        php-version: 8.4
         tools: composer:v2
         mode: extension
-        magento_version: magento/project-community-edition:2.4.5-p1
         magento_repository: ${{ env.MAGENTO_COMPOSER_REPO }}
         composer_auth: ${{ secrets.COMPOSER_AUTH }}
+        magento_version: magento/project-community-edition:2.4.8
 
     - uses: graycoreio/github-actions-magento2/cache-magento@main
       with:
         mode: 'extension'
-        composer_cache_key: 'magento/project-community-edition:2.4.5-p1'
+        composer_cache_key: 'magento/project-community-edition:2.4.8'
     
     - run: composer install
       name: Composer install

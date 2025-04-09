@@ -205,6 +205,11 @@ jobs:
         sudo dpkg -i libmysqlclient20_5.7.30-1ubuntu18.04_amd64.deb
         mysqldump --version
 
+    - name: Enable log-bin-trust-function-creators
+      run: |
+        mysql -h127.0.0.1 -uroot -prootpassword -e "SET GLOBAL log_bin_trust_function_creators = 1;"
+
+
     - run: ${{ inputs.test_command }}
       working-directory:  ${{ inputs.magento_directory }}/dev/tests/integration
       name: Run Integration Tests
