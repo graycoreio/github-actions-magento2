@@ -2,6 +2,9 @@
 
 A Github Action that runs the Magento Coding Standard.
 
+> [!WARNING]
+> This action is only compatible with Magento v2.4.4+.
+
 ## Inputs
 
 See the [action.yml](./action.yml)
