@@ -39,7 +39,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./supported-version
         with:
-          kind: all
+          kind: currently-supported
         id: supported-version
       - run: echo ${{ steps.supported-version.outputs.matrix }}
 
