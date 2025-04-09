@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/graycoreio/github-actions-magento2/compare/v2.0.0...v3.0.0) (2025-04-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* **coding-standard:** use magento/php-compatibility-fork ([#190](https://github.com/graycoreio/github-actions-magento2/issues/190))
+
+### Features
+
+* **setup-magento:** add support for composer auth ([#193](https://github.com/graycoreio/github-actions-magento2/issues/193)) ([01cbea1](https://github.com/graycoreio/github-actions-magento2/commit/01cbea18c9649984893afd432a1cdfa4568a5273))
+* **supported-version:** add recent kind ([#188](https://github.com/graycoreio/github-actions-magento2/issues/188)) ([2f1b2ea](https://github.com/graycoreio/github-actions-magento2/commit/2f1b2eaa5da485a687ecda0fdbf38055e13c5a86))
+* **supported-version:** add v2.4.4-p13, v2.4.5-p12, v2.4.6-p10, v2.4.7-p5 and v2.4.8 ([#187](https://github.com/graycoreio/github-actions-magento2/issues/187)) ([21c3bb3](https://github.com/graycoreio/github-actions-magento2/commit/21c3bb34363c94003bf031f837c1599b8e08f25b))
+
+
+### Bug Fixes
+
+* **coding-standard:** use magento/php-compatibility-fork ([#190](https://github.com/graycoreio/github-actions-magento2/issues/190)) ([0008e86](https://github.com/graycoreio/github-actions-magento2/commit/0008e8642db9b997005c3848cf532f4b1cf0a17d))
+* **supported-version:** adjust failing tests ([#195](https://github.com/graycoreio/github-actions-magento2/issues/195)) ([f48c544](https://github.com/graycoreio/github-actions-magento2/commit/f48c544053e49d76c4ac5aac6743ee6521a700aa))
+
 ## [2.0.0](https://github.com/graycoreio/github-actions-magento2/compare/v1.6.0...v2.0.0) (2025-03-25)
 
 
