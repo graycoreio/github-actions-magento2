@@ -22,6 +22,7 @@ on:
 env:
   PSEUDO_REPO_FOLDER: ../magento_repo
   magento_folder: ../magento2
+  MAGENTO_COMPOSER_REPO: "https://mirror.mage-os.org/"
 
 jobs:
   compute_matrix:
@@ -63,20 +64,26 @@ jobs:
         key: setup-magento-ci | ${{ runner.os }} | ${{ matrix.magento }}
         path: ${{ env.PSEUDO_STORE_FULL_PATH }}
 
-    - run: composer create-project --repository-url="https://mirror.mage-os.org" "${{ matrix.magento }}" "${{ env.PSEUDO_REPO_FOLDER }}" --no-install
+    - run: composer create-project --repository-url="${{ env.MAGENTO_COMPOSER_REPO }}" "${{ matrix.magento }}" "${{ env.PSEUDO_REPO_FOLDER }}" --no-install
       name: Create Store to simulate a real Magento store in a real repo.
       if: steps.setup-magento-store-cache.outputs.cache-hit != 'true'
+      env:
+        COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
     - uses: ./fix-magento-install
       name: Fix Magento Out of Box Install Issues
       with:
         magento_directory: ${{ env.PSEUDO_REPO_FOLDER }}
       if: steps.setup-magento-store-cache.outputs.cache-hit != 'true'
+      env:
+        COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
     - run: composer install
       shell: bash
       working-directory: "${{ env.PSEUDO_REPO_FOLDER }}"
       if: steps.setup-magento-store-cache.outputs.cache-hit != 'true'
+      env:
+        COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
     - run: git init && git config user.email "you@example.com" && git config user.name "Your Name" && git add . && git commit -m "init" && git clean -fdx
       working-directory: "${{ env.PSEUDO_REPO_FOLDER }}"
@@ -92,6 +99,7 @@ jobs:
         tools: composer:v${{ matrix.composer }}
         mode: store
         working-directory: ${{ env.magento_folder }}
+        composer_auth: ${{ secrets.COMPOSER_AUTH }}
     
     - uses: graycoreio/github-actions-magento2/cache-magento@main
       with:
@@ -102,6 +110,8 @@ jobs:
       name: Composer install
       shell: bash
       working-directory: ${{ steps.setup-magento.outputs.path }}
+      env:
+        COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
   setup-magento-extension:
     runs-on: ubuntu-latest
@@ -115,6 +125,8 @@ jobs:
         tools: composer:v2
         mode: extension
         magento_version: magento/project-community-edition:2.4.5-p1
+        magento_repository: ${{ env.MAGENTO_COMPOSER_REPO }}
+        composer_auth: ${{ secrets.COMPOSER_AUTH }}
 
     - uses: graycoreio/github-actions-magento2/cache-magento@main
       with:
@@ -125,3 +137,5 @@ jobs:
       name: Composer install
       shell: bash
       working-directory: ${{ steps.setup-magento.outputs.path }}
+      env:
+        COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}

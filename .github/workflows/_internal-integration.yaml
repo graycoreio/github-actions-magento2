@@ -42,3 +42,5 @@ jobs:
       matrix: ${{ needs.compute_matrix.outputs.matrix }}
       test_command: ../../../vendor/bin/phpunit ../../../vendor/mage-os/magento2-demo-package/Test/Integration
       fail-fast: false
+    secrets:
+      composer_auth: ${{ secrets.COMPOSER_AUTH }}

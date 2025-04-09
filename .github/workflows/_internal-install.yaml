@@ -21,6 +21,9 @@ on:
     - "supported-version/**"
     - "!(**/*.md)"
 
+env:
+  MAGENTO_COMPOSER_REPO: "https://mirror.mage-os.org/"
+
 jobs:
   compute_matrix:
     runs-on: ubuntu-latest
@@ -49,3 +52,5 @@ jobs:
         magento_version: ${{ matrix.magento }}
         package_name: mage-os/magento2-demo-package
         source_folder: $GITHUB_WORKSPACE/_test/demo-package
+        composer_auth: ${{ secrets.COMPOSER_AUTH }}
+        magento_repository: ${{ env.MAGENTO_COMPOSER_REPO }}
