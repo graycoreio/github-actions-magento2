@@ -803,6 +803,7 @@
         "composer": "2.8.8",
         "mysql": "mysql:8.4",
         "elasticsearch": "elasticsearch:8.17.4",
+        "opensearch": "opensearchproject/opensearch:2.19.1",
         "rabbitmq": "rabbitmq:4.0-management",
         "redis": "redis:7.2",
         "valkey": "valkey:8.0",
