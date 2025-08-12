@@ -1,6 +1,7 @@
 {
     "mage-os/project-community-edition:1.0.0": {
         "magento": "mage-os/project-community-edition:1.0.0",
+        "upstream": "2.4.6-p3",
         "php": 8.1,
         "composer": "2.2.21",
         "mysql": "mysql:8.0",
@@ -15,6 +16,7 @@
     },
     "mage-os/project-community-edition:1.0.1": {
         "magento": "mage-os/project-community-edition:1.0.1",
+        "upstream": "2.4.6-p3",
         "php": 8.1,
         "composer": "2.2.21",
         "mysql": "mysql:8.0",
@@ -29,6 +31,7 @@
     },
     "mage-os/project-community-edition:1.0.2": {
         "magento": "mage-os/project-community-edition:1.0.2",
+        "upstream": "2.4.7-p1",
         "php": 8.3,
         "composer": "2.7.4",
         "mysql": "mariadb:10.6",
@@ -43,6 +46,7 @@
     },
     "mage-os/project-community-edition:1.0.3": {
         "magento": "mage-os/project-community-edition:1.0.3",
+        "upstream": "2.4.7-p1",
         "php": 8.3,
         "composer": "2.7.4",
         "mysql": "mariadb:10.6",
@@ -57,6 +61,7 @@
     },
     "mage-os/project-community-edition:1.0.4": {
         "magento": "mage-os/project-community-edition:1.0.4",
+        "upstream": "2.4.7-p2",
         "php": 8.3,
         "composer": "2.7.4",
         "mysql": "mariadb:10.6",
@@ -71,6 +76,7 @@
     },
     "mage-os/project-community-edition:1.0.5": {
         "magento": "mage-os/project-community-edition:1.0.5",
+        "upstream": "2.4.7-p3",
         "php": 8.3,
         "composer": "2.7.4",
         "mysql": "mariadb:10.6",
@@ -85,6 +91,7 @@
     },
     "mage-os/project-community-edition:1.0.6": {
         "magento": "mage-os/project-community-edition:1.0.6",
+        "upstream": "2.4.7-p4",
         "php": 8.3,
         "composer": "2.7.4",
         "mysql": "mariadb:10.6",
@@ -99,6 +106,7 @@
     },
     "mage-os/project-community-edition:1.1.0": {
         "magento": "mage-os/project-community-edition:1.1.0",
+        "upstream": "2.4.8",
         "php": 8.4,
         "composer": "2.8.8",
         "mysql": "mysql:8.4",
@@ -113,6 +121,7 @@
     },
     "mage-os/project-community-edition:1.1.1": {
         "magento": "mage-os/project-community-edition:1.1.1",
+        "upstream": "2.4.8",
         "php": 8.4,
         "composer": "2.8.8",
         "mysql": "mysql:8.4",
@@ -127,6 +136,7 @@
     },
     "mage-os/project-community-edition:1.2.0": {
         "magento": "mage-os/project-community-edition:1.2.0",
+        "upstream": "2.4.8-p1",
         "php": 8.4,
         "composer": "2.8.8",
         "mysql": "mysql:8.4",
