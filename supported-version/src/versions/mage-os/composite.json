@@ -10,8 +10,8 @@
     "varnish": "varnish:7.6",
     "nginx": "nginx:1.26",
     "os": "ubuntu-latest",
-    "release": "2025-06-17T00:00:00+0000",
-    "eol": "2028-06-18T00:00:00+0000"
+    "release": "2025-10-16T00:00:00+0000",
+    "eol": "2028-10-17T00:00:00+0000"
   },
   "mage-os/project-community-edition:next": {
     "magento": "mage-os/project-community-edition:next",
@@ -24,8 +24,8 @@
     "varnish": "varnish:7.6",
     "nginx": "nginx:1.26",
     "os": "ubuntu-latest",
-    "release": "2025-06-17T00:00:00+0000",
-    "eol": "2028-06-18T00:00:00+0000"
+    "release": "2025-10-16T00:00:00+0000",
+    "eol": "2028-10-17T00:00:00+0000"
   },
     "mage-os/project-community-edition:>=1.0 <1.1": {
     "magento": "mage-os/project-community-edition:>=1.0 <1.1",
@@ -81,6 +81,20 @@
     "nginx": "nginx:1.26",
     "os": "ubuntu-latest",
     "release": "2025-08-13T00:00:00+0000",
-    "eol": "2028-08-14T00:00:00+0000"
+    "eol": "2025-10-16T00:00:00+0000"
+  },
+  "mage-os/project-community-edition:>=2.0 <2.1": {
+    "magento": "mage-os/project-community-edition:>=2.0 <2.1",
+    "php": 8.4,
+    "composer": "2.8.8",
+    "mysql": "mysql:8.4",
+    "opensearch": "opensearchproject/opensearch:2.19.1",
+    "rabbitmq": "rabbitmq:4.0-management",
+    "redis": "redis:7.2",
+    "varnish": "varnish:7.6",
+    "nginx": "nginx:1.26",
+    "os": "ubuntu-latest",
+    "release": "2025-10-16T00:00:00+0000",
+    "eol": "2028-10-17T00:00:00+0000"
   }
 }
