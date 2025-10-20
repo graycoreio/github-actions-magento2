@@ -181,7 +181,7 @@
     },
     "mage-os/project-community-edition:2.0.0": {
         "magento": "mage-os/project-community-edition:2.0.0",
-        "upstream": "2.4.8-p2",
+        "upstream": "2.4.8-p3",
         "php": 8.4,
         "composer": "2.8.8",
         "mysql": "mysql:8.4",
