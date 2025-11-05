@@ -4,6 +4,7 @@ import latestJson from '../kind/special-versions/latest.json';
 import nightlyJson from '../kind/special-versions/nightly.json';
 import { getDayBefore } from '../nightly/get-day-before';
 import { getCurrentlySupportedVersions } from "../kind/get-currently-supported";
+import { getUsableVersions } from "../kind/get-usable";
 import { amendMatrixForNext } from "../nightly/amend-matrix-for-next";
 import { getRecentVersions } from "../kind/recent";
 
@@ -14,6 +15,8 @@ export const getMatrixForKind = (kind: string, project: string, versions = "", r
           return getMatrixForVersions(project, latestJson[project]);
         case 'currently-supported':
           return getMatrixForVersions(project, getCurrentlySupportedVersions(project, new Date()));
+        case 'usable':
+          return getMatrixForVersions(project, getUsableVersions(project));
         case 'nightly':
           return amendMatrixForNext(getMatrixForVersions(project, nightlyJson[project]), 'https://upstream-nightly.mage-os.org', getDayBefore());
         case 'all':

@@ -84,7 +84,7 @@ describe('getMatrixForKind for magento-open-source', () => {
     });
 
     it('returns a matrix for valid `custom`', () => {
-        const result = getMatrixForKind("custom", project, "magento/project-community-edition:2.3.7-p3");
+        const result = getMatrixForKind("custom", project, "magento/project-community-edition:2.4.2");
 
         expect(result.magento).toBeDefined();
         expect(result.include).toBeDefined();
@@ -98,7 +98,7 @@ describe('getMatrixForKind for magento-open-source', () => {
     });
 
     it('returns a matrix for valid multiple `custom`', () => {
-        const result = getMatrixForKind("custom", project, "magento/project-community-edition:2.3.7-p3,magento/project-community-edition:2.4.0");
+        const result = getMatrixForKind("custom", project, "magento/project-community-edition:2.4.2,magento/project-community-edition:2.4.3");
 
         expect(result.magento).toBeDefined();
         expect(result.include).toBeDefined();

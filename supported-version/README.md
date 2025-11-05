@@ -21,6 +21,7 @@ See the [action.yml](./action.yml)
 - `currently-supported` - The currently supported Magento Open Source versions by Adobe.
 - `latest` - The latest version of Magento only.
 - `custom` - A custom subset of the versions, as specified by you. Requires `custom_versions` sibling key.
+- `usable` - All versions of Magento, minus any that can no longer be installed or used under normal circumstances.
 - `nightly` - The nightly version of Magento (only available via `https://upstream-nightly.mage-os.org`)
 - `all` - All versions of Magento (including patched/unpatched versions).
 
