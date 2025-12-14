@@ -131,7 +131,7 @@ jobs:
     - uses: graycoreio/github-actions-magento2/cache-magento@main
       with:
         mode: 'extension'
-        composer_cache_key: 'magento/project-community-edition:2.4.8'
+        composer_cache_key: 'magento/project-community-edition:2.4.8-p3'
     
     - run: composer install
       name: Composer install

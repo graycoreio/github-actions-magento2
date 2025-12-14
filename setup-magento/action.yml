@@ -5,7 +5,7 @@ description: "This action sets up a Magento instance for further actions like ru
 inputs:
   php-version:
     description: "Setup PHP version."
-    default: "8.1"
+    default: "8.4"
     required: true
 
   tools:
@@ -27,7 +27,7 @@ inputs:
 
   magento_version: 
     required: false
-    default: '~2.4.5'
+    default: 'magento/project-community-edition:2.4.8-p3'
     description: "The version of Magento to use. This is only relevant if you are testing an extension."
 
   apply_fixes: 
