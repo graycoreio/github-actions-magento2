@@ -60,6 +60,10 @@ jobs:
           working-directory: ${{ steps.setup-magento.outputs.path }}
           run: composer install
 
+        - name: Add test:unit script
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          run: composer config scripts.test:unit "vendor/bin/phpunit -c dev/tests/unit/phpunit.xml"
+
         - name: Run unit tests
           working-directory: ${{ steps.setup-magento.outputs.path }}
           run: composer run test:unit
