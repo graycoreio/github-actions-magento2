@@ -24,6 +24,11 @@ on:
         required: false
         default: true
 
+    composer_auth: 
+        type: string
+        required: false
+        description: "Your composer credentials (typically a stringified json object of the contents of your auth.json)"
+
     composer_cache_key:
         type: string
         required: false
@@ -46,6 +51,7 @@ jobs:
             mode: extension
             magento_version: ${{ matrix.magento }}
             magento_repository: ${{ inputs.magento_repository }}
+            composer_auth: ${{ inputs.composer_auth }}
 
         - uses: graycoreio/github-actions-magento2/cache-magento@main
           with:
@@ -67,6 +73,8 @@ jobs:
         - name: Composer install
           working-directory: ${{ steps.setup-magento.outputs.path }}
           run: composer install
+          env:
+            COMPOSER_AUTH: ${{ inputs.composer_auth }}
 
         - name: Configure phpunit.xml.dist
           working-directory: ${{ steps.setup-magento.outputs.path }}
@@ -103,6 +111,7 @@ jobs:
             mode: extension
             magento_version: ${{ matrix.magento }}
             magento_repository: ${{ inputs.magento_repository }}
+            composer_auth: ${{ inputs.composer_auth }}
 
         - uses: graycoreio/github-actions-magento2/cache-magento@main
           with:
@@ -120,10 +129,14 @@ jobs:
         - name: Require extension
           working-directory: ${{ steps.setup-magento.outputs.path }}
           run: composer require "${{ steps.package.outputs.name }}:@dev" --no-install
+          env:
+            COMPOSER_AUTH: ${{ inputs.composer_auth }}
 
         - name: Composer install
           working-directory: ${{ steps.setup-magento.outputs.path }}
           run: composer install
+          env:
+            COMPOSER_AUTH: ${{ inputs.composer_auth }}
 
         - name: Enable all modules
           working-directory: ${{ steps.setup-magento.outputs.path }}
@@ -162,6 +175,8 @@ jobs:
         shell: bash
         working-directory: ${{ inputs.path }}
         run: composer require "magento/magento-coding-standard" "magento/php-compatibility-fork"
+        env:
+          COMPOSER_AUTH: ${{ inputs.composer_auth }}
 
       - name: Register Coding Standard
         shell: bash
