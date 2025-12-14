@@ -28,6 +28,8 @@ jobs:
           - 8.4
         mode:
           - standalone
+          - store
+          - extension
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
