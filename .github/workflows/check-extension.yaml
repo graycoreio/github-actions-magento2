@@ -27,18 +27,41 @@ on:
     composer_cache_key:
         type: string
         required: false
-        default: ""
+        default: "_mageos"
         description: A key to version the composer cache. Can be incremented if you need to bust the cache.
 jobs:
     unit-test-extension:
         runs-on:  ${{ matrix.os }}
-        strategy: 
+        strategy:
             matrix: ${{ fromJSON(inputs.matrix) }}
+            fail-fast: ${{ inputs.fail-fast }}
         steps:
         - uses: actions/checkout@v6
-        - uses: ./setup-magento
-        - uses: ./cache-magento
-        - run: composer install
-        - run: composer run test:unit
+
+        - uses: graycoreio/github-actions-magento2/setup-magento@${{ github.workflow_sha }}
+          id: setup-magento
+          with:
+            php-version: ${{ matrix.php }}
+            tools: composer:v${{ matrix.composer }}
+            mode: extension
+            magento_version: ${{ matrix.magento }}
+            magento_repository: ${{ inputs.magento_repository }}
+
+        - uses: graycoreio/github-actions-magento2/cache-magento@${{ github.workflow_sha }}
+          with:
+            mode: extension
+            composer_cache_key: ${{ inputs.composer_cache_key }}
+
+        - name: Add extension repository
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          run: composer config repositories.local path ${{ github.workspace }}/${{ inputs.path }}
+
+        - name: Composer install
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          run: composer install
+
+        - name: Run unit tests
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          run: composer run test:unit
         
             
