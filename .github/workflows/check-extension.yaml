@@ -29,6 +29,12 @@ on:
         required: false
         default: "_mageos"
         description: A key to version the composer cache. Can be incremented if you need to bust the cache.
+
+  secrets:
+    composer_auth:
+      required: false
+      description: "Your composer credentials (typically a stringified json object of the contents of your auth.json)"
+
 jobs:
     unit-test-extension:
         runs-on:  ${{ matrix.os }}
@@ -46,6 +52,7 @@ jobs:
             mode: extension
             magento_version: ${{ matrix.magento }}
             magento_repository: ${{ inputs.magento_repository }}
+            composer_auth: ${{ secrets.composer_auth }}
 
         - uses: graycoreio/github-actions-magento2/cache-magento@main
           with:
@@ -67,6 +74,8 @@ jobs:
         - name: Composer install
           working-directory: ${{ steps.setup-magento.outputs.path }}
           run: composer install
+          env:
+            COMPOSER_AUTH: ${{ secrets.composer_auth }}
 
         - name: Configure phpunit.xml.dist
           working-directory: ${{ steps.setup-magento.outputs.path }}
@@ -103,6 +112,7 @@ jobs:
             mode: extension
             magento_version: ${{ matrix.magento }}
             magento_repository: ${{ inputs.magento_repository }}
+            composer_auth: ${{ secrets.composer_auth }}
 
         - uses: graycoreio/github-actions-magento2/cache-magento@main
           with:
@@ -120,10 +130,14 @@ jobs:
         - name: Require extension
           working-directory: ${{ steps.setup-magento.outputs.path }}
           run: composer require "${{ steps.package.outputs.name }}:@dev" --no-install
+          env:
+            COMPOSER_AUTH: ${{ secrets.composer_auth }}
 
         - name: Composer install
           working-directory: ${{ steps.setup-magento.outputs.path }}
           run: composer install
+          env:
+            COMPOSER_AUTH: ${{ secrets.composer_auth }}
 
         - name: Enable all modules
           working-directory: ${{ steps.setup-magento.outputs.path }}
@@ -162,6 +176,8 @@ jobs:
         shell: bash
         working-directory: ${{ inputs.path }}
         run: composer require "magento/magento-coding-standard" "magento/php-compatibility-fork"
+        env:
+          COMPOSER_AUTH: ${{ secrets.composer_auth }}
 
       - name: Register Coding Standard
         shell: bash
