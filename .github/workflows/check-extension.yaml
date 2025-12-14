@@ -166,7 +166,7 @@ jobs:
       - name: Register Coding Standard
         shell: bash
         working-directory: ${{ inputs.path }}
-        run: vendor/bin/phpcs --config-set installed_paths ${{ inputs.path }} /vendor/magento/magento-coding-standard,${{ inputs.path }}/standard/vendor/magento/php-compatibility-fork
+        run: vendor/bin/phpcs --config-set installed_paths ${{ inputs.path }}/vendor/magento/magento-coding-standard,${{ inputs.path }}/standard/vendor/magento/php-compatibility-fork
 
       - name: Get Changed Files
         shell: bash
@@ -178,6 +178,6 @@ jobs:
       - name: Coding Standard Check
         shell: bash
         run: |
-          ../standard/vendor/bin/phpcs --standard=Magento2 \
+          ./vendor/bin/phpcs --standard=Magento2 \
           ${{ github.event_name == 'pull_request' && steps.changed-files.outputs.files || inputs.path }}
         working-directory: ${{ inputs.path }}
