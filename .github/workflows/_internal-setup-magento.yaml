@@ -122,11 +122,11 @@ jobs:
       id: setup-magento
       with:
         php-version: 8.4
-        tools: composer:v2
+        tools: composer:v2.8
         mode: extension
         magento_repository: ${{ env.MAGENTO_COMPOSER_REPO }}
         composer_auth: ${{ secrets.COMPOSER_AUTH }}
-        magento_version: magento/project-community-edition:2.4.8
+        magento_version: magento/project-community-edition:2.4.8-p3
 
     - uses: graycoreio/github-actions-magento2/cache-magento@main
       with:
