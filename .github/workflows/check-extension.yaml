@@ -36,7 +36,9 @@ jobs:
             matrix: ${{ fromJSON(inputs.matrix) }}
         steps:
         - uses: actions/checkout@v6
-          with:
-            fetch-depth: 1
+        - uses: ./setup-magento
+        - uses: ./cache-magento
+        - run: composer install
+        - run: composer run test:unit
         
             
