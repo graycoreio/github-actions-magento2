@@ -170,7 +170,7 @@ jobs:
 
       - name: Get Changed Files
         shell: bash
-        working-directory: project
+        working-directory: ${{ inputs.path }}
         id: changed-files
         run: echo "files=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)" >> $GITHUB_OUTPUT
         if: github.event_name == 'pull_request'
@@ -180,4 +180,4 @@ jobs:
         run: |
           ../standard/vendor/bin/phpcs --standard=Magento2 \
           ${{ github.event_name == 'pull_request' && steps.changed-files.outputs.files || inputs.path }}
-        working-directory: project
+        working-directory: ${{ inputs.path }}
