@@ -56,16 +56,35 @@ jobs:
           working-directory: ${{ steps.setup-magento.outputs.path }}
           run: composer config repositories.local path ${{ github.workspace }}/${{ inputs.path }}
 
+        - name: Get package name
+          id: package
+          run: echo "name=$(jq -r .name ${{ github.workspace }}/${{ inputs.path }}/composer.json)" >> $GITHUB_OUTPUT
+
+        - name: Require extension
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          run: composer require "${{ steps.package.outputs.name }}:@dev" --no-install
+
         - name: Composer install
           working-directory: ${{ steps.setup-magento.outputs.path }}
           run: composer install
 
-        - name: Add test:unit script
+        - name: Configure phpunit.xml.dist
           working-directory: ${{ steps.setup-magento.outputs.path }}
-          run: composer config scripts.test:unit "vendor/bin/phpunit -c dev/tests/unit/phpunit.xml"
+          run: |
+            ## Add the testsuite
+            cat > /tmp/testsuite.xml << 'EOF'
+                    <testsuite name="Extension_Unit_Tests">
+                        <directory>../../../vendor/${{ steps.package.outputs.name }}/Test/Unit</directory>
+                    </testsuite>
+            EOF
+            sed -i '/<testsuites>/r /tmp/testsuite.xml' dev/tests/unit/phpunit.xml.dist
 
-        - name: Run unit tests
+            ## Disable allure (See https://github.com/magento/magento2/issues/36702 )
+            ## (╯°□°)╯︵ ┻━┻
+            sed -i '/<extensions>/,/<\/extensions>/d' dev/tests/unit/phpunit.xml.dist
+
+        - name: Run extension unit tests
           working-directory: ${{ steps.setup-magento.outputs.path }}
-          run: composer run test:unit
+          run: vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist --testsuite Extension_Unit_Tests
         
             
