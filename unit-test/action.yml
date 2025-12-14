@@ -50,7 +50,7 @@ runs:
     - name: Setup Magento (extension mode)
       if: inputs.mode == 'extension'
       id: setup-magento-extension
-      uses: graycoreio/github-actions-magento/setup-magento@main
+      uses: graycoreio/github-actions-magento2/setup-magento@main
       with:
         php-version: ${{ inputs.php_version }}
         mode: extension
@@ -68,7 +68,7 @@ runs:
     - name: Setup Magento (store mode)
       if: inputs.mode == 'store'
       id: setup-magento-store
-      uses: graycoreio/github-actions-magento/setup-magento@main
+      uses: graycoreio/github-actions-magento2/setup-magento@main
       with:
         php-version: ${{ inputs.php_version }}
         mode: store
