@@ -1,0 +1,90 @@
+name: MageCheck Extension
+on:
+ workflow_call:
+  inputs:
+    path:
+        type: string
+        required: false
+        default: "."
+        description: "The folder of the Magento store or extension that you are testing."
+
+    magento_repository:
+        type: string
+        required: false
+        default: "https://mirror.mage-os.org/"
+        description: "Where to install Magento from"
+
+    matrix:
+        type: string
+        required: true
+        description: "The matrix of Magento versions to test against"
+
+    fail-fast:
+        type: boolean
+        required: false
+        default: true
+
+    composer_cache_key:
+        type: string
+        required: false
+        default: "_mageos"
+        description: A key to version the composer cache. Can be incremented if you need to bust the cache.
+jobs:
+    unit-test-extension:
+        runs-on:  ${{ matrix.os }}
+        strategy:
+            matrix: ${{ fromJSON(inputs.matrix) }}
+            fail-fast: ${{ inputs.fail-fast }}
+        steps:
+        - uses: actions/checkout@v6
+
+        - uses: graycoreio/github-actions-magento2/setup-magento@main
+          id: setup-magento
+          with:
+            php-version: ${{ matrix.php }}
+            tools: composer:v${{ matrix.composer }}
+            mode: extension
+            magento_version: ${{ matrix.magento }}
+            magento_repository: ${{ inputs.magento_repository }}
+
+        - uses: graycoreio/github-actions-magento2/cache-magento@main
+          with:
+            mode: extension
+            composer_cache_key: ${{ inputs.composer_cache_key }}
+
+        - name: Add extension repository
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          run: composer config repositories.local path ${{ github.workspace }}/${{ inputs.path }}
+
+        - name: Get package name
+          id: package
+          run: echo "name=$(jq -r .name ${{ github.workspace }}/${{ inputs.path }}/composer.json)" >> $GITHUB_OUTPUT
+
+        - name: Require extension
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          run: composer require "${{ steps.package.outputs.name }}:@dev" --no-install
+
+        - name: Composer install
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          run: composer install
+
+        - name: Configure phpunit.xml.dist
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          run: |
+            ## Add the testsuite
+            cat > /tmp/testsuite.xml << 'EOF'
+                    <testsuite name="Extension_Unit_Tests">
+                        <directory>../../../vendor/${{ steps.package.outputs.name }}/Test/Unit</directory>
+                    </testsuite>
+            EOF
+            sed -i '/<testsuites>/r /tmp/testsuite.xml' dev/tests/unit/phpunit.xml.dist
+
+            ## Disable allure (See https://github.com/magento/magento2/issues/36702 )
+            ## (╯°□°)╯︵ ┻━┻
+            sed -i '/<extensions>/,/<\/extensions>/d' dev/tests/unit/phpunit.xml.dist
+
+        - name: Run extension unit tests
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          run: vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist --testsuite Extension_Unit_Tests
+        
+            

@@ -1,0 +1,39 @@
+name: Check Extension Test
+
+on:
+    workflow_dispatch: {}
+    push:
+        branches:
+            - main
+        paths:
+            - "_test/demo-package/**"
+            - ".github/workflows/_internal_check_extension.yaml"
+            - ".github/workflows/check-extension.yaml"
+            - "supported-version/**"
+            - "!(**/*.md)"
+    pull_request:
+        branches:
+            - main
+        paths:
+            - "_test/demo-package/**"
+            - ".github/workflows/_internal_check_extension.yaml"
+            - ".github/workflows/check-extension.yaml"
+            - "supported-version/**"
+            - "!(**/*.md)"
+jobs:
+  compute_matrix:
+      runs-on: ubuntu-latest
+      outputs:
+        matrix: ${{ steps.supported-version.outputs.matrix }}
+      steps:
+        - uses: actions/checkout@v4
+        - uses: ./supported-version
+          with:
+            kind: currently-supported
+          id: supported-version
+  check-workflow:
+    needs: compute_matrix
+    uses: ./.github/workflows/check-extension.yaml
+    with:
+      path: _test/demo-package
+      matrix: ${{ needs.compute_matrix.outputs.matrix }}
