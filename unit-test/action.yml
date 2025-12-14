@@ -2,10 +2,15 @@ name: "Unit Test"
 author: "Graycore"
 description: "A Github Action that runs the Unit Tests of a Magento Package"
 inputs:
-  php_version: 
+  php_version:
     required: true
     default: "8.4"
     description: "PHP Version to use"
+
+  mode:
+    required: false
+    default: "standalone"
+    description: "Test mode: 'standalone' (existing behavior), 'extension' (uses setup-magento with extension mode), or 'store' (uses setup-magento with store mode)"
 
   source_folder:
     required: true
@@ -21,30 +26,88 @@ inputs:
     required: false
     description: "Composer Authentication Credentials"
 
+  magento_version:
+    required: false
+    default: "magento/project-community-edition:2.4.8-p3"
+    description: "Magento version to install (extension/store modes only)"
+
+  magento_repository:
+    required: false
+    default: "https://mirror.mage-os.org/"
+    description: "Composer repository URL for Magento packages (extension/store modes only)"
+
 runs:
   using: "composite"
-  steps: 
+  steps:
+    # Standalone mode: just set up PHP
     - name: Set PHP Version
+      if: inputs.mode == 'standalone'
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ inputs.php_version }}
 
+    # Extension mode: use setup-magento to create a Magento instance
+    - name: Setup Magento (extension mode)
+      if: inputs.mode == 'extension'
+      id: setup-magento-extension
+      uses: graycoreio/github-actions-magento/setup-magento@main
+      with:
+        php-version: ${{ inputs.php_version }}
+        mode: extension
+        magento_version: ${{ inputs.magento_version }}
+        magento_repository: ${{ inputs.magento_repository }}
+        composer_auth: ${{ inputs.composer_auth }}
+
+    - name: Add extension repository
+      if: inputs.mode == 'extension'
+      shell: bash
+      working-directory: ${{ steps.setup-magento-extension.outputs.path }}
+      run: composer config repositories.local path ${{ github.workspace }}/${{ inputs.source_folder }}
+
+    # Store mode: use setup-magento with existing project
+    - name: Setup Magento (store mode)
+      if: inputs.mode == 'store'
+      id: setup-magento-store
+      uses: graycoreio/github-actions-magento/setup-magento@main
+      with:
+        php-version: ${{ inputs.php_version }}
+        mode: store
+        working-directory: ${{ inputs.source_folder }}
+        magento_repository: ${{ inputs.magento_repository }}
+        composer_auth: ${{ inputs.composer_auth }}
+
+    # Compute working directory based on mode
+    - name: Compute working directory
+      id: compute-workdir
+      shell: bash
+      run: |
+        if [ "${{ inputs.mode }}" = "extension" ]; then
+          echo "workdir=${{ steps.setup-magento-extension.outputs.path }}" >> $GITHUB_OUTPUT
+        elif [ "${{ inputs.mode }}" = "store" ]; then
+          echo "workdir=${{ steps.setup-magento-store.outputs.path }}" >> $GITHUB_OUTPUT
+        else
+          echo "workdir=${{ inputs.source_folder }}" >> $GITHUB_OUTPUT
+        fi
+
     - name: Get Composer Cache Directory
       shell: bash
-      working-directory:  ${{ inputs.source_folder }}
+      if: inputs.mode == 'standalone'
+      working-directory: ${{ steps.compute-workdir.outputs.workdir }}
       id: composer-cache
       run: |
         echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
     - name: "Cache Composer Packages"
+      if: inputs.mode == 'standalone'
       uses: actions/cache@v5
       with:
         key: "composer | v4 | ${{ hashFiles('composer.lock') }} | ${{ runner.os }} | ${{ inputs.php_version }}"
         path: ${{ steps.composer-cache.outputs.dir }}
 
     - run: composer install
-      name: Require and attempt install
-      working-directory:  ${{ inputs.source_folder }}
+      if: inputs.mode == 'standalone'
+      name: Composer install
+      working-directory: ${{ steps.compute-workdir.outputs.workdir }}
       shell: bash
       env:
         COMPOSER_CACHE_DIR: ${{ steps.composer-cache.outputs.dir }}
@@ -52,7 +115,7 @@ runs:
 
     - run: ${{ inputs.test_command }}
       name: Run Unit Tests
-      working-directory:  ${{ inputs.source_folder }}
+      working-directory: ${{ steps.compute-workdir.outputs.workdir }}
       shell: bash
       env:
         COMPOSER_CACHE_DIR: ${{ steps.composer-cache.outputs.dir }}

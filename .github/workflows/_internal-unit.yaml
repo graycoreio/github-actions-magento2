@@ -26,6 +26,8 @@ jobs:
           - 8.2
           - 8.3
           - 8.4
+        mode:
+          - standalone
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
@@ -33,3 +35,4 @@ jobs:
       with:
         source_folder: _test/demo-package
         php_version: ${{ matrix.php_version }}
+        mode: ${{ matrix.mode }}
