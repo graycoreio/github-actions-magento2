@@ -100,7 +100,10 @@ jobs:
         mode: store
         working-directory: ${{ env.magento_folder }}
         composer_auth: ${{ secrets.COMPOSER_AUTH }}
-    
+
+    - run: echo "Magento path:${{ steps.setup-magento.outputs.path }}"
+      name: Log Magento path
+
     - uses: graycoreio/github-actions-magento2/cache-magento@main
       with:
         mode: 'store'
