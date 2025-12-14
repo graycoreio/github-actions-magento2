@@ -105,7 +105,6 @@ runs:
         path: ${{ steps.composer-cache.outputs.dir }}
 
     - run: composer install
-      if: inputs.mode == 'standalone'
       name: Composer install
       working-directory: ${{ steps.compute-workdir.outputs.workdir }}
       shell: bash
