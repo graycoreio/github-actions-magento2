@@ -37,9 +37,9 @@ runs:
         echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
     - name: "Cache Composer Packages"
-      uses: actions/cache@v3
+      uses: actions/cache@v5
       with:
-        key: "composer | v3 | ${{ hashFiles('composer.lock') }} | ${{ runner.os }} | ${{ inputs.php_version }}"
+        key: "composer | v4 | ${{ hashFiles('composer.lock') }} | ${{ runner.os }} | ${{ inputs.php_version }}"
         path: ${{ steps.composer-cache.outputs.dir }}
 
     - run: composer install
