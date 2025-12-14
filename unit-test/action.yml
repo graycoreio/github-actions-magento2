@@ -4,7 +4,7 @@ description: "A Github Action that runs the Unit Tests of a Magento Package"
 inputs:
   php_version: 
     required: true
-    default: "8.1"
+    default: "8.4"
     description: "PHP Version to use"
 
   source_folder:
