@@ -166,7 +166,7 @@ jobs:
       - name: Register Coding Standard
         shell: bash
         working-directory: ${{ inputs.path }}
-        run: vendor/bin/phpcs --config-set installed_paths vendor/magento/magento-coding-standard,standard/vendor/magento/php-compatibility-fork
+        run: vendor/bin/phpcs --config-set installed_paths vendor/magento/magento-coding-standard,vendor/magento/php-compatibility-fork
 
       - name: Get Changed Files
         shell: bash
