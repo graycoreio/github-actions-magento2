@@ -31,8 +31,9 @@ on:
         description: A key to version the composer cache. Can be incremented if you need to bust the cache.
 jobs:
     unit-test-extension:
-        runs-on: ubuntu-latest
-        strategy: ${{ fromJSON(inputs.matrix) }}
+        runs-on:  ${{ matrix.os }}
+        strategy: 
+            matrix: ${{ fromJSON(inputs.matrix) }}
         steps:
         - uses: actions/checkout@v6
           with:
