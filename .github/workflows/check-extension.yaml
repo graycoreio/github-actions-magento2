@@ -24,16 +24,17 @@ on:
         required: false
         default: true
 
-    composer_auth: 
-        type: string
-        required: false
-        description: "Your composer credentials (typically a stringified json object of the contents of your auth.json)"
-
     composer_cache_key:
         type: string
         required: false
         default: "_mageos"
         description: A key to version the composer cache. Can be incremented if you need to bust the cache.
+
+  secrets:
+    composer_auth:
+      required: false
+      description: "Your composer credentials (typically a stringified json object of the contents of your auth.json)"
+      
 jobs:
     unit-test-extension:
         runs-on:  ${{ matrix.os }}
