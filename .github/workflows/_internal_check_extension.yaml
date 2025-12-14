@@ -31,7 +31,6 @@ jobs:
           with:
             kind: currently-supported
           id: supported-version
-        - run: echo ${{ steps.supported-version.outputs.matrix }}
   check-workflow:
     needs: compute_matrix
     uses: ./.github/workflows/check-extension.yaml
