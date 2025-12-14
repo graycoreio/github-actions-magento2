@@ -168,16 +168,8 @@ jobs:
         working-directory: ${{ inputs.path }}
         run: vendor/bin/phpcs --config-set installed_paths vendor/magento/magento-coding-standard,vendor/magento/php-compatibility-fork
 
-      - name: Get Changed Files
-        shell: bash
-        working-directory: ${{ inputs.path }}
-        id: changed-files
-        run: echo "files=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)" >> $GITHUB_OUTPUT
-        if: github.event_name == 'pull_request'
-
       - name: Coding Standard Check
         shell: bash
         run: |
-          ./vendor/bin/phpcs --standard=Magento2 \
-          ${{ github.event_name == 'pull_request' && steps.changed-files.outputs.files }} .
+          ./vendor/bin/phpcs --standard=Magento2 .
         working-directory: ${{ inputs.path }}
