@@ -179,5 +179,5 @@ jobs:
         shell: bash
         run: |
           ./vendor/bin/phpcs --standard=Magento2 \
-          ${{ github.event_name == 'pull_request' && steps.changed-files.outputs.files || inputs.path }}
+          ${{ github.event_name == 'pull_request' && steps.changed-files.outputs.files }} .
         working-directory: ${{ inputs.path }}
