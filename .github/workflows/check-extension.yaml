@@ -86,5 +86,51 @@ jobs:
         - name: Run extension unit tests
           working-directory: ${{ steps.setup-magento.outputs.path }}
           run: vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist --testsuite Extension_Unit_Tests
-        
+
+    compile-extension:
+        runs-on:  ${{ matrix.os }}
+        strategy:
+            matrix: ${{ fromJSON(inputs.matrix) }}
+            fail-fast: ${{ inputs.fail-fast }}
+        steps:
+        - uses: actions/checkout@v6
+
+        - uses: graycoreio/github-actions-magento2/setup-magento@main
+          id: setup-magento
+          with:
+            php-version: ${{ matrix.php }}
+            tools: composer:v${{ matrix.composer }}
+            mode: extension
+            magento_version: ${{ matrix.magento }}
+            magento_repository: ${{ inputs.magento_repository }}
+
+        - uses: graycoreio/github-actions-magento2/cache-magento@main
+          with:
+            mode: extension
+            composer_cache_key: ${{ inputs.composer_cache_key }}
+
+        - name: Add extension repository
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          run: composer config repositories.local path ${{ github.workspace }}/${{ inputs.path }}
+
+        - name: Get package name
+          id: package
+          run: echo "name=$(jq -r .name ${{ github.workspace }}/${{ inputs.path }}/composer.json)" >> $GITHUB_OUTPUT
+
+        - name: Require extension
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          run: composer require "${{ steps.package.outputs.name }}:@dev" --no-install
+
+        - name: Composer install
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          run: composer install
+
+        - name: Enable all modules
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          run: php bin/magento module:enable --all
+
+        - name: Compile
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          run: php bin/magento setup:di:compile
+
             
