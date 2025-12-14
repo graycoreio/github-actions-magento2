@@ -1,0 +1,41 @@
+name: MageCheck Extension
+on:
+ workflow_call:
+  inputs:
+    path:
+        type: string
+        required: false
+        default: "."
+        description: "The folder of the Magento store or extension that you are testing."
+
+    magento_repository:
+        type: string
+        required: false
+        default: "https://mirror.mage-os.org/"
+        description: "Where to install Magento from"
+
+    matrix:
+        type: string
+        required: true
+        description: "The matrix of Magento versions to test against"
+
+    fail-fast:
+        type: boolean
+        required: false
+        default: true
+
+    composer_cache_key:
+        type: string
+        required: false
+        default: ""
+        description: A key to version the composer cache. Can be incremented if you need to bust the cache.
+jobs:
+    unit-test-extension:
+        runs-on: ubuntu-latest
+        strategy: ${{ fromJSON(inputs.matrix) }}
+        steps:
+        - uses: actions/checkout@v6
+          with:
+            fetch-depth: 1
+        
+            
