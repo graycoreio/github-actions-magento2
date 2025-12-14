@@ -38,7 +38,7 @@ jobs:
         steps:
         - uses: actions/checkout@v6
 
-        - uses: graycoreio/github-actions-magento2/setup-magento@${{ github.workflow_sha }}
+        - uses: graycoreio/github-actions-magento2/setup-magento@main
           id: setup-magento
           with:
             php-version: ${{ matrix.php }}
@@ -47,7 +47,7 @@ jobs:
             magento_version: ${{ matrix.magento }}
             magento_repository: ${{ inputs.magento_repository }}
 
-        - uses: graycoreio/github-actions-magento2/cache-magento@${{ github.workflow_sha }}
+        - uses: graycoreio/github-actions-magento2/cache-magento@main
           with:
             mode: extension
             composer_cache_key: ${{ inputs.composer_cache_key }}
