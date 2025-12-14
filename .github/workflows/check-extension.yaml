@@ -171,5 +171,5 @@ jobs:
       - name: Coding Standard Check
         shell: bash
         run: |
-          ./vendor/bin/phpcs --standard=Magento2 .
+          ./vendor/bin/phpcs --standard=Magento2 --ignore=*vendor/* .
         working-directory: ${{ inputs.path }}
