@@ -133,4 +133,43 @@ jobs:
           working-directory: ${{ steps.setup-magento.outputs.path }}
           run: php bin/magento setup:di:compile
 
-            
+    coding-standard:
+      runs-on:  ${{ matrix.os }}
+      strategy:
+          matrix: ${{ fromJSON(inputs.matrix) }}
+          fail-fast: ${{ inputs.fail-fast }}
+      steps:
+      - uses: actions/checkout@v6
+          
+      - name: Get Composer Version
+        uses: graycoreio/github-actions-magento2/get-composer-version@main
+        id: get-composer-version
+
+      - name: Check if allow-plugins option is available for this version of composer
+        uses: graycoreio/github-actions-magento2/semver-compare@main
+        with:
+          version: 2.2
+          compare_against: ${{ steps.get-composer-version.outputs.version }}
+        id: is-allow-plugins-available
+
+      - name: Enable dealerdirect/phpcodesniffer-composer-installer plugin
+        shell: bash
+        working-directory: ${{ inputs.path }}
+        run: composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer  true --global
+        if: steps.is-allow-plugins-available.outputs.result < 1
+
+      - name: Install Coding Standard
+        shell: bash
+        working-directory: ${{ inputs.path }}
+        run: composer require "magento/magento-coding-standard" "magento/php-compatibility-fork"
+
+      - name: Register Coding Standard
+        shell: bash
+        working-directory: ${{ inputs.path }}
+        run: vendor/bin/phpcs --config-set installed_paths vendor/magento/magento-coding-standard,vendor/magento/php-compatibility-fork
+
+      - name: Coding Standard Check
+        shell: bash
+        run: |
+          ./vendor/bin/phpcs --standard=Magento2 --ignore=*vendor/* .
+        working-directory: ${{ inputs.path }}
