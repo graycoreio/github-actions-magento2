@@ -161,7 +161,7 @@ jobs:
       - name: Install Coding Standard
         shell: bash
         working-directory: ${{ inputs.path }}
-        run: composer require "magento/magento-coding-standard"
+        run: composer require "magento/magento-coding-standard" "magento/php-compatibility-fork"
 
       - name: Register Coding Standard
         shell: bash
