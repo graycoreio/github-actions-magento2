@@ -31,8 +31,7 @@ jobs:
         - uses: ./supported-version
           with:
             kind: currently-supported
-          id: supported-version
-        - run: echo ${{ steps.supported-version.outputs.matrix }}
+            include_services: true
   integration-workflow:
     needs: compute_matrix
     uses: ./.github/workflows/integration.yaml
