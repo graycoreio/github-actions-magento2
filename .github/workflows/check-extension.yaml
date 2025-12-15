@@ -263,10 +263,6 @@ jobs:
           EOF
           sed -i '/<testsuites>/r /tmp/testsuite.xml' dev/tests/integration/phpunit.xml.dist
 
-          ## Disable allure (See https://github.com/magento/magento2/issues/36702 )
-          ## (╯°□°)╯︵ ┻━┻
-          sed -i '/<extensions>/,/<\/extensions>/d' dev/tests/integration/phpunit.xml.dist
-
       - name: Run Integration Tests
         working-directory: ${{ steps.setup-magento.outputs.path }}/dev/tests/integration
         run: ../../../vendor/bin/phpunit -c phpunit.xml.dist --testsuite Extension_Integration_Tests
