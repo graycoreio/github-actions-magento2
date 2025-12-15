@@ -1,3 +1,14 @@
+export interface ServiceConfig {
+    image: string;
+    env?: Record<string, string>;
+    ports?: string[];
+    options?: string;
+}
+
+export interface Services {
+    [serviceName: string]: ServiceConfig;
+}
+
 export interface PackageMatrixVersion {
     magento: string,
     php: string | number,
@@ -12,7 +23,8 @@ export interface PackageMatrixVersion {
     nginx: string,
     os: string,
     release: string,
-    eol: string
+    eol: string,
+    services?: Services
 }
 
 export interface GithubActionsMatrix {
