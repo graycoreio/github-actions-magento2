@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/graycoreio/github-actions-magento2/compare/v3.0.0...v4.0.0) (2025-12-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **integration:** use services from supported-version ([#207](https://github.com/graycoreio/github-actions-magento2/issues/207))
+* **unit-test:** set default unit-test php version to 8.4
+* **supported-version:** upgrade to use node24
+
+### Features
+
+* **check-extension:** add coding standard ([#203](https://github.com/graycoreio/github-actions-magento2/issues/203)) ([da59af2](https://github.com/graycoreio/github-actions-magento2/commit/da59af27fa8aa088a53f5e99b834ed8b88959395))
+* **check-extension:** add integration tests ([#205](https://github.com/graycoreio/github-actions-magento2/issues/205)) ([87b8b80](https://github.com/graycoreio/github-actions-magento2/commit/87b8b80febfa50df4107623942627079d4f12850))
+* **check-extension:** add new check-extension workflow ([#201](https://github.com/graycoreio/github-actions-magento2/issues/201)) ([1ab0330](https://github.com/graycoreio/github-actions-magento2/commit/1ab0330f1f9f7663dec418d22c2674eaf599cc35))
+* **check-extension:** add setup:di:compile test ([#202](https://github.com/graycoreio/github-actions-magento2/issues/202)) ([0c244f2](https://github.com/graycoreio/github-actions-magento2/commit/0c244f2f2891e3b8250b12c66781981775cbeb09))
+* **check-extension:** prefer phpcs conf if it exists ([810a570](https://github.com/graycoreio/github-actions-magento2/commit/810a5705cfc5fafa8230214ab84a44fc86de5baf))
+* **extension-check:** support composer auth ([#204](https://github.com/graycoreio/github-actions-magento2/issues/204)) ([886bbbb](https://github.com/graycoreio/github-actions-magento2/commit/886bbbb9ba2cb296c9f945e37bcd2669864384af))
+* **integration:** use services from supported-version ([#207](https://github.com/graycoreio/github-actions-magento2/issues/207)) ([5fb9523](https://github.com/graycoreio/github-actions-magento2/commit/5fb9523081c1f6e353320c4540d609ce735cf474))
+* **supported-version:** Add 2.4.5-p14, 2.4.6-p12, 2.4.7-p7 and 2.4.8-p2 ([#295](https://github.com/graycoreio/github-actions-magento2/issues/295)) ([499eb24](https://github.com/graycoreio/github-actions-magento2/commit/499eb24a13ed9f783c4af7ffac5bd5339c357774))
+* **supported-version:** add optional services output for each matrix entry ([#206](https://github.com/graycoreio/github-actions-magento2/issues/206)) ([9c1dbc7](https://github.com/graycoreio/github-actions-magento2/commit/9c1dbc7d072a9864f9eb1d1a6219b8aaa99f0bcd))
+* **supported-versions:** 1.3.1 ([#297](https://github.com/graycoreio/github-actions-magento2/issues/297)) ([a8e8db3](https://github.com/graycoreio/github-actions-magento2/commit/a8e8db3572abfabfd64a5a701f62b630aabc3260))
+* **supported-versions:** update matrix for Magento 2.4.8-p3, 2.4.7-p8, 2.4.6-p13 ([#301](https://github.com/graycoreio/github-actions-magento2/issues/301)) ([e99b140](https://github.com/graycoreio/github-actions-magento2/commit/e99b140104280b87fd23e482f86b45442e7a6167))
+* **supported-version:** update matrix for Mage-OS 2.0.0 ([#298](https://github.com/graycoreio/github-actions-magento2/issues/298)) ([b0a3bea](https://github.com/graycoreio/github-actions-magento2/commit/b0a3bea8e4d0fbead1e5a7eab72d56a025845049))
+* **supported-version:** upgrade to use node24 ([3ef4318](https://github.com/graycoreio/github-actions-magento2/commit/3ef43188b22ccc25226e7e39bfbe5d5ee2599a58))
+* **unit-test:** set default unit-test php version to 8.4 ([8a95e72](https://github.com/graycoreio/github-actions-magento2/commit/8a95e723df2aec4a5a528189e2df73aebe9ad148))
+* updated supported-version matrix for Mage-OS release 1.2.0 ([f546006](https://github.com/graycoreio/github-actions-magento2/commit/f5460068b60334f81a186235c67c8239ab2f6e14))
+* upgrade setup-magento action test to v2.4.8-p3 ([#198](https://github.com/graycoreio/github-actions-magento2/issues/198)) ([6c31728](https://github.com/graycoreio/github-actions-magento2/commit/6c31728af28fbf37cebc296192ee10367dcdd546))
+
+
+### Bug Fixes
+
+* 'invalid kind provided' when defining `usable` type ([#305](https://github.com/graycoreio/github-actions-magento2/issues/305)) ([c057552](https://github.com/graycoreio/github-actions-magento2/commit/c05755261db8ae7f335d559bea60c231b04bfc5b))
+* allow matrix testing without EOL versions ([#299](https://github.com/graycoreio/github-actions-magento2/issues/299)) ([5608271](https://github.com/graycoreio/github-actions-magento2/commit/5608271fe3546ed7ed6d94e33b3984b3bb8dbfd6))
+* **supported-verison:** upstream version for Mage-OS 2.0.0 ([#302](https://github.com/graycoreio/github-actions-magento2/issues/302)) ([5fd96b9](https://github.com/graycoreio/github-actions-magento2/commit/5fd96b988e2f3576aa5b7add7fa5c9018ad35416))
+* **supported-version:** adjust correct key for mage-os/project-community-edition:&gt;=1.2 &lt;1.3 ([e12d993](https://github.com/graycoreio/github-actions-magento2/commit/e12d9937614ebd8537ce791e1cf2c34672716871))
+
 ## [3.0.0](https://github.com/graycoreio/github-actions-magento2/compare/v2.0.0...v3.0.0) (2025-04-09)
 
 

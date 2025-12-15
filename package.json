@@ -1,6 +1,6 @@
 {
   "name": "@graycoreio/github-actions-magento2",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "Github Actions for Magento 2",
   "scripts": {
     "test": "cd supported-version && npm run test && cd -",
