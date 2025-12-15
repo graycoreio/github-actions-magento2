@@ -806,7 +806,7 @@
         "opensearch": "opensearchproject/opensearch:2.19.1",
         "rabbitmq": "rabbitmq:4.0-management",
         "redis": "redis:7.2",
-        "valkey": "valkey:8.0",
+        "valkey": "valkey/valkey:8.0",
         "varnish": "varnish:7.6",
         "nginx": "nginx:1.26",
         "os": "ubuntu-latest",
