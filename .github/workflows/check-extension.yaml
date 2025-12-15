@@ -189,3 +189,92 @@ jobs:
         run: |
           ./vendor/bin/phpcs --standard=Magento2 --ignore=*vendor/* .
         working-directory: ${{ inputs.path }}
+
+    integration_test:
+      runs-on:  ${{ matrix.os }}
+      strategy:
+          matrix: ${{ fromJSON(inputs.matrix) }}
+          fail-fast: ${{ inputs.fail-fast }}
+      services: ${{ matrix.services }}
+      steps:
+      - uses: actions/checkout@v6
+
+      - uses: graycoreio/github-actions-magento2/setup-magento@main
+        id: setup-magento
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v${{ matrix.composer }}
+          mode: extension
+          magento_version: ${{ matrix.magento }}
+          magento_repository: ${{ inputs.magento_repository }}
+          composer_auth: ${{ secrets.composer_auth }}
+
+      - uses: graycoreio/github-actions-magento2/cache-magento@main
+        with:
+          mode: extension
+          composer_cache_key: ${{ inputs.composer_cache_key }}
+
+      - name: Add extension repository
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        run: composer config repositories.local path ${{ github.workspace }}/${{ inputs.path }}
+
+      - name: Get package name
+        id: package
+        run: echo "name=$(jq -r .name ${{ github.workspace }}/${{ inputs.path }}/composer.json)" >> $GITHUB_OUTPUT
+
+      - name: Require extension
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        run: composer require "${{ steps.package.outputs.name }}:@dev" --no-install
+        env:
+          COMPOSER_AUTH: ${{ secrets.composer_auth }}
+
+      - name: Composer install
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        run: composer install
+        env:
+          COMPOSER_AUTH: ${{ secrets.composer_auth }}
+
+      - uses: graycoreio/github-actions-magento2/get-magento-version@main
+        id: magento-version
+        with:
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+
+      - name: Replace Configuration Settings for env
+        working-directory:  ${{ steps.setup-magento.outputs.path }}/dev/tests/integration
+        run: |
+          sed -i "s/'db-host' => 'localhost'/'db-host' => '127.0.0.1'/" etc/install-config-mysql.php.dist
+          sed -i "s/'db-user' => 'root'/'db-user' => 'user'/" etc/install-config-mysql.php.dist
+          sed -i "s/'db-password' => '123123q'/'db-password' => 'password'/" etc/install-config-mysql.php.dist
+          sed -i "s/'elasticsearch-host' => 'localhost'/'elasticsearch-host' => '127.0.0.1'/" etc/install-config-mysql.php.dist
+          sed -i "s/'amqp-host' => 'localhost'/'amqp-host' => '127.0.0.1'/" etc/install-config-mysql.php.dist
+
+      - name: Enable log-bin-trust-function-creators
+        run: |
+          mysql -h127.0.0.1 -uroot -prootpassword -e "SET GLOBAL log_bin_trust_function_creators = 1;"
+
+      - name: Configure phpunit.xml.dist
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        run: |
+          ## Add the testsuite
+          cat > /tmp/testsuite.xml << 'EOF'
+                  <testsuite name="Extension_Integration_Tests">
+                      <directory>../../../vendor/${{ steps.package.outputs.name }}/Test/Integration</directory>
+                  </testsuite>
+          EOF
+          sed -i '/<testsuites>/r /tmp/testsuite.xml' dev/tests/integration/phpunit.xml.dist
+
+          ## Disable allure (See https://github.com/magento/magento2/issues/36702 )
+          ## (╯°□°)╯︵ ┻━┻
+          sed -i '/<extensions>/,/<\/extensions>/d' dev/tests/integration/phpunit.xml.dist
+
+      - name: Run Integration Tests
+        working-directory: ${{ steps.setup-magento.outputs.path }}/dev/tests/integration
+        run: ../../../vendor/bin/phpunit -c phpunit.xml.dist --testsuite Extension_Integration_Tests
+      
+      - name: Upload test sandbox dir
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: sandbox-data-${{ steps.magento-version.outputs.version }}
+          path: ${{ steps.setup-magento.outputs.path }}/dev/tests/integration/tmp/sandbox-*
+          retention-days: 3
