@@ -30,6 +30,7 @@ jobs:
         - uses: ./supported-version
           with:
             kind: currently-supported
+            include_services: true
           id: supported-version
   check-workflow:
     needs: compute_matrix
