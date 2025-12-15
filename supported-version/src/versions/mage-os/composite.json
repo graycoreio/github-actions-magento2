@@ -56,7 +56,7 @@
     "eol": "2025-06-16T00:00:00+0000"
   },
   "mage-os/project-community-edition:>=1.2 <1.3": {
-    "magento": "mage-os/project-community-edition:>=1.1 <1.2",
+    "magento": "mage-os/project-community-edition:>=1.2 <1.3",
     "php": 8.4,
     "composer": "2.8.8",
     "mysql": "mysql:8.4",
