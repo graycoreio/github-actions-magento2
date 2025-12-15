@@ -59,66 +59,10 @@ on:
 jobs:
   integration_test:
     runs-on:  ${{ matrix.os }}
+    services: ${{ matrix.services }}
     strategy:
       fail-fast: ${{ inputs.fail-fast }}
       matrix: ${{ fromJSON(inputs.matrix) }}
-    services:
-      elasticsearch:
-        image: ${{ matrix.elasticsearch || '' }}
-        env:
-          # By default, ElasticSearch refuses to spawn in single node configuration, as it expects redundancy.
-          # This is a dev environment, so redundancy is just wasteful.
-          discovery.type: single-node
-          # Disable HTTPS and password authentication
-          # this is a local dev environment, so the added CA chain complexity is an extreme overkill
-          xpack.security.enabled: false
-          xpack.security.http.ssl.enabled: false
-          xpack.security.transport.ssl.enabled: false
-
-        options: >-
-          --health-cmd "curl http://localhost:9200/_cluster/health"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 10
-        ports:
-          - 9200:9200
-
-      opensearch:
-        image: ${{ matrix.opensearch || '' }}
-        env:
-          # By default, ElasticSearch refuses to spawn in single node configuration, as it expects redundancy.
-          # This is a dev environment, so redundancy is just wasteful.
-          discovery.type: single-node
-          # Disable HTTPS and password authentication
-          DISABLE_INSTALL_DEMO_CONFIG: true
-          DISABLE_SECURITY_PLUGIN: true
-
-        options: >-
-          --health-cmd "curl http://localhost:9200/_cluster/health"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 10
-        ports:
-          - 9200:9200
-
-      mysql:
-        image: ${{ matrix.mysql }}
-        env:
-          MYSQL_DATABASE: magento_integration_tests
-          MYSQL_USER: user
-          MYSQL_PASSWORD: password
-          MYSQL_ROOT_PASSWORD: rootpassword
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
-      rabbitmq:
-        image: ${{ matrix.rabbitmq }}
-        env:
-          RABBITMQ_DEFAULT_USER: guest
-          RABBITMQ_DEFAULT_PASS: guest
-        ports:
-          - 5672:5672
     steps:
     - uses: actions/checkout@v4
     - name: Set PHP Version
