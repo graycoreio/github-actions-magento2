@@ -30,7 +30,6 @@ inputs:
 outputs:
   matrix:
     description: "The Github Actions matrix of software technologies required to run Magento."
-    value: ${{ steps.generate.outputs.matrix }}
 
 runs:
   using: "node24"
