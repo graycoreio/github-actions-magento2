@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.1](https://github.com/graycoreio/github-actions-magento2/compare/v4.0.0...v4.0.1) (2025-12-16)
+
+
+### Bug Fixes
+
+* **supported-version:** handle semver-ish values from old magento verisons ([7c0bc65](https://github.com/graycoreio/github-actions-magento2/commit/7c0bc65842e0e866cd957a44f879d37d04d11dce))
+
 ## [4.0.0](https://github.com/graycoreio/github-actions-magento2/compare/v3.0.0...v4.0.0) (2025-12-15)
 
 
