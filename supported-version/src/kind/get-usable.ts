@@ -12,7 +12,8 @@ export const getUsableVersions = (project: string): string[] => {
              */
 
             // Packagist retired support for Composer 1 on 2025-09-01.
-            if (value.composer && semver.lt(value.composer.toString(), '2.0.0')) {
+            const composerVersion = semver.coerce(value.composer.toString());
+            if (composerVersion && semver.lt(composerVersion, '2.0.0')) {
                 return false;
             }
 

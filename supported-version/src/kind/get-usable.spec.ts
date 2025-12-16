@@ -35,8 +35,19 @@ describe('getUsableVersions for magento-open-source', () => {
         mockGetVersions.mockReturnValue({
             'magento/project-community-edition:2.4.6': { composer: '2.0.0' }
         });
-        
+
         const versions = getUsableVersions(project);
+        expect(versions).toContain('magento/project-community-edition:2.4.6');
+    });
+
+    it('should handle numeric composer versions', () => {
+        mockGetVersions.mockReturnValue({
+            'magento/project-community-edition:2.3.7-p3': { composer: 1 },
+            'magento/project-community-edition:2.4.6': { composer: 2 }
+        });
+
+        const versions = getUsableVersions(project);
+        expect(versions).not.toContain('magento/project-community-edition:2.3.7-p3');
         expect(versions).toContain('magento/project-community-edition:2.4.6');
     });
 });
