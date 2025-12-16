@@ -32,6 +32,7 @@ jobs:
           with:
             kind: currently-supported
             include_services: true
+          id: supported-version
   integration-workflow:
     needs: compute_matrix
     uses: ./.github/workflows/integration.yaml
