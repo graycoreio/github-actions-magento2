@@ -8,9 +8,10 @@ See the [integration.yaml](./integration.yaml)
 
 | Input              | Description                                                                                                                                     | Required | Default                       |
 | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------------------------- |
-| matrix             | JSON string of [version matrix for Magento](./#matrix-format)                                                                                   | true     | NULL                          |
+| matrix             | JSON string of [version matrix for Magento](./#matrix-format). Must include a `services` key (pass `include_services: true` to the supported-version action). | true     | NULL                          |
 | fail-fast          | Same as Github's [fail-fast](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstrategyfail-fast) | false    | true                          |
 | package_name       | The name of the package                                                                                                                         | true     | NULL                          |
+| use_local_source   | Whether or not you want to test your local package or not.                                                                                      | false    | true                          |
 | source_folder      | The source folder of the package                                                                                                                | false    | $GITHUB_WORKSPACE             |
 | magento_directory  | The folder where Magento will be installed                                                                                                      | false    | ../magento2                   |
 | magento_repository | Where to install Magento from                                                                                                                   | false    | https://mirror.mage-os.org/   |
@@ -48,8 +49,9 @@ jobs:
       steps:
         - uses: actions/checkout@v2
         - uses: graycoreio/github-actions-magento2/supported-version@main
+          with:
+            include_services: true
           id: supported-version
-        - run: echo ${{ steps.supported-version.outputs.matrix }}
   integration-workflow:
     needs: compute_matrix
     uses: graycoreio/github-actions-magento2/.github/workflows/integration.yaml@main
