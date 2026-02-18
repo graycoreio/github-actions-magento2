@@ -89,7 +89,7 @@ runs:
 
 
     - name: "Cache Composer Packages"
-      uses: actions/cache@v3
+      uses: actions/cache@v5
       with:
         key: "composer | v5 | ${{ inputs.composer_cache_key }} | ${{ hashFiles('composer.lock') }} | ${{ runner.os }} | ${{ inputs.composer_version }} | ${{ inputs.php_version }} | ${{ inputs.magento_version }}"
         path: ${{ steps.composer-cache.outputs.dir }}

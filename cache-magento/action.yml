@@ -36,7 +36,7 @@ runs:
       id: cache-magento-get-composer-version
 
     - name: "Cache Composer Packages"
-      uses: actions/cache@v3
+      uses: actions/cache@v5
       id: cache-magento-cache
       with:
         key: "composer | v5.8 | ${{ inputs.composer_cache_key }} | ${{ steps.cache-magento-get-composer-version.outputs.version }} | ${{ steps.cache-magento-get-php-version.outputs.version }}"
