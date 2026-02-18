@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.0.0](https://github.com/graycoreio/github-actions-magento2/compare/v4.0.1...v5.0.0) (2026-02-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove unmaintained setup-di-compile action
+
+### Features
+
+* remove unmaintained setup-di-compile action ([7b5ccf7](https://github.com/graycoreio/github-actions-magento2/commit/7b5ccf7d9d67da8c67e77b222b89b0abf332b183))
+* use actions/cache@v5 ([86b01b1](https://github.com/graycoreio/github-actions-magento2/commit/86b01b17faf443802bdf827fdbb706c55ae7e3fb))
+* use actions/checkout@v6 ([c2c3755](https://github.com/graycoreio/github-actions-magento2/commit/c2c375572967ee6ff8afc3a406b8d5a02880159e))
+* use actions/upload-artifact@v6 ([5f3ba73](https://github.com/graycoreio/github-actions-magento2/commit/5f3ba73bc67a5c09e22f83c6e51421596103e0ce))
+
 ## [4.0.1](https://github.com/graycoreio/github-actions-magento2/compare/v4.0.0...v4.0.1) (2025-12-16)
 
 
