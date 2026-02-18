@@ -28,7 +28,7 @@ jobs:
           - 8.1
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v6
     - uses: graycoreio/github-actions-magento2/unit-test@main
       with:
         php_version: ${{ matrix.php_version }}

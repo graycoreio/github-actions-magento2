@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     name: A job to semantically compare two versions
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - uses: graycoreio/github-actions-magento2/semver-compare@main
         with:
           version: 2.1.0

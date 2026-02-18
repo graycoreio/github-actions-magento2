@@ -47,7 +47,7 @@ jobs:
       outputs:
         matrix: ${{ steps.supported-version.outputs.matrix }}
       steps:
-        - uses: actions/checkout@v2
+        - uses: actions/checkout@v6
         - uses: graycoreio/github-actions-magento2/supported-version@main
           with:
             include_services: true

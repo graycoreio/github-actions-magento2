@@ -29,7 +29,7 @@ jobs:
   showcase_cache:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - uses: graycoreio/github-actions-magento2/cache-magento@main
       with:
         mode: 'store'
