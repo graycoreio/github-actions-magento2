@@ -272,7 +272,7 @@ jobs:
         run: ../../../vendor/bin/phpunit -c phpunit.xml.dist --testsuite Extension_Integration_Tests
       
       - name: Upload test sandbox dir
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: sandbox-data-${{ steps.magento-version.outputs.version }}
