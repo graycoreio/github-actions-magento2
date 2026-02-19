@@ -11,6 +11,13 @@ describe('getMatrixForKind for mage-os', () => {
         expect(result.include).toBeDefined();
     });
 
+    it('returns a single-element matrix for with a matrix "magento" for `latest`', () => {
+        const result = getMatrixForKind("latest", project);
+        expect(result.magento.length).toEqual(1);
+        expect(result.include.length).toEqual(1);
+        expect(result.magento[0]).toEqual(result.include[0].magento);
+    });
+
     it('returns a matrix for `currently-supported`', () => {
         const result = getMatrixForKind("currently-supported", project);
 
@@ -46,6 +53,13 @@ describe('getMatrixForKind for mage-os', () => {
         expect(result.magento).toBeDefined();
         expect(result.include).toBeDefined();
     });
+
+    it('returns a single-element matrix for with a matrix "magento" for `nightly`', () => {
+        const result = getMatrixForKind("nightly", project);
+        expect(result.magento.length).toEqual(1);
+        expect(result.include.length).toEqual(1);
+        expect(result.magento[0]).toEqual(result.include[0].magento);
+    });
     
     it('errors for invalid `custom``', () => {
         expect(() => getMatrixForKind("custom", project)).toThrowError();
@@ -64,9 +78,16 @@ describe('getMatrixForKind for magento-open-source', () => {
 
     it('returns a matrix for `latest`', () => {
         const result = getMatrixForKind("latest", project);
-
+        console.log(result);
         expect(result.magento).toBeDefined();
         expect(result.include).toBeDefined();
+    });
+
+    it('returns a single-element matrix for with a matrix "magento" for `latest`', () => {
+        const result = getMatrixForKind("latest", project);
+        expect(result.magento.length).toEqual(1);
+        expect(result.include.length).toEqual(1);
+        expect(result.magento[0]).toEqual(result.include[0].magento);
     });
 
     it('returns a matrix for `currently-supported`', () => {
@@ -95,6 +116,13 @@ describe('getMatrixForKind for magento-open-source', () => {
 
         expect(result.magento).toBeDefined();
         expect(result.include).toBeDefined();
+    });
+
+    it('returns a single-element matrix for with a matrix "magento" for `nightly`', () => {
+        const result = getMatrixForKind("nightly", project);
+        expect(result.magento.length).toEqual(1);
+        expect(result.include.length).toEqual(1);
+        expect(result.magento[0]).toEqual(result.include[0].magento);
     });
 
     it('returns a matrix for valid multiple `custom`', () => {

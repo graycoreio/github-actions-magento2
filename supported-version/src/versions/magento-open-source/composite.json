@@ -142,7 +142,7 @@
         "eol": "2028-04-09T00:00:00+0000"
     },
     "magento/project-community-edition": {
-        "magento": "magento/project-community-edition:>=2.4.8 <2.4.9",
+        "magento": "magento/project-community-edition",
         "php": 8.4,
         "composer": "2.8.8",
         "mysql": "mysql:8.4",
@@ -158,7 +158,7 @@
         "eol": "2028-04-09T00:00:00+0000"
     },
     "magento/project-community-edition:next": {
-        "magento": "magento/project-community-edition:>=2.4.8 <2.4.9",
+        "magento": "magento/project-community-edition:@alpha",
         "php": 8.4,
         "composer": "2.8.8",
         "mysql": "mysql:8.4",
