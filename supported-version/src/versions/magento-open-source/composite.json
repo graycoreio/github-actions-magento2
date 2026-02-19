@@ -100,7 +100,7 @@
     "magento/project-community-edition:>=2.4.6 <2.4.7": {
         "magento": "magento/project-community-edition:>=2.4.6 <2.4.7",
         "php": 8.2,
-        "composer": "2.2.25",
+        "composer": "2.2.26",
         "mysql": "mysql:8.0",
         "elasticsearch": "elasticsearch:8.17.4",
         "rabbitmq": "rabbitmq:3.13-management",
@@ -114,7 +114,7 @@
     "magento/project-community-edition:>=2.4.7 <2.4.8": {
         "magento": "magento/project-community-edition:>=2.4.7 <2.4.8",
         "php": 8.3,
-        "composer": "2.8.8",
+        "composer": "2.9.3",
         "mysql": "mysql:8.0",
         "elasticsearch": "elasticsearch:8.17.4",
         "rabbitmq": "rabbitmq:3.13-management",
@@ -128,7 +128,7 @@
     "magento/project-community-edition:>=2.4.8 <2.4.9": {
         "magento": "magento/project-community-edition:>=2.4.8 <2.4.9",
         "php": 8.4,
-        "composer": "2.8.12",
+        "composer": "2.9.3",
         "mysql": "mysql:8.4",
         "elasticsearch": "elasticsearch:8.17.4",
         "opensearch": "opensearchproject/opensearch:2.19.1",
@@ -144,7 +144,7 @@
     "magento/project-community-edition": {
         "magento": "magento/project-community-edition",
         "php": 8.4,
-        "composer": "2.8.12",
+        "composer": "2.9.3",
         "mysql": "mysql:8.4",
         "elasticsearch": "elasticsearch:8.17.4",
         "opensearch": "opensearchproject/opensearch:2.19.1",
@@ -160,7 +160,7 @@
     "magento/project-community-edition:next": {
         "magento": "magento/project-community-edition:@alpha",
         "php": 8.4,
-        "composer": "2.8.8",
+        "composer": "2.9.3",
         "mysql": "mysql:8.4",
         "elasticsearch": "elasticsearch:8.17.4",
         "valkey": "valkey/valkey:8.0",
