@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.1.0](https://github.com/graycoreio/github-actions-magento2/compare/v5.0.0...v5.1.0) (2026-02-19)
+
+
+### Features
+
+* **supported-version:** backport composer 2.9.3 to older mage-os verisons ([48902e8](https://github.com/graycoreio/github-actions-magento2/commit/48902e8e6a748a1328a0e50eff32e717a560975c))
+* **supported-version:** bump all composer versions to latest supported version ([c26e84f](https://github.com/graycoreio/github-actions-magento2/commit/c26e84f69361cd53dce853b415656f3af9b44427))
+* **supported-version:** bump all nginx versions to latest supported version ([c19912d](https://github.com/graycoreio/github-actions-magento2/commit/c19912dc4bfc83f4649bbd6bff8b8e9366384906))
+* **supported-versions:** upgrade 2.4.8-p2/p3 to opensearch 3 ([d29e574](https://github.com/graycoreio/github-actions-magento2/commit/d29e57447582250203ee5cbad561306ca6080ffa))
+* **supported-version:** updated matrix for Mage-OS 2.1.0 ([07f8953](https://github.com/graycoreio/github-actions-magento2/commit/07f89530df8396d359c043c6b3a8b429a67465a8))
+* **supported-version:** upgrade to compsoer 2.9.5 ([7e70ee9](https://github.com/graycoreio/github-actions-magento2/commit/7e70ee93efb85c48ef312cf4f796bc90acc1b9cf))
+
+
+### Bug Fixes
+
+* **supported-version:** pin specific composer 2 versions for historic Magento releases ([505179c](https://github.com/graycoreio/github-actions-magento2/commit/505179ce7bdf1b41472d9ba735cc36002b84e2a0))
+* using `latest` accidentally output two versions for Magento Open Source ([34ddee6](https://github.com/graycoreio/github-actions-magento2/commit/34ddee6aef5e21f1e4bfa992ff333031b7552c35))
+
 ## [5.0.0](https://github.com/graycoreio/github-actions-magento2/compare/v4.0.1...v5.0.0) (2026-02-18)
 
 
