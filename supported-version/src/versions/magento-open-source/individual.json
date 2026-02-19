@@ -786,7 +786,7 @@
     "magento/project-community-edition:2.4.7": {
         "magento": "magento/project-community-edition:2.4.7",
         "php": 8.3,
-        "composer": "2.9.3",
+        "composer": "2.9.5",
         "mysql": "mariadb:10.6",
         "elasticsearch": "elasticsearch:8.11.4",
         "rabbitmq": "rabbitmq:3.13-management",
@@ -800,7 +800,7 @@
     "magento/project-community-edition:2.4.7-p1": {
         "magento": "magento/project-community-edition:2.4.7-p1",
         "php": 8.3,
-        "composer": "2.9.3",
+        "composer": "2.9.5",
         "mysql": "mariadb:10.6",
         "elasticsearch": "elasticsearch:8.11.4",
         "rabbitmq": "rabbitmq:3.13-management",
@@ -814,7 +814,7 @@
     "magento/project-community-edition:2.4.7-p2": {
         "magento": "magento/project-community-edition:2.4.7-p2",
         "php": 8.3,
-        "composer": "2.9.3",
+        "composer": "2.9.5",
         "mysql": "mariadb:10.6",
         "elasticsearch": "elasticsearch:8.11.4",
         "rabbitmq": "rabbitmq:3.13-management",
@@ -828,7 +828,7 @@
     "magento/project-community-edition:2.4.7-p3": {
         "magento": "magento/project-community-edition:2.4.7-p3",
         "php": 8.3,
-        "composer": "2.9.3",
+        "composer": "2.9.5",
         "mysql": "mariadb:10.6",
         "elasticsearch": "elasticsearch:8.11.4",
         "rabbitmq": "rabbitmq:3.13-management",
@@ -842,7 +842,7 @@
     "magento/project-community-edition:2.4.7-p4": {
         "magento": "magento/project-community-edition:2.4.7-p4",
         "php": 8.3,
-        "composer": "2.9.3",
+        "composer": "2.9.5",
         "mysql": "mariadb:10.6",
         "elasticsearch": "elasticsearch:8.11.4",
         "rabbitmq": "rabbitmq:3.13-management",
@@ -856,7 +856,7 @@
     "magento/project-community-edition:2.4.7-p5": {
         "magento": "magento/project-community-edition:2.4.7-p5",
         "php": 8.3,
-        "composer": "2.9.3",
+        "composer": "2.9.5",
         "mysql": "mysql:8.0",
         "elasticsearch": "elasticsearch:8.17.4",
         "rabbitmq": "rabbitmq:3.13-management",
@@ -870,7 +870,7 @@
     "magento/project-community-edition:2.4.7-p6": {
         "magento": "magento/project-community-edition:2.4.7-p6",
         "php": 8.3,
-        "composer": "2.9.3",
+        "composer": "2.9.5",
         "mysql": "mariadb:10.6",
         "elasticsearch": "elasticsearch:8.11.4",
         "rabbitmq": "rabbitmq:3.13-management",
@@ -884,7 +884,7 @@
     "magento/project-community-edition:2.4.7-p7": {
         "magento": "magento/project-community-edition:2.4.7-p7",
         "php": 8.3,
-        "composer": "2.9.3",
+        "composer": "2.9.5",
         "mysql": "mariadb:10.6",
         "elasticsearch": "elasticsearch:8.11.4",
         "rabbitmq": "rabbitmq:3.13-management",
@@ -898,7 +898,7 @@
     "magento/project-community-edition:2.4.7-p8": {
         "magento": "magento/project-community-edition:2.4.7-p8",
         "php": 8.3,
-        "composer": "2.9.3",
+        "composer": "2.9.5",
         "mysql": "mariadb:10.6",
         "elasticsearch": "elasticsearch:8.11.4",
         "rabbitmq": "rabbitmq:3.13-management",
@@ -912,7 +912,7 @@
     "magento/project-community-edition:2.4.8": {
         "magento": "magento/project-community-edition:2.4.8",
         "php": 8.4,
-        "composer": "2.9.3",
+        "composer": "2.9.5",
         "mysql": "mysql:8.4",
         "elasticsearch": "elasticsearch:8.17.4",
         "opensearch": "opensearchproject/opensearch:2.19.1",
@@ -928,7 +928,7 @@
     "magento/project-community-edition:2.4.8-p1": {
         "magento": "magento/project-community-edition:2.4.8-p1",
         "php": 8.4,
-        "composer": "2.9.3",
+        "composer": "2.9.5",
         "mysql": "mysql:8.4",
         "opensearch": "opensearchproject/opensearch:2.19.1",
         "rabbitmq": "rabbitmq:4.0-management",
@@ -942,7 +942,7 @@
     "magento/project-community-edition:2.4.8-p2": {
         "magento": "magento/project-community-edition:2.4.8-p2",
         "php": 8.4,
-        "composer": "2.9.3",
+        "composer": "2.9.5",
         "mysql": "mysql:8.4",
         "opensearch": "opensearchproject/opensearch:3",
         "rabbitmq": "rabbitmq:4.0-management",
@@ -956,7 +956,7 @@
     "magento/project-community-edition:2.4.8-p3": {
         "magento": "magento/project-community-edition:2.4.8-p3",
         "php": 8.4,
-        "composer": "2.9.3",
+        "composer": "2.9.5",
         "mysql": "mysql:8.4",
         "opensearch": "opensearchproject/opensearch:3",
         "rabbitmq": "rabbitmq:4.0-management",

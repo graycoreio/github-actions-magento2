@@ -2,7 +2,7 @@
   "mage-os/project-community-edition": {
     "magento": "mage-os/project-community-edition",
     "php": 8.4,
-    "composer": "2.9.3",
+    "composer": "2.9.5",
     "mysql": "mysql:8.4",
     "opensearch": "opensearchproject/opensearch:2.19.1",
     "rabbitmq": "rabbitmq:4.0-management",
@@ -16,7 +16,7 @@
   "mage-os/project-community-edition:next": {
     "magento": "mage-os/project-community-edition:next",
     "php": 8.4,
-    "composer": "2.9.3",
+    "composer": "2.9.5",
     "mysql": "mysql:8.4",
     "opensearch": "opensearchproject/opensearch:2.19.1",
     "rabbitmq": "rabbitmq:4.0-management",
@@ -30,7 +30,7 @@
     "mage-os/project-community-edition:>=1.0 <1.1": {
     "magento": "mage-os/project-community-edition:>=1.0 <1.1",
     "php": 8.3,
-    "composer": "2.9.3",
+    "composer": "2.9.5",
     "mysql": "mariadb:10.6",
     "elasticsearch": "elasticsearch:8.11.4",
     "rabbitmq": "rabbitmq:3.13-management",
@@ -44,7 +44,7 @@
   "mage-os/project-community-edition:>=1.1 <1.2": {
     "magento": "mage-os/project-community-edition:>=1.1 <1.2",
     "php": 8.4,
-    "composer": "2.9.3",
+    "composer": "2.9.5",
     "mysql": "mysql:8.4",
     "opensearch": "opensearchproject/opensearch:2.19.1",
     "rabbitmq": "rabbitmq:4.0-management",
@@ -58,7 +58,7 @@
   "mage-os/project-community-edition:>=1.2 <1.3": {
     "magento": "mage-os/project-community-edition:>=1.2 <1.3",
     "php": 8.4,
-    "composer": "2.9.3",
+    "composer": "2.9.5",
     "mysql": "mysql:8.4",
     "opensearch": "opensearchproject/opensearch:2.19.1",
     "rabbitmq": "rabbitmq:4.0-management",
@@ -72,7 +72,7 @@
   "mage-os/project-community-edition:>=1.3 <1.4": {
     "magento": "mage-os/project-community-edition:>=1.2 <1.3",
     "php": 8.4,
-    "composer": "2.9.3",
+    "composer": "2.9.5",
     "mysql": "mysql:8.4",
     "opensearch": "opensearchproject/opensearch:2.19.1",
     "rabbitmq": "rabbitmq:4.0-management",
@@ -86,7 +86,7 @@
   "mage-os/project-community-edition:>=2.0 <2.1": {
     "magento": "mage-os/project-community-edition:>=2.0 <2.1",
     "php": 8.4,
-    "composer": "2.9.3",
+    "composer": "2.9.5",
     "mysql": "mysql:8.4",
     "opensearch": "opensearchproject/opensearch:2.19.1",
     "rabbitmq": "rabbitmq:4.0-management",
@@ -100,7 +100,7 @@
   "mage-os/project-community-edition:>=2.1 <2.2": {
     "magento": "mage-os/project-community-edition:>=2.1 <2.2",
     "php": 8.4,
-    "composer": "2.9.3",
+    "composer": "2.9.5",
     "mysql": "mysql:8.4",
     "opensearch": "opensearchproject/opensearch:2.19.1",
     "rabbitmq": "rabbitmq:4.0-management",
