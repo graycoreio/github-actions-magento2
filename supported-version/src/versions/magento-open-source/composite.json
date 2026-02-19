@@ -106,7 +106,7 @@
         "rabbitmq": "rabbitmq:3.13-management",
         "redis": "redis:7.2",
         "varnish": "varnish:7.6",
-        "nginx": "nginx:1.26",
+        "nginx": "nginx:1.28",
         "os": "ubuntu-latest",
         "release": "2025-04-08T00:00:00+0000",
         "eol": "2026-03-14T00:00:00+0000"
@@ -120,7 +120,7 @@
         "rabbitmq": "rabbitmq:3.13-management",
         "redis": "redis:7.2",
         "varnish": "varnish:7.6",
-        "nginx": "nginx:1.26",
+        "nginx": "nginx:1.28",
         "os": "ubuntu-latest",
         "release": "2025-04-08T00:00:00+0000",
         "eol": "2027-04-09T00:00:00+0000"
@@ -136,7 +136,7 @@
         "redis": "redis:7.2",
         "valkey": "valkey/valkey:8.0",
         "varnish": "varnish:7.6",
-        "nginx": "nginx:1.26",
+        "nginx": "nginx:1.28",
         "os": "ubuntu-latest",
         "release": "2025-04-08T00:00:00+0000",
         "eol": "2028-04-09T00:00:00+0000"
@@ -152,7 +152,7 @@
         "redis": "redis:7.2",
         "valkey": "valkey/valkey:8.0",
         "varnish": "varnish:7.6",
-        "nginx": "nginx:1.26",
+        "nginx": "nginx:1.28",
         "os": "ubuntu-latest",
         "release": "2025-04-08T00:00:00+0000",
         "eol": "2028-04-09T00:00:00+0000"
@@ -168,7 +168,7 @@
         "rabbitmq": "rabbitmq:4.0-management",
         "redis": "redis:7.2",
         "varnish": "varnish:7.6",
-        "nginx": "nginx:1.26",
+        "nginx": "nginx:1.28",
         "os": "ubuntu-latest",
         "release": "2025-04-08T00:00:00+0000",
         "eol": "2028-04-09T00:00:00+0000"
