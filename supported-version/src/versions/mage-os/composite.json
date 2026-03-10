@@ -4,30 +4,30 @@
     "php": 8.4,
     "composer": "2.9.5",
     "mysql": "mysql:8.4",
-    "opensearch": "opensearchproject/opensearch:2.19.1",
-    "rabbitmq": "rabbitmq:4.0-management",
-    "redis": "redis:7.2",
-    "varnish": "varnish:7.6",
-    "nginx": "nginx:1.26",
+    "opensearch": "opensearchproject/opensearch:3",
+    "rabbitmq": "rabbitmq:4.1-management",
+    "valkey": "valkey/valkey:8.0",
+    "varnish": "varnish:7.7",
+    "nginx": "nginx:1.28",
     "os": "ubuntu-latest",
-    "release": "2026-01-20T00:00:00+0000",
-    "eol": "2029-01-20T00:00:00+0000"
+    "release": "2026-03-10T00:00:00+0000",
+    "eol": "2029-03-10T00:00:00+0000"
   },
   "mage-os/project-community-edition:next": {
     "magento": "mage-os/project-community-edition:next",
     "php": 8.4,
     "composer": "2.9.5",
     "mysql": "mysql:8.4",
-    "opensearch": "opensearchproject/opensearch:2.19.1",
-    "rabbitmq": "rabbitmq:4.0-management",
-    "redis": "redis:7.2",
-    "varnish": "varnish:7.6",
-    "nginx": "nginx:1.26",
+    "opensearch": "opensearchproject/opensearch:3",
+    "rabbitmq": "rabbitmq:4.1-management",
+    "valkey": "valkey/valkey:8.0",
+    "varnish": "varnish:7.7",
+    "nginx": "nginx:1.28",
     "os": "ubuntu-latest",
-    "release": "2026-01-20T00:00:00+0000",
-    "eol": "2029-01-20T00:00:00+0000"
+    "release": "2026-03-10T00:00:00+0000",
+    "eol": "2029-03-10T00:00:00+0000"
   },
-    "mage-os/project-community-edition:>=1.0 <1.1": {
+  "mage-os/project-community-edition:>=1.0 <1.1": {
     "magento": "mage-os/project-community-edition:>=1.0 <1.1",
     "php": 8.3,
     "composer": "2.9.5",
@@ -109,6 +109,20 @@
     "nginx": "nginx:1.26",
     "os": "ubuntu-latest",
     "release": "2026-01-20T00:00:00+0000",
-    "eol": "2029-01-20T00:00:00+0000"
+    "eol": "2026-03-10T00:00:00+0000"
+  },
+  "mage-os/project-community-edition:>=2.2 <2.3": {
+    "magento": "mage-os/project-community-edition:>=2.2 <2.3",
+    "php": 8.4,
+    "composer": "2.9.3",
+    "mysql": "mysql:8.4",
+    "opensearch": "opensearchproject/opensearch:3",
+    "rabbitmq": "rabbitmq:4.1-management",
+    "valkey": "valkey/valkey:8.0",
+    "varnish": "varnish:7.7",
+    "nginx": "nginx:1.28",
+    "os": "ubuntu-latest",
+    "release": "2026-03-10T00:00:00+0000",
+    "eol": "2029-03-10T00:00:00+0000"
   }
 }
