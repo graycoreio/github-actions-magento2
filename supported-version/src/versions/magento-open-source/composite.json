@@ -117,7 +117,7 @@
         "composer": "2.9.5",
         "mysql": "mysql:8.0",
         "elasticsearch": "elasticsearch:8.17.4",
-        "opensearch": "opensearchproject/opensearch:2.19",
+        "opensearch": "opensearchproject/opensearch:2.19.5",
         "rabbitmq": "rabbitmq:4.1-management",
         "redis": "redis:7.2",
         "valkey": "valkey/valkey:8.0",
