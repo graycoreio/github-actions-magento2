@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0](https://github.com/graycoreio/github-actions-magento2/compare/v5.1.0...v6.0.0) (2026-03-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* **supported-version:** Adobe has dropped support for elasticsearch and redis in their latest releases of v2.4.8.
+
+### Features
+
+* **supported-version:** add support for MageOS 2.2.0 ([b4526db](https://github.com/graycoreio/github-actions-magento2/commit/b4526dbb52f59ad79b07fedb5fe487424c0b4dea))
+* **supported-version:** update for Magento v2.4.8-p4 release ([e6be791](https://github.com/graycoreio/github-actions-magento2/commit/e6be791eed5d2b4f83bb56391e7eab39c52eed59))
+* **supported-version:** upgrade opensearch to 2.19.5 ([7e40a62](https://github.com/graycoreio/github-actions-magento2/commit/7e40a62efaff0c31fab1284980fc5400997b211f))
+
 ## [5.1.0](https://github.com/graycoreio/github-actions-magento2/compare/v5.0.0...v5.1.0) (2026-02-19)
 
 
