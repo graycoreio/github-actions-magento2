@@ -7,11 +7,12 @@
     "opensearch": "opensearchproject/opensearch:3",
     "rabbitmq": "rabbitmq:4.1-management",
     "valkey": "valkey/valkey:8.0",
+    "redis": "redis:7.2",
     "varnish": "varnish:7.7",
     "nginx": "nginx:1.28",
     "os": "ubuntu-latest",
     "release": "2026-03-10T00:00:00+0000",
-    "eol": "2029-03-10T00:00:00+0000"
+    "eol": "2029-03-18T00:00:00+0000"
   },
   "mage-os/project-community-edition:next": {
     "magento": "mage-os/project-community-edition:next",
@@ -21,11 +22,12 @@
     "opensearch": "opensearchproject/opensearch:3",
     "rabbitmq": "rabbitmq:4.1-management",
     "valkey": "valkey/valkey:8.0",
+    "redis": "redis:7.2",
     "varnish": "varnish:7.7",
     "nginx": "nginx:1.28",
     "os": "ubuntu-latest",
     "release": "2026-03-10T00:00:00+0000",
-    "eol": "2029-03-10T00:00:00+0000"
+    "eol": "2029-03-18T00:00:00+0000"
   },
   "mage-os/project-community-edition:>=1.0 <1.1": {
     "magento": "mage-os/project-community-edition:>=1.0 <1.1",
@@ -119,10 +121,11 @@
     "opensearch": "opensearchproject/opensearch:3",
     "rabbitmq": "rabbitmq:4.1-management",
     "valkey": "valkey/valkey:8.0",
+    "redis": "redis:7.2",
     "varnish": "varnish:7.7",
     "nginx": "nginx:1.28",
     "os": "ubuntu-latest",
     "release": "2026-03-10T00:00:00+0000",
-    "eol": "2029-03-10T00:00:00+0000"
+    "eol": "2029-03-18T00:00:00+0000"
   }
 }
