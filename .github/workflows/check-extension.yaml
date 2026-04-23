@@ -76,6 +76,7 @@ jobs:
           run: composer install
           env:
             COMPOSER_AUTH: ${{ secrets.composer_auth }}
+            COMPOSER_MIRROR_PATH_REPOS: 1
 
         - name: Configure phpunit.xml.dist
           working-directory: ${{ steps.setup-magento.outputs.path }}
@@ -138,6 +139,7 @@ jobs:
           run: composer install
           env:
             COMPOSER_AUTH: ${{ secrets.composer_auth }}
+            COMPOSER_MIRROR_PATH_REPOS: 1
 
         - name: Enable all modules
           working-directory: ${{ steps.setup-magento.outputs.path }}
@@ -237,6 +239,7 @@ jobs:
         run: composer install
         env:
           COMPOSER_AUTH: ${{ secrets.composer_auth }}
+          COMPOSER_MIRROR_PATH_REPOS: 1
 
       - uses: graycoreio/github-actions-magento2/get-magento-version@main
         id: magento-version
