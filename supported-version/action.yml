@@ -24,7 +24,7 @@ inputs:
 
   include_services:
     required: false
-    default: "false"
+    default: "true"
     description: "Whether to include a `services` key in each matrix entry with GitHub Actions service configurations."
 
 outputs:
