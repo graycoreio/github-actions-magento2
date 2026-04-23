@@ -182,7 +182,18 @@ jobs:
       - name: Register Coding Standard
         shell: bash
         working-directory: ${{ inputs.path }}
-        run: vendor/bin/phpcs --config-set installed_paths vendor/magento/magento-coding-standard,vendor/magento/php-compatibility-fork
+        run: |
+          if [ -d vendor/magento/magento-coding-standard ]; then
+            CODING_STANDARD_VENDOR=magento
+          elif [ -d vendor/mage-os/magento-coding-standard ]; then
+            CODING_STANDARD_VENDOR=mage-os
+          else
+            echo "No magento-coding-standard directory found under vendor/magento or vendor/mage-os."
+            echo "Trusting dealerdirect/phpcodesniffer-composer-installer to have registered installed_paths."
+            exit 0
+          fi
+          vendor/bin/phpcs --config-set installed_paths \
+            "vendor/${CODING_STANDARD_VENDOR}/magento-coding-standard,vendor/${CODING_STANDARD_VENDOR}/php-compatibility-fork"
 
       - name: Coding Standard Check
         shell: bash
