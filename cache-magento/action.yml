@@ -8,10 +8,6 @@ inputs:
     default: "__mageos"
     description: A key to version the composer cache. Can be incremented if you need to bust the cache.
 
-  mode:
-    required: true
-    description: "The mode for setup, one of: `extension` or `store`."
-
 outputs:
   cache-hit:
     description: "A boolean value to indicate an exact match was found for the key"

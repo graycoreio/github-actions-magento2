@@ -56,7 +56,6 @@ jobs:
 
         - uses: graycoreio/github-actions-magento2/cache-magento@main
           with:
-            mode: extension
             composer_cache_key: ${{ inputs.composer_cache_key }}
 
         - name: Add extension repository
@@ -116,7 +115,6 @@ jobs:
 
         - uses: graycoreio/github-actions-magento2/cache-magento@main
           with:
-            mode: extension
             composer_cache_key: ${{ inputs.composer_cache_key }}
 
         - name: Add extension repository
@@ -226,7 +224,6 @@ jobs:
 
       - uses: graycoreio/github-actions-magento2/cache-magento@main
         with:
-          mode: extension
           composer_cache_key: ${{ inputs.composer_cache_key }}
 
       - name: Add extension repository

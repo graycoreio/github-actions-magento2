@@ -10,7 +10,6 @@ See the [action.yml](./action.yml)
 | Input              | Description                                                                            | Required | Default      |
 | ------------------ | -------------------------------------------------------------------------------------- | -------- | ------------ |
 | composer_cache_key | A key to version the composer cache. Can be incremented if you need to bust the cache. | false    | '__mageos' |
-| mode               | "The mode for setup, one of: `extension` or `store`."                                  | true     | N/A          |
 
 ### Usage
 
@@ -31,8 +30,6 @@ jobs:
     steps:
     - uses: actions/checkout@v6
     - uses: graycoreio/github-actions-magento2/cache-magento@main
-      with:
-        mode: 'store'
       id: cache-magento
 
     - run: composer install
