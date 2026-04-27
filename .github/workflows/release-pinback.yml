@@ -26,7 +26,8 @@ jobs:
       - name: Restore @main refs
         run: |
           sed -i "s|uses: graycoreio/github-actions-magento2/\([^@]*\)@[^ #]*|uses: graycoreio/github-actions-magento2/\1@main|g" \
-            */action.yml .github/workflows/*.yml .github/workflows/*.yaml
+            */action.yml \
+            $(find .github/workflows \( -name "*.yml" -o -name "*.yaml" \) ! -name "release-pinback.yml")
 
       - name: Show changed files
         run: git diff
@@ -54,15 +55,21 @@ jobs:
           git checkout -b chore/pinback-${{ steps.version.outputs.VERSION }}
           git add .
           git commit -m "chore: restore internal action refs to @main"
-          git push origin chore/pinback-${{ steps.version.outputs.VERSION }}
+          git push --force origin chore/pinback-${{ steps.version.outputs.VERSION }}
 
       - name: Open PR
         if: ${{ steps.local-changes.outputs.HAS_LOCAL_CHANGES == 'true' }}
         env:
           GH_TOKEN: ${{ secrets.GRAYBOT_PIN_BACK_PAT }}
         run: |
-          gh pr create \
-            --base main \
-            --head chore/pinback-${{ steps.version.outputs.VERSION }} \
-            --title "chore: restore internal action refs to @main after ${{ steps.version.outputs.VERSION }}" \
-            --body "Restores all internal \`graycoreio/github-actions-magento2\` action refs from \`${{ steps.version.outputs.VERSION }}\` back to \`@main\`."
+          BRANCH="chore/pinback-${{ steps.version.outputs.VERSION }}"
+          EXISTING=$(gh pr list --head "$BRANCH" --json number --jq '.[0].number // empty')
+          if [ -z "$EXISTING" ]; then
+            gh pr create \
+              --base main \
+              --head "$BRANCH" \
+              --title "chore: restore internal action refs to @main after ${{ steps.version.outputs.VERSION }}" \
+              --body "Restores all internal \`graycoreio/github-actions-magento2\` action refs from \`${{ steps.version.outputs.VERSION }}\` back to \`@main\`."
+          else
+            echo "PR #$EXISTING already exists for $BRANCH — skipping creation"
+          fi
