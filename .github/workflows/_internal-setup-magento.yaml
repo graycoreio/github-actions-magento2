@@ -101,7 +101,7 @@ jobs:
         working-directory: ${{ env.magento_folder }}
         composer_auth: ${{ secrets.COMPOSER_AUTH }}
     
-    - uses: graycoreio/github-actions-magento2/cache-magento@main
+    - uses: ./cache-magento
       with:
         composer_cache_key:  '${{ matrix.magento }}'
 
