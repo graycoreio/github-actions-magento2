@@ -3,7 +3,8 @@
 <div align="center">
 
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/graycoreio/github-actions-magento2)
-[![Integration Test](https://github.com/graycoreio/github-actions-magento2/actions/workflows/_internal-integration.yaml/badge.svg)](https://github.com/graycoreio/github-actions-magento2/actions/workflows/_internal-integration.yaml)
+[![Integration Test](https://img.shields.io/github/actions/workflow/status/graycoreio/github-actions-magento2/_internal-integration.yaml?label=Integration%20Test&labelColor=1a1a1a)](https://github.com/graycoreio/github-actions-magento2/actions/workflows/_internal-integration.yaml)
+[![MageCheck](https://img.shields.io/github/actions/workflow/status/graycoreio/github-actions-magento2/_internal_check_extension.yaml?label=Check%20Extension%20Test&labelColor=1a1a1a)](https://github.com/graycoreio/github-actions-magento2/actions/workflows/_internal_check_extension.yaml)
 
 </div>
 
