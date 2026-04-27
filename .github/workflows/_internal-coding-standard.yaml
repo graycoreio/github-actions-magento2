@@ -51,9 +51,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v${{ matrix.composer }}
+          coverage: none
+
       - uses: './coding-standard'
         with:
           version: ${{ github.event.inputs.version || '*' }}
           path: ${{ github.event.inputs.path || '_test/demo-package' }}
-          composer_version: ${{ matrix.composer }}
-          php_version: ${{ matrix.php }}
