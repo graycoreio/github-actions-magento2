@@ -21,7 +21,7 @@ jobs:
       - name: Extract version
         id: version
         run: |
-          VERSION="v$(cat .release-please-manifest.json | jq -r '.["."']')"
+          VERSION="v$(jq -r '."."' .release-please-manifest.json)"
           echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
 
       - name: Restore @main refs
