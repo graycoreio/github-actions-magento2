@@ -83,14 +83,15 @@ runs:
       shell: bash
       working-directory: ${{ inputs.path }}
       run: |
-        SEVERITY_FLAGS="$([ -n "${{ inputs.severity }}" ] && echo "--severity=${{ inputs.severity }}") \
-          $([ -n "${{ inputs.warning_severity }}" ] && echo "--warning-severity=${{ inputs.warning_severity }}") \
-          $([ -n "${{ inputs.error_severity }}" ] && echo "--error-severity=${{ inputs.error_severity }}")"
+        FLAGS=()
+        [ -n "${{ inputs.severity }}" ] && FLAGS+=(--severity=${{ inputs.severity }}) || true
+        [ -n "${{ inputs.warning_severity }}" ] && FLAGS+=(--warning-severity=${{ inputs.warning_severity }}) || true
+        [ -n "${{ inputs.error_severity }}" ] && FLAGS+=(--error-severity=${{ inputs.error_severity }}) || true
 
         if [ -f .phpcs.xml ] || [ -f phpcs.xml ] || [ -f .phpcs.xml.dist ] || [ -f phpcs.xml.dist ]; then
-          vendor/bin/phpcs ${SEVERITY_FLAGS} .
+          vendor/bin/phpcs "${FLAGS[@]}" .
         else
-          vendor/bin/phpcs --standard=Magento2 --ignore=*vendor/* ${SEVERITY_FLAGS} .
+          vendor/bin/phpcs --standard=Magento2 --ignore=*vendor/* "${FLAGS[@]}" .
         fi
 
 branding:
