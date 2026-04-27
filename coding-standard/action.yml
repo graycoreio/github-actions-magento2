@@ -32,6 +32,11 @@ inputs:
     default: 'false'
     required: false
 
+  composer_auth:
+    required: false
+    default: ""
+    description: "Composer authentication credentials (contents of auth.json as a JSON string)"
+
 runs:
   using: composite
   steps:
@@ -56,6 +61,8 @@ runs:
       shell: bash
       working-directory: ${{ inputs.path }}
       run: composer require "magento/magento-coding-standard:${{ inputs.version || '*' }}" "magento/php-compatibility-fork"
+      env:
+        COMPOSER_AUTH: ${{ inputs.composer_auth }}
 
     - name: Register Coding Standard
       shell: bash

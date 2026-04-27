@@ -164,6 +164,7 @@ jobs:
       - uses: graycoreio/github-actions-magento2/coding-standard@main
         with:
           path: ${{ inputs.path }}
+          composer_auth: ${{ secrets.composer_auth }}
 
     integration_test:
       runs-on:  ${{ matrix.os }}
