@@ -11,12 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: write
     steps:
       - uses: actions/checkout@v6
         with:
           ref: main
-          token: ${{ secrets.GRAYCORE_GITHUB_TOKEN }}
+          token: ${{ secrets.GRAYBOT_PIN_BACK_PAT }}
 
       - name: Extract version
         id: version
@@ -60,7 +59,7 @@ jobs:
       - name: Open PR
         if: ${{ steps.local-changes.outputs.HAS_LOCAL_CHANGES == 'true' }}
         env:
-          GH_TOKEN: ${{ secrets.GRAYCORE_GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GRAYBOT_PIN_BACK_PAT }}
         run: |
           gh pr create \
             --base main \
