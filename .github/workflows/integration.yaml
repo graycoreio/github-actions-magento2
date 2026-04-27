@@ -140,6 +140,7 @@ jobs:
       env:
         COMPOSER_CACHE_DIR: ${{ steps.composer-cache.outputs.dir }}
         COMPOSER_AUTH: ${{ secrets.composer_auth }}
+        COMPOSER_MIRROR_PATH_REPOS: 1
 
     - name: Replace Configuration Settings for env
       working-directory:  ${{ inputs.magento_directory }}/dev/tests/integration
