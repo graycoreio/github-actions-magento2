@@ -127,7 +127,7 @@ jobs:
         composer_auth: ${{ secrets.COMPOSER_AUTH }}
         magento_version: magento/project-community-edition:2.4.8-p3
 
-    - uses: graycoreio/github-actions-magento2/cache-magento@main
+    - uses: ./cache-magento
       with:
         composer_cache_key: 'magento/project-community-edition:2.4.8-p3'
     
