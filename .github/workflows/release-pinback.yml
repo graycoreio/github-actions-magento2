@@ -11,11 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v6
         with:
           ref: main
           token: ${{ secrets.GRAYCORE_GITHUB_TOKEN }}
+
+      - name: Extract version
+        id: version
+        run: |
+          VERSION="v$(cat .release-please-manifest.json | jq -r '.["."']')"
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
 
       - name: Restore @main refs
         run: |
@@ -45,6 +52,18 @@ jobs:
           git config --global commit.gpgSign true
           git config --global user.email "automation@graycore.io"
           git config --global user.name "Beep Boop"
+          git checkout -b chore/pinback-${{ steps.version.outputs.VERSION }}
           git add .
           git commit -m "chore: restore internal action refs to @main"
-          git push origin main
+          git push origin chore/pinback-${{ steps.version.outputs.VERSION }}
+
+      - name: Open PR
+        if: ${{ steps.local-changes.outputs.HAS_LOCAL_CHANGES == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GRAYCORE_GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --base main \
+            --head chore/pinback-${{ steps.version.outputs.VERSION }} \
+            --title "chore: restore internal action refs to @main after ${{ steps.version.outputs.VERSION }}" \
+            --body "Restores all internal \`graycoreio/github-actions-magento2\` action refs from \`${{ steps.version.outputs.VERSION }}\` back to \`@main\`."
