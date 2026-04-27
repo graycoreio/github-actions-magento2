@@ -26,20 +26,27 @@ jobs:
 
       - name: Pin refs on release PR branch
         if: steps.release.outputs.pr
-        env:
-          GRAYBOT_GPG_KEY: ${{ secrets.GRAYBOT_GPG_KEY }}
+        id: pin-refs
         run: |
           VERSION="v$(jq -r '."."' .release-please-manifest.json)"
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
 
           sed -i "s|uses: graycoreio/github-actions-magento2/\([^@]*\)@main|uses: graycoreio/github-actions-magento2/\1@${VERSION}|g" \
             */action.yml \
             $(find .github/workflows \( -name "*.yml" -o -name "*.yaml" \) ! -name "release-*")
 
           if git diff --quiet; then
-            echo "No changes — refs already pinned to ${VERSION}"
-            exit 0
+            echo "HAS_CHANGES=false" >> $GITHUB_OUTPUT
+          else
+            echo "HAS_CHANGES=true" >> $GITHUB_OUTPUT
           fi
 
+      - name: Commit pinned refs
+        if: steps.release.outputs.pr && steps.pin-refs.outputs.HAS_CHANGES == 'true'
+        env:
+          GRAYBOT_GPG_KEY: ${{ secrets.GRAYBOT_GPG_KEY }}
+          GH_TOKEN: ${{ secrets.GRAYBOT_PIN_BACK_PAT }}
+        run: |
           echo "$GRAYBOT_GPG_KEY" | gpg --batch --import
           export GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | grep sec | awk '{print $2}' | cut -d/ -f2)
           git config --global user.signingkey $GPG_KEY_ID
@@ -47,5 +54,5 @@ jobs:
           git config --global user.email "automation@graycore.io"
           git config --global user.name "Beep Boop"
           git add .
-          git commit -m "chore: pin internal action refs to ${VERSION}"
+          git commit -m "chore: pin internal action refs to ${{ steps.pin-refs.outputs.VERSION }}"
           git push origin ${{ fromJSON(steps.release.outputs.pr).headBranchName }}
