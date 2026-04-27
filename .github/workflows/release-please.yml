@@ -8,7 +8,43 @@ on:
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - uses: googleapis/release-please-action@v4
+      - id: release
+        uses: googleapis/release-please-action@v4
         with:
           token: ${{ secrets.GRAYCORE_GITHUB_TOKEN }}
+
+      - name: Checkout release PR branch
+        if: steps.release.outputs.pr
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ fromJSON(steps.release.outputs.pr).headBranchName }}
+          token: ${{ secrets.GRAYCORE_GITHUB_TOKEN }}
+
+      - name: Pin refs on release PR branch
+        if: steps.release.outputs.pr
+        env:
+          GRAYBOT_GPG_KEY: ${{ secrets.GRAYBOT_GPG_KEY }}
+        run: |
+          VERSION="v$(jq -r '."."' .release-please-manifest.json)"
+
+          sed -i "s|uses: graycoreio/github-actions-magento2/\([^@]*\)@main|uses: graycoreio/github-actions-magento2/\1@${VERSION}|g" \
+            */action.yml \
+            $(find .github/workflows \( -name "*.yml" -o -name "*.yaml" \) ! -name "release-*")
+
+          if git diff --quiet; then
+            echo "No changes — refs already pinned to ${VERSION}"
+            exit 0
+          fi
+
+          echo "$GRAYBOT_GPG_KEY" | gpg --batch --import
+          export GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | grep sec | awk '{print $2}' | cut -d/ -f2)
+          git config --global user.signingkey $GPG_KEY_ID
+          git config --global commit.gpgSign true
+          git config --global user.email "automation@graycore.io"
+          git config --global user.name "Beep Boop"
+          git add .
+          git commit -m "chore: pin internal action refs to ${VERSION}"
+          git push origin ${{ fromJSON(steps.release.outputs.pr).headBranchName }}
