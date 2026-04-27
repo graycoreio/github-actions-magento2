@@ -25,7 +25,7 @@ jobs:
 
       - name: Restore @main refs
         run: |
-          sed -i "s|uses: graycoreio/github-actions-magento2/\([^@]*\)@[^ #]*|uses: graycoreio/github-actions-magento2/\1@main|g" \
+          sed -i "s|uses: graycoreio/github-actions-magento2/\([^@main #]*|uses: graycoreio/github-actions-magento2/\1@main \
             */action.yml .github/workflows/*.yml .github/workflows/*.yaml
 
       - name: Show changed files
