@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.0.0](https://github.com/graycoreio/github-actions-magento2/compare/v6.0.0...v7.0.0) (2026-04-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* **coding-standard:** Much of the "setup" that's built-into the command is removed in favor of a leaner action. This also includes the "on PR, only diff PR contents" behavior. This can be restored, but it shouldn't be the default and should be done as an input.
+* **coding-standard-baseline:** remove coding-standard-baseline action ([#223](https://github.com/graycoreio/github-actions-magento2/issues/223))
+* **install-test:** You should rely on [Check Extension](https://github.com/graycoreio/github-actions-magento2/blob/main/.github/workflows/check-extension-README.md) instead.
+* **unit-test:** remove unit-test action ([#221](https://github.com/graycoreio/github-actions-magento2/issues/221))
+* **supported-version:** `include_services` now defaults to `true`. Callers that strictly validate the matrix schema and do not expect a `services` key must explicitly pass `include_services: false`.
+
+### Features
+
+* **coding-standard-baseline:** remove coding-standard-baseline action ([#223](https://github.com/graycoreio/github-actions-magento2/issues/223)) ([953de84](https://github.com/graycoreio/github-actions-magento2/commit/953de845ebf7b5d2c9a24670b380c016bd6efdcd))
+* **coding-standard:** add missing composer_auth to require of magento-coding-standard ([3fad3a8](https://github.com/graycoreio/github-actions-magento2/commit/3fad3a89954be09a0f11f04a6c1c7d927fc872eb))
+* **coding-standard:** remove pr-diff feature and built-in php setup ([#224](https://github.com/graycoreio/github-actions-magento2/issues/224)) ([d5c744e](https://github.com/graycoreio/github-actions-magento2/commit/d5c744e15544e249f79fa486a073d7020635e48a))
+* **coding-standard:** skip composer install if the coding is already installed ([e1a8a81](https://github.com/graycoreio/github-actions-magento2/commit/e1a8a81488c77144786427ff63a99f93cd17b897))
+* **install-test:** remove install test ([#222](https://github.com/graycoreio/github-actions-magento2/issues/222)) ([de415ea](https://github.com/graycoreio/github-actions-magento2/commit/de415eaff54507ca24cbecf8916fd1526beb0186))
+* **unit-test:** remove unit-test action ([#221](https://github.com/graycoreio/github-actions-magento2/issues/221)) ([98923b2](https://github.com/graycoreio/github-actions-magento2/commit/98923b24c58899779a6a6367e3863d718b09bb8d))
+
+
+### Bug Fixes
+
+* **check-extension:** mirror path repos to prevent symlink errors with template files ([#218](https://github.com/graycoreio/github-actions-magento2/issues/218)) ([d80befb](https://github.com/graycoreio/github-actions-magento2/commit/d80befbe9b26dfa37af117775544c85ea36b7127)), closes [#217](https://github.com/graycoreio/github-actions-magento2/issues/217)
+* **check-extension:** probe vendor dir for MageOS/Magento standards when running phpcs ([#216](https://github.com/graycoreio/github-actions-magento2/issues/216)) ([7799f0f](https://github.com/graycoreio/github-actions-magento2/commit/7799f0f9bf788545bc36924b6528c09c6a8bb09a)), closes [#213](https://github.com/graycoreio/github-actions-magento2/issues/213)
+* **supported-version:** default include_services to true ([#215](https://github.com/graycoreio/github-actions-magento2/issues/215)) ([b510ea2](https://github.com/graycoreio/github-actions-magento2/commit/b510ea21e38c97a4852776fc4e57fbcf9917fa9f)), closes [#214](https://github.com/graycoreio/github-actions-magento2/issues/214)
+
 ## [6.0.0](https://github.com/graycoreio/github-actions-magento2/compare/v5.1.0...v6.0.0) (2026-03-11)
 
 
