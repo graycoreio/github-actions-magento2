@@ -152,56 +152,16 @@ jobs:
           fail-fast: ${{ inputs.fail-fast }}
       steps:
       - uses: actions/checkout@v6
-          
-      - name: Get Composer Version
-        uses: graycoreio/github-actions-magento2/get-composer-version@main
-        id: get-composer-version
 
-      - name: Check if allow-plugins option is available for this version of composer
-        uses: graycoreio/github-actions-magento2/semver-compare@main
+      - uses: shivammathur/setup-php@v2
         with:
-          version: 2.2
-          compare_against: ${{ steps.get-composer-version.outputs.version }}
-        id: is-allow-plugins-available
+          php-version: ${{ matrix.php }}
+          tools: composer:v${{ matrix.composer }}
+          coverage: none
 
-      - name: Enable dealerdirect/phpcodesniffer-composer-installer plugin
-        shell: bash
-        working-directory: ${{ inputs.path }}
-        run: composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer  true --global
-        if: steps.is-allow-plugins-available.outputs.result < 1
-
-      - name: Install Coding Standard
-        shell: bash
-        working-directory: ${{ inputs.path }}
-        run: composer require "magento/magento-coding-standard" "magento/php-compatibility-fork"
-        env:
-          COMPOSER_AUTH: ${{ secrets.composer_auth }}
-
-      - name: Register Coding Standard
-        shell: bash
-        working-directory: ${{ inputs.path }}
-        run: |
-          if [ -d vendor/magento/magento-coding-standard ]; then
-            CODING_STANDARD_VENDOR=magento
-          elif [ -d vendor/mage-os/magento-coding-standard ]; then
-            CODING_STANDARD_VENDOR=mage-os
-          else
-            echo "No magento-coding-standard directory found under vendor/magento or vendor/mage-os."
-            echo "Trusting dealerdirect/phpcodesniffer-composer-installer to have registered installed_paths."
-            exit 0
-          fi
-          vendor/bin/phpcs --config-set installed_paths \
-            "vendor/${CODING_STANDARD_VENDOR}/magento-coding-standard,vendor/${CODING_STANDARD_VENDOR}/php-compatibility-fork"
-
-      - name: Coding Standard Check
-        shell: bash
-        run: |
-          if [ -f .phpcs.xml ] || [ -f phpcs.xml ] || [ -f .phpcs.xml.dist ] || [ -f phpcs.xml.dist ]; then
-            ./vendor/bin/phpcs .
-          else
-            ./vendor/bin/phpcs --standard=Magento2 --ignore=*vendor/* .
-          fi
-        working-directory: ${{ inputs.path }}
+      - uses: graycoreio/github-actions-magento2/coding-standard@main
+        with:
+          path: ${{ inputs.path }}
 
     integration_test:
       runs-on:  ${{ matrix.os }}
