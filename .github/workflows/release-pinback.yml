@@ -22,6 +22,9 @@ jobs:
           sed -i "s|graycoreio/github-actions-magento2/\([^@]*\)@[^ #]*|graycoreio/github-actions-magento2/\1@main|g" \
             */action.yml .github/workflows/*.yml .github/workflows/*.yaml
 
+      - name: Show changed files
+        run: git diff
+
       - name: Check for local changes
         id: local-changes
         run: |
