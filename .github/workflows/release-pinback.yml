@@ -1,0 +1,47 @@
+name: Pinback Release Refs
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  pinback:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          token: ${{ secrets.GRAYCORE_GITHUB_TOKEN }}
+
+      - name: Restore @main refs
+        run: |
+          sed -i "s|graycoreio/github-actions-magento2/\([^@]*\)@[^ #]*|graycoreio/github-actions-magento2/\1@main|g" \
+            */action.yml .github/workflows/*.yml .github/workflows/*.yaml
+
+      - name: Check for local changes
+        id: local-changes
+        run: |
+          if git diff --quiet --exit-code; then
+            echo "HAS_LOCAL_CHANGES=false" >> $GITHUB_OUTPUT
+          else
+            echo "HAS_LOCAL_CHANGES=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit changes
+        if: ${{ steps.local-changes.outputs.HAS_LOCAL_CHANGES == 'true' }}
+        env:
+          GRAYBOT_GPG_KEY: ${{ secrets.GRAYBOT_GPG_KEY }}
+        run: |
+          echo "$GRAYBOT_GPG_KEY" | gpg --batch --import
+          export GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | grep sec | awk '{print $2}' | cut -d/ -f2)
+          git config --global user.signingkey $GPG_KEY_ID
+          git config --global commit.gpgSign true
+          git config --global user.email "automation@graycore.io"
+          git config --global user.name "Beep Boop"
+          git add .
+          git commit -m "chore: restore internal action refs to @main"
+          git push origin main
