@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 env:
   RELEASE_BRANCH: release-please--branches--main--components--github-actions-magento2
@@ -13,13 +14,28 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    outputs:
+      releases_created: ${{ steps.release.outputs.releases_created }}
     steps:
       - id: release
         uses: googleapis/release-please-action@v4
         with:
           token: ${{ secrets.GRAYCORE_GITHUB_TOKEN }}
 
+      - name: Check if release branch exists
+        id: branch-check
+        if: steps.release.outputs.releases_created != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GRAYCORE_GITHUB_TOKEN }}
+        run: |
+          if gh api "repos/${{ github.repository }}/git/refs/heads/${{ env.RELEASE_BRANCH }}" --silent 2>/dev/null; then
+            echo "EXISTS=true" >> $GITHUB_OUTPUT
+          else
+            echo "EXISTS=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Checkout release PR branch
+        if: steps.branch-check.outputs.EXISTS == 'true'
         uses: actions/checkout@v6
         with:
           ref: ${{ env.RELEASE_BRANCH }}
@@ -27,13 +43,14 @@ jobs:
 
       - name: Pin refs on release PR branch
         id: pin-refs
+        if: steps.branch-check.outputs.EXISTS == 'true'
         run: |
           VERSION="v$(jq -r '."."' .release-please-manifest.json)"
           echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
 
           sed -i "s|uses: graycoreio/github-actions-magento2/\([^@]*\)@main|uses: graycoreio/github-actions-magento2/\1@${VERSION}|g" \
             */action.yml \
-            $(find .github/workflows \( -name "*.yml" -o -name "*.yaml" \) ! -name "release-*")
+            $(find .github/workflows \( -name "*.yml" -o -name "*.yaml" \) ! -name "release-*" ! -name "_internal*")
 
           if git diff --quiet; then
             echo "HAS_CHANGES=false" >> $GITHUB_OUTPUT
@@ -55,3 +72,67 @@ jobs:
           git add .
           git commit -m "chore: pin internal action refs to ${{ steps.pin-refs.outputs.VERSION }}"
           git push origin ${{ env.RELEASE_BRANCH }}
+
+  pinback:
+    needs: release-please
+    if: needs.release-please.outputs.releases_created == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          token: ${{ secrets.GRAYBOT_PIN_BACK_PAT }}
+
+      - name: Extract version
+        id: version
+        run: |
+          VERSION="v$(jq -r '."."' .release-please-manifest.json)"
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Restore @main refs
+        run: |
+          sed -i "s|uses: graycoreio/github-actions-magento2/\([^@]*\)@[^ #]*|uses: graycoreio/github-actions-magento2/\1@main|g" \
+            */action.yml \
+            $(find .github/workflows \( -name "*.yml" -o -name "*.yaml" \) ! -name "release-please.yml")
+
+      - name: Show changed files
+        run: git diff
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet; then
+            echo "HAS_CHANGES=false" >> $GITHUB_OUTPUT
+          else
+            echo "HAS_CHANGES=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and open pinback PR
+        if: steps.changes.outputs.HAS_CHANGES == 'true'
+        env:
+          GRAYBOT_GPG_KEY: ${{ secrets.GRAYBOT_GPG_KEY }}
+          GH_TOKEN: ${{ secrets.GRAYBOT_PIN_BACK_PAT }}
+        run: |
+          echo "$GRAYBOT_GPG_KEY" | gpg --batch --import
+          export GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | grep sec | awk '{print $2}' | cut -d/ -f2)
+          git config --global user.signingkey $GPG_KEY_ID
+          git config --global commit.gpgSign true
+          git config --global user.email "automation@graycore.io"
+          git config --global user.name "Beep Boop"
+          BRANCH="chore/pinback-${{ steps.version.outputs.VERSION }}"
+          git checkout -b "$BRANCH"
+          git add .
+          git commit -m "chore: restore internal action refs to @main"
+          git push --force origin "$BRANCH"
+          EXISTING=$(gh pr list --head "$BRANCH" --json number --jq '.[0].number // empty')
+          if [ -z "$EXISTING" ]; then
+            gh pr create \
+              --base main \
+              --head "$BRANCH" \
+              --title "chore: restore internal action refs to @main after ${{ steps.version.outputs.VERSION }}" \
+              --body "Restores all internal \`graycoreio/github-actions-magento2\` action refs from \`${{ steps.version.outputs.VERSION }}\` back to \`@main\`."
+          else
+            echo "PR #$EXISTING already exists for $BRANCH — skipping creation"
+          fi
