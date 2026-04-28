@@ -44,7 +44,7 @@ jobs:
         steps:
         - uses: actions/checkout@v6
 
-        - uses: graycoreio/github-actions-magento2/setup-magento@v7.0.0-rc.0
+        - uses: graycoreio/github-actions-magento2/setup-magento@main
           id: setup-magento
           with:
             php-version: ${{ matrix.php }}
@@ -54,7 +54,7 @@ jobs:
             magento_repository: ${{ inputs.magento_repository }}
             composer_auth: ${{ secrets.composer_auth }}
 
-        - uses: graycoreio/github-actions-magento2/cache-magento@v7.0.0-rc.0
+        - uses: graycoreio/github-actions-magento2/cache-magento@main
           with:
             composer_cache_key: ${{ inputs.composer_cache_key }}
 
@@ -104,7 +104,7 @@ jobs:
         steps:
         - uses: actions/checkout@v6
 
-        - uses: graycoreio/github-actions-magento2/setup-magento@v7.0.0-rc.0
+        - uses: graycoreio/github-actions-magento2/setup-magento@main
           id: setup-magento
           with:
             php-version: ${{ matrix.php }}
@@ -114,7 +114,7 @@ jobs:
             magento_repository: ${{ inputs.magento_repository }}
             composer_auth: ${{ secrets.composer_auth }}
 
-        - uses: graycoreio/github-actions-magento2/cache-magento@v7.0.0-rc.0
+        - uses: graycoreio/github-actions-magento2/cache-magento@main
           with:
             composer_cache_key: ${{ inputs.composer_cache_key }}
 
@@ -161,7 +161,7 @@ jobs:
           tools: composer:v${{ matrix.composer }}
           coverage: none
 
-      - uses: graycoreio/github-actions-magento2/coding-standard@v7.0.0-rc.0
+      - uses: graycoreio/github-actions-magento2/coding-standard@main
         with:
           path: ${{ inputs.path }}
           composer_auth: ${{ secrets.composer_auth }}
@@ -175,7 +175,7 @@ jobs:
       steps:
       - uses: actions/checkout@v6
 
-      - uses: graycoreio/github-actions-magento2/setup-magento@v7.0.0-rc.0
+      - uses: graycoreio/github-actions-magento2/setup-magento@main
         id: setup-magento
         with:
           php-version: ${{ matrix.php }}
@@ -185,7 +185,7 @@ jobs:
           magento_repository: ${{ inputs.magento_repository }}
           composer_auth: ${{ secrets.composer_auth }}
 
-      - uses: graycoreio/github-actions-magento2/cache-magento@v7.0.0-rc.0
+      - uses: graycoreio/github-actions-magento2/cache-magento@main
         with:
           composer_cache_key: ${{ inputs.composer_cache_key }}
 
@@ -210,7 +210,7 @@ jobs:
           COMPOSER_AUTH: ${{ secrets.composer_auth }}
           COMPOSER_MIRROR_PATH_REPOS: 1
 
-      - uses: graycoreio/github-actions-magento2/get-magento-version@v7.0.0-rc.0
+      - uses: graycoreio/github-actions-magento2/get-magento-version@main
         id: magento-version
         with:
           working-directory: ${{ steps.setup-magento.outputs.path }}
