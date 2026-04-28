@@ -19,6 +19,7 @@ on:
 
 jobs:
   get-composer-version:
+    if: "!startsWith(github.head_ref, 'release-please')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6

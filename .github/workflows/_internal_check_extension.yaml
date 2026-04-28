@@ -22,6 +22,7 @@ on:
             - "!(**/*.md)"
 jobs:
   compute_matrix:
+      if: "!startsWith(github.head_ref, 'release-please')"
       runs-on: ubuntu-latest
       outputs:
         matrix: ${{ steps.supported-version.outputs.matrix }}
