@@ -52,12 +52,12 @@ runs:
         fi
 
     - name: Get Composer Version
-      uses: graycoreio/github-actions-magento2/get-composer-version@main
+      uses: graycoreio/github-actions-magento2/get-composer-version@v7.0.0-rc.0
       id: get-composer-version
       if: steps.check-installed.outputs.installed != 'true'
 
     - name: Check if allow-plugins option is available for this version of composer
-      uses: graycoreio/github-actions-magento2/semver-compare@main
+      uses: graycoreio/github-actions-magento2/semver-compare@v7.0.0-rc.0
       id: is-allow-plugins-available
       if: steps.check-installed.outputs.installed != 'true'
       with:

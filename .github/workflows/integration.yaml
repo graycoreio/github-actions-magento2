@@ -82,7 +82,7 @@ jobs:
         COMPOSER_AUTH: ${{ secrets.composer_auth }}
       name: Create Magento ${{ matrix.magento }} Project 
 
-    - uses: graycoreio/github-actions-magento2/get-magento-version@main
+    - uses: graycoreio/github-actions-magento2/get-magento-version@v7.0.0-rc.0
       id: magento-version
       with:
         working-directory:  ${{ inputs.magento_directory }}
