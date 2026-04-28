@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.0.0](https://github.com/graycoreio/github-actions-magento2/compare/v7.0.0-rc.0...v7.0.0) (2026-04-28)
+
+
+### Features
+
+* **supported-version:** update for Mage-OS 2.2.2 ([#317](https://github.com/graycoreio/github-actions-magento2/issues/317)) ([bbecc7f](https://github.com/graycoreio/github-actions-magento2/commit/bbecc7f5f9e4ddfdf5b41eb17fac6db1b30b56f0))
+
+
+### Bug Fixes
+
+* **supported-version:** filter uninstallable versions from usable kind ([#319](https://github.com/graycoreio/github-actions-magento2/issues/319)) ([f803617](https://github.com/graycoreio/github-actions-magento2/commit/f8036173e143ab5d13147c136e0d9e0c6bbb829b))
+
+
+### Miscellaneous Chores
+
+* promote release 7.0.0 ([90babb1](https://github.com/graycoreio/github-actions-magento2/commit/90babb16bfb28ca1953c95edb2301c9090b52f67))
+
 ## [7.0.0-rc.0](https://github.com/graycoreio/github-actions-magento2/compare/v6.0.0...v7.0.0-rc.0) (2026-04-28)
 
 
