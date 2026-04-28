@@ -90,7 +90,7 @@ runs:
       env:
         COMPOSER_AUTH: ${{ inputs.composer_auth }}
 
-    - uses: graycoreio/github-actions-magento2/fix-magento-install@v7.0.0-rc.0
+    - uses: graycoreio/github-actions-magento2/fix-magento-install@main
       name: Fix Magento Out of Box Install Issues
       with:
         magento_directory: ${{ steps.setup-magento-compute-directory.outputs.MAGENTO_DIRECTORY }}
