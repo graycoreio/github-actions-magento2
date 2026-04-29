@@ -26,11 +26,11 @@ runs:
       run: |
         echo "dir=$(composer config cache-files-dir --global)" >> $GITHUB_OUTPUT
 
-    - run: echo "::set-output name=version::$(php -v | awk 'NR==1{print $2}')"
+    - run: echo "version=$(php -v | awk 'NR==1{print $2}')" >> "$GITHUB_OUTPUT"
       shell: bash
       id: cache-magento-get-php-version
 
-    - run: echo "::set-output name=version::$(composer --version | awk '{print $3}')"
+    - run: echo "version=$(composer --version | awk '{print $3}')" >> "$GITHUB_OUTPUT"
       shell: bash
       name: Compute Composer Version
       id: cache-magento-get-composer-version
