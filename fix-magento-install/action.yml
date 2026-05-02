@@ -14,7 +14,7 @@ runs:
       with:
         working-directory: ${{ inputs.magento_directory }}
 
-    - run: echo "::set-output name=version::$(composer --version | awk '{print $3}')"
+    - run: echo "version=$(composer --version | awk '{print $3}')" >> $GITHUB_OUTPUT
       shell: bash
       name: Compute Composer Version
       id: init-magento-get-composer-version
