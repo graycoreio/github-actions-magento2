@@ -1,0 +1,69 @@
+name: Sansec eComscan Security Scan
+
+on:
+  push:
+    branches:
+    - main
+    paths:
+    - ".github/workflows/_internal-sansec-ecomscan.yaml"
+    - "sansec-ecomscan/**"
+    - "!(**/*.md)"
+  pull_request:
+    branches:
+    - main
+    paths:
+    - ".github/workflows/_internal-sansec-ecomscan.yaml"
+    - "sansec-ecomscan/**"
+    - "!(**/*.md)"
+  workflow_dispatch:
+
+env:
+  MAGENTO_COMPOSER_REPO: "https://mirror.mage-os.org/"
+
+jobs:
+  compute_matrix:
+    if: "!startsWith(github.head_ref, 'release-please')"
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.supported-version.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./supported-version
+        with:
+          kind: currently-supported
+        id: supported-version
+
+  run-ecomscan:
+    needs: compute_matrix
+    strategy:
+      matrix: ${{ fromJSON(needs.compute_matrix.outputs.matrix) }}
+      fail-fast: false
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: ./setup-magento
+        id: setup-magento
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v${{ matrix.composer }}
+          mode: extension
+          magento_repository: ${{ env.MAGENTO_COMPOSER_REPO }}
+          magento_version: ${{ matrix.magento }}
+          composer_auth: ${{ secrets.COMPOSER_AUTH }}
+
+      - name: Composer install
+        shell: bash
+        run: composer install
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        env:
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
+
+      - uses: ./sansec-ecomscan
+        with:
+          ecomscan_key: ${{ secrets.SANSEC_LICENSE_KEY }}
+          path: ${{ steps.setup-magento.outputs.path }}
