@@ -65,5 +65,5 @@ jobs:
 
       - uses: ./sansec-ecomscan
         with:
-          ecomscan_key: ${{ secrets.SANSEC_LICENSE_KEY }}
+          license: ${{ secrets.SANSEC_LICENSE_KEY }}
           path: ${{ steps.setup-magento.outputs.path }}
