@@ -1,0 +1,84 @@
+name: Setup Install Test
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches:
+    - main
+    paths:
+    - "_test/demo-package/**"
+    - "setup-install/**"
+    - ".github/workflows/_internal-setup-install.yaml"
+    - "supported-version/**"
+    - "!(**/*.md)"
+  pull_request:
+    branches:
+    - main
+    paths:
+    - "_test/demo-package/**"
+    - "setup-install/**"
+    - ".github/workflows/_internal-setup-install.yaml"
+    - "supported-version/**"
+    - "!(**/*.md)"
+
+jobs:
+  compute_matrix:
+    if: "!startsWith(github.head_ref, 'release-please')"
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.supported-version.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./supported-version
+        id: supported-version
+        with:
+          kind: currently-supported
+          include_services: true
+
+  setup-install:
+    needs: compute_matrix
+    strategy:
+      matrix: ${{ fromJSON(needs.compute_matrix.outputs.matrix) }}
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    services: ${{ matrix.services }}
+    steps:
+    - uses: actions/checkout@v6
+
+    - uses: ./setup-magento
+      id: setup-magento
+      with:
+        php-version: ${{ matrix.php }}
+        tools: composer:v${{ matrix.composer }}
+        mode: extension
+        magento_version: ${{ matrix.magento }}
+        magento_repository: "https://mirror.mage-os.org/"
+        composer_auth: ${{ secrets.COMPOSER_AUTH }}
+
+    - uses: ./cache-magento
+      with:
+        composer_cache_key: ${{ matrix.magento }}
+
+    - name: Add extension repository
+      working-directory: ${{ steps.setup-magento.outputs.path }}
+      run: composer config repositories.local path ${{ github.workspace }}/_test/demo-package
+
+    - name: Get package name
+      id: package
+      run: echo "name=$(jq -r .name ${{ github.workspace }}/_test/demo-package/composer.json)" >> $GITHUB_OUTPUT
+
+    - name: Require extension
+      working-directory: ${{ steps.setup-magento.outputs.path }}
+      run: composer require "${{ steps.package.outputs.name }}:@dev" --no-install
+
+    - name: Composer install
+      working-directory: ${{ steps.setup-magento.outputs.path }}
+      run: composer install
+      env:
+        COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
+        COMPOSER_MIRROR_PATH_REPOS: 1
+
+    - uses: ./setup-install
+      with:
+        services: ${{ toJSON(matrix.services) }}
+        path: ${{ steps.setup-magento.outputs.path }}
