@@ -1,0 +1,47 @@
+name: "Sansec eComscan Security Scan"
+author: "Graycore"
+description: "A Github Action that runs the Sansec eComscan security scanner."
+
+inputs:
+  license:
+    required: true
+    description: "Sansec license key (ECOMSCAN_KEY)"
+
+  path:
+    required: true
+    default: '.'
+    description: "The directory to scan."
+
+  skip_database:
+    required: false
+    default: 'true'
+    description: "Skip the database scan (--skip-database). Defaults to true."
+
+runs:
+  using: composite
+  steps:
+    - name: Download eComscan
+      shell: bash
+      run: wget https://ecomscan.com/downloads/linux-amd64/ecomscan
+
+    - name: Fix permissions
+      shell: bash
+      run: chmod +x ecomscan
+
+    - name: Run eComscan
+      shell: bash
+      env:
+        ECOMSCAN_KEY: ${{ inputs.license }}
+      run: |
+        FLAGS=(--no-auto-update --deep --format=csv)
+        [ "${{ inputs.skip_database }}" = "true" ] && FLAGS+=(--skip-database)
+        output=$(./ecomscan "${FLAGS[@]}" "${{ inputs.path }}")
+        if [ -n "$output" ]; then
+          echo "Security issues found:"
+          echo "$output"
+          exit 1
+        fi
+
+branding:
+  icon: "shield"
+  color: "red"
