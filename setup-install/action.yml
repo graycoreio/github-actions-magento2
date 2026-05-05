@@ -1,0 +1,31 @@
+name: "Magento setup:install"
+author: "Graycore"
+description: "A GitHub Action that runs bin/magento setup:install, deriving service flags from the supported-version services matrix."
+
+inputs:
+  services:
+    required: false
+    default: "null"
+    description: "JSON string of the services key from the supported-version matrix entry (toJSON(matrix.services))."
+
+  path:
+    required: false
+    default: "."
+    description: "Path to the Magento root directory. Accepts the output of the setup-magento action."
+
+  extra_args:
+    required: false
+    default: ""
+    description: "Additional raw flags to append to the setup:install command."
+
+outputs:
+  command:
+    description: "The full bin/magento setup:install command that was run."
+
+runs:
+  using: "node24"
+  main: "dist/index.js"
+
+branding:
+  icon: "tool"
+  color: "orange"

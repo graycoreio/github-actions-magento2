@@ -1,0 +1,22 @@
+{
+  "name": "@graycoreio/github-actions-magento2-setup-install",
+  "version": "1.0.0",
+  "description": "A Github Action that runs bin/magento setup:install from the supported-version services matrix",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "build": "npx esbuild --outfile=dist/index.js --platform=node --bundle --minify src/index.ts",
+    "test": "jest"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "0.0.0-PLACEHOLDER",
+    "@actions/exec": "0.0.0-PLACEHOLDER"
+  },
+  "devDependencies": {
+    "@types/jest": "0.0.0-PLACEHOLDER",
+    "jest": "0.0.0-PLACEHOLDER",
+    "ts-jest": "0.0.0-PLACEHOLDER"
+  }
+}
