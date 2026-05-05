@@ -56,6 +56,10 @@ jobs:
           magento_version: ${{ matrix.magento }}
           composer_auth: ${{ secrets.COMPOSER_AUTH }}
 
+      - uses: ./cache-magento
+        with:
+          composer_cache_key: ${{ matrix.magento }}
+
       - name: Composer install
         shell: bash
         run: composer install
