@@ -17,6 +17,11 @@ inputs:
     default: 'true'
     description: "Skip the database scan (--skip-database). Defaults to true."
 
+  skip-server-checks:
+    required: false
+    default: 'true'
+    description: "Skip server / os level checks like copy-fail"
+
 runs:
   using: composite
   steps:
@@ -27,12 +32,13 @@ runs:
     - name: Fix permissions
       shell: bash
       run: chmod +x ecomscan
-
+  
     - name: Run eComscan
       shell: bash
       env:
         ECOMSCAN_KEY: ${{ inputs.license }}
       run: |
+        [ "${{ inputs.skip-server-checks }}" = "true" ] && export ECOMSCAN_SKIP_SERVER_CHECKS=true
         FLAGS=(--no-auto-update --deep --format=csv)
         [ "${{ inputs.skip_database }}" = "true" ] && FLAGS+=(--skip-database)
         output=$(./ecomscan "${FLAGS[@]}" "${{ inputs.path }}")
