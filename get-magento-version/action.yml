@@ -2,29 +2,42 @@ name: "Get Magento Version"
 author: "Graycore"
 description: " A Github Action that determines the currently installed version of Magento"
 
-inputs: 
-  working-directory: 
+inputs:
+  working-directory:
     default: $GITHUB_WORKSPACE
     description: "The current working directory of the action"
     required: false
 
 outputs:
-  version: # id of output
-    description: 'The determined version of Magento'
+  version:
+    description: 'The resolved Magento version (e.g. 2.4.6-p14)'
     value: ${{ steps.get-magento-version.outputs.version }}
+  project:
+    description: 'The Magento project package name (e.g. magento/project-community-edition)'
+    value: ${{ steps.get-magento-version.outputs.project }}
 
 runs:
   using: "composite"
   steps:
-  - run: |
-      echo "version=$(cat composer.json | jq '.require 
-      | with_entries( select(.key == "magento/product-community-edition" or .key == "magento/product-enterprise-edition") )
-      | to_entries 
-      | .[0].value')" >> $GITHUB_OUTPUT
-    shell: bash
-    working-directory:  ${{ inputs.working-directory }}
-    name: Compute Installed Magento version
+  - name: Compute Installed Magento version
     id: get-magento-version
+    shell: bash
+    working-directory: ${{ inputs.working-directory }}
+    run: |
+      PATTERN="magento/product-(community|enterprise)-edition|mage-os/product-community-edition"
+
+      if [ -f composer.lock ]; then
+        RESULT=$(jq -r --arg p "$PATTERN" '.packages[] | select(.name | test($p)) | "\(.name) \(.version)"' composer.lock | head -1)
+      else
+        RESULT=$(jq -r --arg p "$PATTERN" '.require | to_entries[] | select(.key | test($p)) | "\(.key) \(.value)"' composer.json | head -1)
+      fi
+
+      PRODUCT=$(echo "$RESULT" | awk '{print $1}')
+      VERSION=$(echo "$RESULT" | awk '{print $2}' | sed 's/^v//')
+      PROJECT=$(echo "$PRODUCT" | sed 's/product-/project-/')
+
+      echo "version=\"$VERSION\"" >> $GITHUB_OUTPUT
+      echo "project=$PROJECT" >> $GITHUB_OUTPUT
 
 branding:
   icon: "code"
