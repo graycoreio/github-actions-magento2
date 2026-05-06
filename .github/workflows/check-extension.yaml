@@ -139,13 +139,9 @@ jobs:
             COMPOSER_AUTH: ${{ secrets.composer_auth }}
             COMPOSER_MIRROR_PATH_REPOS: 1
 
-        - name: Enable all modules
-          working-directory: ${{ steps.setup-magento.outputs.path }}
-          run: php bin/magento module:enable --all
-
-        - name: Compile
-          working-directory: ${{ steps.setup-magento.outputs.path }}
-          run: php bin/magento setup:di:compile
+        - uses: graycoreio/github-actions-magento2/setup-di-compile@main
+          with:
+            path: ${{ steps.setup-magento.outputs.path }}
 
     coding-standard:
       runs-on:  ${{ matrix.os }}
