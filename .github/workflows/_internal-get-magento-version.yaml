@@ -37,8 +37,13 @@ jobs:
         with:
           working-directory:  ../magento2
 
-      - name: Fail if key does not match
+      - name: Fail if version does not match
         if: steps.magento-version.outputs.version != '"2.4.5-p1"'
         shell: bash
         run: echo "${{ steps.magento-version.outputs.version }}" && exit 1
+
+      - name: Fail if project does not match
+        if: steps.magento-version.outputs.project != 'magento/project-community-edition'
+        shell: bash
+        run: echo "${{ steps.magento-version.outputs.project }}" && exit 1
        
