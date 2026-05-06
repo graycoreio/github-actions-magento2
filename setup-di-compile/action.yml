@@ -1,0 +1,26 @@
+name: "Magento compilation (setup:di:compile)"
+author: "Graycore"
+description: "A GitHub Action that runs bin/magento setup:di:compile."
+
+inputs:
+  path:
+    required: false
+    default: "."
+    description: "Path to the Magento root directory. Accepts the output of the setup-magento action."
+
+runs:
+  using: composite
+  steps:
+    - name: Enable all modules
+      working-directory: ${{ inputs.path }}
+      shell: bash
+      run: php bin/magento module:enable --all
+
+    - name: Compile
+      working-directory: ${{ inputs.path }}
+      shell: bash
+      run: php bin/magento setup:di:compile
+
+branding:
+  icon: "tool"
+  color: "orange"
