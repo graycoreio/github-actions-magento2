@@ -1,0 +1,5 @@
+{
+    "name": "vendor/module",
+    "type": "magento2-module",
+    "require": {}
+}

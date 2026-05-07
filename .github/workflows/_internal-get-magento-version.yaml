@@ -46,4 +46,25 @@ jobs:
         if: steps.magento-version.outputs.project != 'magento/project-community-edition'
         shell: bash
         run: echo "${{ steps.magento-version.outputs.project }}" && exit 1
-       
+
+  get-magento-version-extension:
+    if: "!startsWith(github.head_ref, 'release-please')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Create mock extension composer.json
+        shell: bash
+        run: |
+          mkdir -p /tmp/test-extension
+          echo '{"name":"vendor/module","type":"magento2-module","require":{}}' > /tmp/test-extension/composer.json
+
+      - uses: ./get-magento-version
+        id: ext-version
+        with:
+          working-directory: /tmp/test-extension
+
+      - name: Fail if project is not empty
+        if: steps.ext-version.outputs.project != ''
+        shell: bash
+        run: echo "Expected empty project, got '${{ steps.ext-version.outputs.project }}'" && exit 1

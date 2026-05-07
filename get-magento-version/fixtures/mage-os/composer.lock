@@ -1,0 +1,9 @@
+{
+    "packages": [
+        {
+            "name": "mage-os/product-community-edition",
+            "version": "1.0.0"
+        }
+    ],
+    "packages-dev": []
+}

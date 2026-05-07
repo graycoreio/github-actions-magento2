@@ -1,0 +1,5 @@
+{
+    "require": {
+        "magento/product-community-edition": "2.4.6-p1"
+    }
+}

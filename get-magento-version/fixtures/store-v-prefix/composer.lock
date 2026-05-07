@@ -1,0 +1,9 @@
+{
+    "packages": [
+        {
+            "name": "magento/product-community-edition",
+            "version": "v2.4.6"
+        }
+    ],
+    "packages-dev": []
+}

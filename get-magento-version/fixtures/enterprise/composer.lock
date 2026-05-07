@@ -1,0 +1,9 @@
+{
+    "packages": [
+        {
+            "name": "magento/product-enterprise-edition",
+            "version": "2.4.7-p1"
+        }
+    ],
+    "packages-dev": []
+}
