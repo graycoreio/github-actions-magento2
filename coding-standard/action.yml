@@ -111,7 +111,7 @@ runs:
         [ -n "${{ inputs.error_severity }}" ] && FLAGS+=(--error-severity=${{ inputs.error_severity }}) || true
 
         if [ -f .phpcs.xml ] || [ -f phpcs.xml ] || [ -f .phpcs.xml.dist ] || [ -f phpcs.xml.dist ]; then
-          vendor/bin/phpcs "${FLAGS[@]}" .
+          vendor/bin/phpcs "${FLAGS[@]}"
         else
           vendor/bin/phpcs --standard=Magento2 --ignore=*vendor/* "${FLAGS[@]}" .
         fi
