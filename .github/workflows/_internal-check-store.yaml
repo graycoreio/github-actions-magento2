@@ -1,0 +1,77 @@
+name: Check Store Test
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/_internal-check-store.yaml"
+      - ".github/workflows/check-store.yaml"
+      - "supported-version/**"
+      - "get-magento-version/**"
+      - "!(**/*.md)"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/_internal-check-store.yaml"
+      - ".github/workflows/check-store.yaml"
+      - "supported-version/**"
+      - "get-magento-version/**"
+      - "!(**/*.md)"
+
+jobs:
+  compute_matrix:
+    if: "!startsWith(github.head_ref, 'release-please')"
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.supported-version.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./supported-version
+        id: supported-version
+        with:
+          kind: currently-supported
+
+  prepare-fixture:
+    needs: compute_matrix
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix: ${{ fromJSON(needs.compute_matrix.outputs.matrix) }}
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v${{ matrix.composer }}
+          coverage: none
+
+      - uses: ./cache-magento
+        with:
+          composer_cache_key: ${{ matrix.magento }}
+
+      - name: Create Magento store fixture
+        run: composer create-project --repository-url="https://mirror.mage-os.org/" "${{ matrix.magento }}" ./store-fixture
+
+      - name: Strip vendor from fixture
+        run: rm -rf ./store-fixture/vendor
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: store-fixture-${{ matrix.version }}
+          path: ./store-fixture
+          retention-days: 3
+
+  check-store:
+    needs: [compute_matrix, prepare-fixture]
+    strategy:
+      matrix: ${{ fromJSON(needs.compute_matrix.outputs.matrix) }}
+      fail-fast: false
+    uses: ./.github/workflows/check-store.yaml
+    with:
+      store_artifact_name: store-fixture-${{ matrix.version }}
+      path: "."
+      composer_cache_key: ${{ matrix.magento }}
