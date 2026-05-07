@@ -17,6 +17,8 @@ Opinionated Github Actions and Workflows to make building, testing, and maintain
 
 ## Workflows
 
+If you are new here, start with a reusable workflow. They are pre-built CI pipelines that you can adopt in minutes — no deep knowledge of the individual actions required. Pick the one that matches your project type and call it from your own workflow file.
+
 | Workflow Name                                                        | Description                                                                          |
 | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
 | [Integration Test](./.github/workflows/integration-README.md)        | A Github Workflow that runs the Integration Tests of a Magento Package               |
@@ -24,6 +26,9 @@ Opinionated Github Actions and Workflows to make building, testing, and maintain
 | [MageCheck Store](./.github/workflows/check-store-README.md)         | A Github Workflow that runs various kinds of quality checks for a Magento Store.     |
 
 ## Actions
+
+If the reusable workflows do not fit your needs, the individual actions are the building blocks they are composed from. Use these when you need full control over your pipeline.
+
 
 | Action Name                                                  | Description                                                                               |
 | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
