@@ -5,6 +5,7 @@
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/graycoreio/github-actions-magento2)
 [![Integration Test](https://img.shields.io/github/actions/workflow/status/graycoreio/github-actions-magento2/_internal-integration.yaml?label=Integration%20Test&labelColor=1a1a1a)](https://github.com/graycoreio/github-actions-magento2/actions/workflows/_internal-integration.yaml)
 [![MageCheck](https://img.shields.io/github/actions/workflow/status/graycoreio/github-actions-magento2/_internal_check_extension.yaml?label=Check%20Extension%20Test&labelColor=1a1a1a)](https://github.com/graycoreio/github-actions-magento2/actions/workflows/_internal_check_extension.yaml)
+[![MageCheck Store](https://img.shields.io/github/actions/workflow/status/graycoreio/github-actions-magento2/_internal-check-store.yaml?label=Check%20Store%20Test&labelColor=1a1a1a)](https://github.com/graycoreio/github-actions-magento2/actions/workflows/_internal-check-store.yaml)
 
 </div>
 
@@ -20,6 +21,7 @@ Opinionated Github Actions and Workflows to make building, testing, and maintain
 | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
 | [Integration Test](./.github/workflows/integration-README.md)        | A Github Workflow that runs the Integration Tests of a Magento Package               |
 | [MageCheck Extension](./.github/workflows/check-extension-README.md) | A Github Workflow that runs various kinds of quality checks for a Magento Extension. |
+| [MageCheck Store](./.github/workflows/check-store-README.md)         | A Github Workflow that runs various kinds of quality checks for a Magento Store.     |
 
 ## Actions
 
