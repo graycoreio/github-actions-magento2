@@ -1,5 +1,7 @@
 # Integration Tests for a Magento Package
 
+> **Deprecated** — use [MageCheck Extension](./check-extension-README.md) instead. Scheduled for removal in v10.
+
 A Github Workflow that runs the Integration Tests of a Magento Package
 
 ## Inputs
