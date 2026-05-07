@@ -12,12 +12,11 @@ export const amendMatrixForNext = (matrix: GithubActionsMatrix, repository: Repo
     const nextVersionRegExp = new RegExp(nextVersionPlaceHolder + '$');
     matrix.magento = matrix.magento.map((item) => item.match(nextVersionRegExp) ? unifyNextPackageName(item, repository, date) : item);
     matrix.include = matrix.include.map((item) => {
-        return item.magento.match(nextVersionRegExp)
-            ? {
-                ...item,
-                magento: unifyNextPackageName(item.magento, repository, date),
-            }
-            : item;
+        if (!item.magento.match(nextVersionRegExp)) {
+            return item;
+        }
+        const magento = unifyNextPackageName(item.magento, repository, date);
+        return { ...item, magento, version: magento.split(':')[1] };
     });
     return matrix;
 }

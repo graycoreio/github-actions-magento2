@@ -16,7 +16,7 @@ export const getMatrixForVersions = (project: string, versions: string[]): Githu
 
         return {
             magento: [...acc.magento, current],
-            include: [...acc.include, knownVersions[current]]
+            include: [...acc.include, { ...knownVersions[current], version: current.split(':')[1] ?? '' }]
         }
     }, {magento: [], include: []});
 }

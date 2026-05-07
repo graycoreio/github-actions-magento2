@@ -11,6 +11,7 @@ export interface Services {
 
 export interface PackageMatrixVersion {
     magento: string,
+    version: string,
     php: string | number,
     composer: string | number,
     mysql: string,

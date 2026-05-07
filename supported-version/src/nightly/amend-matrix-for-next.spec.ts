@@ -4,10 +4,11 @@ describe('amendMatrixForNext', () => {
     it('should amend the "next" versions listed in the matrix output for the given repo', () => {
         expect(
             amendMatrixForNext(
-                { 
+                {
                     include: [
                         {
                             "magento": "magento/project-community-edition:next",
+                            "version": "next",
                             "php": 8.2,
                             "composer": "2",
                             "mysql": "mysql:8.0",
@@ -24,15 +25,16 @@ describe('amendMatrixForNext', () => {
                         }
                     ],
                     magento: ["magento/project-community-edition:next"]
-                }, 
-                "https://upstream-nightly.mage-os.org", 
+                },
+                "https://upstream-nightly.mage-os.org",
                 new Date()
                 )
         ).toEqual(
-            { 
+            {
                 include: [
                     {
                         "magento": "magento/project-community-edition:@alpha",
+                        "version": "@alpha",
                         "php": 8.2,
                         "composer": "2",
                         "mysql": "mysql:8.0",
@@ -56,10 +58,11 @@ describe('amendMatrixForNext', () => {
     it('should should do nothing to matrixes that contain no next versions', () => {
         expect(
             amendMatrixForNext(
-                { 
+                {
                     include: [
                         {
                             "magento": "magento/project-community-edition:v2.4.6-p2",
+                            "version": "v2.4.6-p2",
                             "php": 8.2,
                             "composer": "2",
                             "mysql": "mysql:8.0",
@@ -76,15 +79,16 @@ describe('amendMatrixForNext', () => {
                         }
                     ],
                     magento: ["magento/project-community-edition:v2.4.6-p2"]
-                }, 
-                "https://upstream-nightly.mage-os.org", 
+                },
+                "https://upstream-nightly.mage-os.org",
                 new Date()
                 )
         ).toEqual(
-            { 
+            {
                 include: [
                     {
                         "magento": "magento/project-community-edition:v2.4.6-p2",
+                        "version": "v2.4.6-p2",
                         "php": 8.2,
                         "composer": "2",
                         "mysql": "mysql:8.0",
@@ -108,10 +112,11 @@ describe('amendMatrixForNext', () => {
     it('should only modify next versions', () => {
         expect(
             amendMatrixForNext(
-                { 
+                {
                     include: [
                         {
                             "magento": "magento/project-community-edition:v2.4.6-p2",
+                            "version": "v2.4.6-p2",
                             "php": 8.2,
                             "composer": "2",
                             "mysql": "mysql:8.0",
@@ -128,6 +133,7 @@ describe('amendMatrixForNext', () => {
                         },
                         {
                             "magento": "magento/project-community-edition:next",
+                            "version": "next",
                             "php": 8.2,
                             "composer": "2",
                             "mysql": "mysql:8.0",
@@ -144,15 +150,16 @@ describe('amendMatrixForNext', () => {
                         }
                     ],
                     magento: ["magento/project-community-edition:v2.4.6-p2", "magento/project-community-edition:next"]
-                }, 
-                "https://upstream-nightly.mage-os.org", 
+                },
+                "https://upstream-nightly.mage-os.org",
                 new Date()
                 )
         ).toEqual(
-            { 
+            {
                 include: [
                     {
                         "magento": "magento/project-community-edition:v2.4.6-p2",
+                        "version": "v2.4.6-p2",
                         "php": 8.2,
                         "composer": "2",
                         "mysql": "mysql:8.0",
@@ -169,6 +176,7 @@ describe('amendMatrixForNext', () => {
                     },
                     {
                         "magento": "magento/project-community-edition:@alpha",
+                        "version": "@alpha",
                         "php": 8.2,
                         "composer": "2",
                         "mysql": "mysql:8.0",
@@ -192,10 +200,11 @@ describe('amendMatrixForNext', () => {
     it('should amend the "next" versions listed in the matrix output for the given repo, for a different project', () => {
         expect(
             amendMatrixForNext(
-                { 
+                {
                     include: [
                         {
                             "magento": "mage-os/project-community-edition:next",
+                            "version": "next",
                             "php": 8.2,
                             "composer": "2",
                             "mysql": "mysql:8.0",
@@ -212,15 +221,16 @@ describe('amendMatrixForNext', () => {
                         }
                     ],
                     magento: ["mage-os/project-community-edition:next"]
-                }, 
-                "https://upstream-nightly.mage-os.org", 
+                },
+                "https://upstream-nightly.mage-os.org",
                 new Date()
                 )
         ).toEqual(
-            { 
+            {
                 include: [
                     {
                         "magento": "mage-os/project-community-edition:@alpha",
+                        "version": "@alpha",
                         "php": 8.2,
                         "composer": "2",
                         "mysql": "mysql:8.0",

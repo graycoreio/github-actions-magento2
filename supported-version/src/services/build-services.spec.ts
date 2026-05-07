@@ -3,6 +3,7 @@ import { PackageMatrixVersion } from '../matrix/matrix-type';
 
 const createTestEntry = (overrides: Partial<PackageMatrixVersion> = {}): PackageMatrixVersion => ({
   magento: 'magento/project-community-edition:2.4.7',
+  version: '2.4.7',
   php: '8.3',
   composer: '2.7.4',
   mysql: 'mysql:8.4',
