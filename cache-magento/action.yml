@@ -31,11 +31,21 @@ runs:
       name: Compute Composer Version
       id: cache-magento-get-composer-version
 
+    - name: Compute cache keys
+      id: cache-magento-keys
+      shell: bash
+      run: |
+        bash "${{ github.action_path }}/compute-cache-keys.sh" \
+          "${{ inputs.composer_cache_key }}" \
+          "${{ steps.cache-magento-get-php-version.outputs.version }}" \
+          "${{ steps.cache-magento-get-composer-version.outputs.version }}" \
+          >> $GITHUB_OUTPUT
+
     - name: "Cache Composer Packages"
       uses: actions/cache@v5
       id: cache-magento-cache
       with:
-        key: "composer | v5.8 | ${{ inputs.composer_cache_key }} | ${{ steps.cache-magento-get-composer-version.outputs.version }} | ${{ steps.cache-magento-get-php-version.outputs.version }}"
+        key: ${{ steps.cache-magento-keys.outputs.download-key }}
         path: ${{ steps.cache-magento-composer-cache.outputs.dir }}
 
 branding:

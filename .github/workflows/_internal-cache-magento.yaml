@@ -1,0 +1,23 @@
+name: Cache Magento Test
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "cache-magento/**"
+      - ".github/workflows/_internal-cache-magento.yaml"
+      - "!(**/*.md)"
+  pull_request:
+    branches: [main]
+    paths:
+      - "cache-magento/**"
+      - ".github/workflows/_internal-cache-magento.yaml"
+      - "!(**/*.md)"
+
+jobs:
+  unit:
+    if: "!startsWith(github.head_ref, 'release-please')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: bash cache-magento/test.sh
