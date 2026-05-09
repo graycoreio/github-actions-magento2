@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.0.0](https://github.com/graycoreio/github-actions-magento2/compare/v7.0.0...v8.0.0) (2026-05-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* **setup-magento:** Previously, when using setup-magento in extension mode, the magento 2 repo root was ../magento2 (outside of the extension folder). Due to interactions with `cache-magento` we need to keep magento inside the GITHUB_WORKSPACE (the root repo). We now do this in the `_ghamagento` folder. If you rely on the `steps.setup-magento.outputs.path` nothing changes for you. But, if you hardcoded the path, it's likely broken.
+
+### Features
+
+* **cache-magento:** add stamp caching for vendor/ directory ([#245](https://github.com/graycoreio/github-actions-magento2/issues/245)) ([8d00f81](https://github.com/graycoreio/github-actions-magento2/commit/8d00f8149abb5fe9dc9cc87775b108f30284cf21))
+* **cache-magento:** include runner.os in the cache key ([#245](https://github.com/graycoreio/github-actions-magento2/issues/245)) ([2d7238d](https://github.com/graycoreio/github-actions-magento2/commit/2d7238de14a6ce3657b430ebd89f60b4cc341a09))
+* **check-extension:** enable stamp caching ([#248](https://github.com/graycoreio/github-actions-magento2/issues/248)) ([baef64b](https://github.com/graycoreio/github-actions-magento2/commit/baef64bc0a235dc92cb81c10afbd22e70e6623f2))
+* **check-extension:** use setup-di-compile action in compile-extension job ([#240](https://github.com/graycoreio/github-actions-magento2/issues/240)) ([6a520d4](https://github.com/graycoreio/github-actions-magento2/commit/6a520d49fd4ba3f33151dbb8c12dfd3be47630ab))
+* **check-store:** enable stamp caching ([#247](https://github.com/graycoreio/github-actions-magento2/issues/247)) ([59f87b6](https://github.com/graycoreio/github-actions-magento2/commit/59f87b6b2e4e0007e041c82329291012ee95ce61))
+* **check-store:** introduce new check-store workflow ([#241](https://github.com/graycoreio/github-actions-magento2/issues/241)) ([d311df7](https://github.com/graycoreio/github-actions-magento2/commit/d311df79661d13ab252eb681600608ed821c78fd))
+* **get-magento-version:** pull version from lockfile if it exists ([#242](https://github.com/graycoreio/github-actions-magento2/issues/242)) ([87989bb](https://github.com/graycoreio/github-actions-magento2/commit/87989bb250aab72274ad9f71481f70f0a8d8ac1e))
+* **sansec-ecomscan:** add sansec ecomscan feature ([#235](https://github.com/graycoreio/github-actions-magento2/issues/235)) ([3c0a90f](https://github.com/graycoreio/github-actions-magento2/commit/3c0a90f92ba4e3aaa6854bc98d451fde7340877d))
+* **sansec-ecomscan:** skip server checks by default ([#238](https://github.com/graycoreio/github-actions-magento2/issues/238)) ([bbd8307](https://github.com/graycoreio/github-actions-magento2/commit/bbd830745f9b752d308f4ef1b8fdc48cea10e5ba))
+* **setup-di-compile:** restore setup-di-compile as a lean action ([#239](https://github.com/graycoreio/github-actions-magento2/issues/239)) ([212f9a8](https://github.com/graycoreio/github-actions-magento2/commit/212f9a8e86e2c214910e26c3ea19eb90b9aafc4b))
+* **setup-install:** add new setup-install action ([#237](https://github.com/graycoreio/github-actions-magento2/issues/237)) ([e31f6f6](https://github.com/graycoreio/github-actions-magento2/commit/e31f6f656a2e24afcb95dcc1b4c4dc51e73d00f7))
+* **setup-magento:** extension working dir changed to _ghamagento folder ([#246](https://github.com/graycoreio/github-actions-magento2/issues/246)) ([a729f8b](https://github.com/graycoreio/github-actions-magento2/commit/a729f8b2fda45af7c4a4cd0bbe32bdf5151bf125))
+* **setup-magento:** mkdir app/etc in extension mode ([#246](https://github.com/graycoreio/github-actions-magento2/issues/246)) ([c53607c](https://github.com/graycoreio/github-actions-magento2/commit/c53607cca85b77c08a9ae826e5f1365f2b7b9ace))
+* **supported-version:** dynamically append "version" to matrix ([a7e327d](https://github.com/graycoreio/github-actions-magento2/commit/a7e327d44f6dbca270be5f5c5488498f8ba27b2b))
+
+
+### Bug Fixes
+
+* **coding-standard:** use exactly phpcs.xml if exists ([#243](https://github.com/graycoreio/github-actions-magento2/issues/243)) ([a1c6246](https://github.com/graycoreio/github-actions-magento2/commit/a1c6246c7834203379f25acb03ba8ad7ad42c859))
+* **fix-magento-install:** remove deprecated set-output ([c115395](https://github.com/graycoreio/github-actions-magento2/commit/c115395583913b1beb539aa514a305d8dcbb9364))
+
 ## [7.0.0](https://github.com/graycoreio/github-actions-magento2/compare/v7.0.0-rc.0...v7.0.0) (2026-04-29)
 
 

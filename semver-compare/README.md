@@ -31,7 +31,7 @@ jobs:
     name: A job to semantically compare two versions
     steps:
       - uses: actions/checkout@v6
-      - uses: graycoreio/github-actions-magento2/semver-compare@v7 # x-release-please-major
+      - uses: graycoreio/github-actions-magento8/semver-compare@v7 # x-release-please-major
         with:
           version: 2.1.0
           compare_against: 2.2.3

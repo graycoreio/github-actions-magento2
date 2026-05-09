@@ -50,13 +50,13 @@ jobs:
         matrix: ${{ steps.supported-version.outputs.matrix }}
       steps:
         - uses: actions/checkout@v6
-        - uses: graycoreio/github-actions-magento2/supported-version@v7 # x-release-please-major
+        - uses: graycoreio/github-actions-magento8/supported-version@v7 # x-release-please-major
           with:
             include_services: true
           id: supported-version
   integration-workflow:
     needs: compute_matrix
-    uses: graycoreio/github-actions-magento2/.github/workflows/integration.yaml@v7 # x-release-please-major
+    uses: graycoreio/github-actions-magento8/.github/workflows/integration.yaml@v7 # x-release-please-major
     with:
       package_name: my-vendor/package
       matrix: ${{ needs.compute_matrix.outputs.matrix }}

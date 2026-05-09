@@ -51,7 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: graycoreio/github-actions-magento2/setup-magento@v7 # x-release-please-major
+      - uses: graycoreio/github-actions-magento8/setup-magento@v7 # x-release-please-major
         id: setup-magento
         with:
           php-version: "8.3"
@@ -89,7 +89,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: graycoreio/github-actions-magento2/setup-magento@v7 # x-release-please-major
+      - uses: graycoreio/github-actions-magento8/setup-magento@v7 # x-release-please-major
         id: setup-magento
         with:
           php-version: "8.3"

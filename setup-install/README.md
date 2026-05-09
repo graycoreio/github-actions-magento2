@@ -36,7 +36,7 @@ jobs:
       matrix: ${{ steps.supported-version.outputs.matrix }}
     steps:
       - uses: actions/checkout@v6
-      - uses: graycoreio/github-actions-magento2/supported-version@v7 # x-release-please-major
+      - uses: graycoreio/github-actions-magento8/supported-version@v7 # x-release-please-major
         id: supported-version
         with:
           include_services: "true"
@@ -51,7 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: graycoreio/github-actions-magento2/setup-magento@v7 # x-release-please-major
+      - uses: graycoreio/github-actions-magento8/setup-magento@v7 # x-release-please-major
         id: setup-magento
         with:
           php-version: ${{ matrix.php }}
@@ -64,7 +64,7 @@ jobs:
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
-      - uses: graycoreio/github-actions-magento2/setup-install@v7 # x-release-please-major
+      - uses: graycoreio/github-actions-magento8/setup-install@v7 # x-release-please-major
         with:
           services: ${{ toJSON(matrix.services) }}
           path: ${{ steps.setup-magento.outputs.path }}
