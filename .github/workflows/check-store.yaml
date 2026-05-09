@@ -20,6 +20,12 @@ on:
         default: ""
         description: "If provided, download store files from this artifact instead of using actions/checkout."
 
+      stamp:
+        type: boolean
+        required: false
+        default: false
+        description: "Cache the vendor/ directory in addition to the Composer download cache."
+
     secrets:
       composer_auth:
         required: false
@@ -76,9 +82,11 @@ jobs:
           working-directory: ${{ inputs.path }}
           composer_auth: ${{ secrets.composer_auth }}
 
-      - uses: graycoreio/github-actions-magento2/cache-magento@main
+      - uses: graycoreio/github-actions-magento2/cache-magento@cache-magento-overhaul
         with:
           composer_cache_key: ${{ inputs.composer_cache_key }}
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          stamp: ${{ inputs.stamp }}
 
       - name: Composer install
         working-directory: ${{ steps.setup-magento.outputs.path }}
@@ -135,9 +143,11 @@ jobs:
           working-directory: ${{ inputs.path }}
           composer_auth: ${{ secrets.composer_auth }}
 
-      - uses: graycoreio/github-actions-magento2/cache-magento@main
+      - uses: graycoreio/github-actions-magento2/cache-magento@cache-magento-overhaul
         with:
           composer_cache_key: ${{ inputs.composer_cache_key }}
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          stamp: ${{ inputs.stamp }}
 
       - name: Composer install
         working-directory: ${{ steps.setup-magento.outputs.path }}

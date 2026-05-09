@@ -43,26 +43,49 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: shivammathur/setup-php@v2
+      - uses: ./setup-magento
+        id: setup-magento
         with:
           php-version: ${{ matrix.php }}
           tools: composer:v${{ matrix.composer }}
-          coverage: none
+          magento_version: ${{ matrix.magento }}
+          mode: extension
+
+      - run: composer update --no-install
+        working-directory: ${{ steps.setup-magento.outputs.path }}
 
       - uses: ./cache-magento
         with:
           composer_cache_key: ${{ matrix.magento }}
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          stamp: true
 
-      - name: Create Magento store fixture
-        run: composer create-project --repository-url="https://mirror.mage-os.org/" "${{ matrix.magento }}" ./store-fixture
+      - name: Inspect stamp cache contents
+        if: always()
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        run: |
+          echo "=== top-level vendor/magento ==="
+          ls vendor/magento/ 2>/dev/null | head -30 || echo "(no vendor/magento)"
+          echo
+          echo "=== magento2-base presence ==="
+          if [ -d vendor/magento/magento2-base ]; then
+            echo "PRESENT — file count: $(find vendor/magento/magento2-base -type f | wc -l)"
+          else
+            echo "ABSENT (negation worked)"
+          fi
+          echo
+          echo "=== installed.json mentions magento/magento2-base ==="
+          grep -c '"name": "magento/magento2-base"' vendor/composer/installed.json 2>/dev/null || echo 0
 
-      - name: Strip vendor from fixture
-        run: rm -rf ./store-fixture/vendor
+      - run: composer install
+        working-directory: ${{ steps.setup-magento.outputs.path }}
 
       - uses: actions/upload-artifact@v7
         with:
           name: store-fixture-${{ matrix.version }}
-          path: ./store-fixture
+          path: |
+            ${{ steps.setup-magento.outputs.path }}
+            !${{ steps.setup-magento.outputs.path }}/vendor
           retention-days: 3
 
   check-store:
@@ -73,5 +96,6 @@ jobs:
     uses: ./.github/workflows/check-store.yaml
     with:
       store_artifact_name: store-fixture-${{ matrix.version }}
-      path: "."
+      path: "_ghamagento/"
       composer_cache_key: ${{ matrix.magento }}
+      stamp: true
