@@ -68,7 +68,7 @@ runs:
     - run: |
         MAGENTO_DIRECTORY=""
         if [ "${{ inputs.mode }}" = 'extension' ]; then
-            MAGENTO_DIRECTORY="../magento2"
+            MAGENTO_DIRECTORY="_ghamagento"
         else
             MAGENTO_DIRECTORY="${{ inputs.working-directory }}"
         fi
