@@ -11,7 +11,7 @@
       "release-type": "node",
       "extra-files": [
         { "type": "generic", "path": "*/README.md", "glob": true },
-        { "type": "generic", "path": ".github/workflows/*-README.md", "glob": true }
+        { "type": "generic", "path": "docs/workflows/*.md", "glob": true }
       ]
     }
   }

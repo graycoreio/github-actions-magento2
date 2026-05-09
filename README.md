@@ -21,9 +21,9 @@ If you are new here, start with a reusable workflow. They are pre-built CI pipel
 
 | Workflow Name                                                        | Description                                                                          |
 | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| [Integration Test](./.github/workflows/integration-README.md)        | **Deprecated** — use MageCheck Extension instead. A Github Workflow that runs the Integration Tests of a Magento Package. |
-| [MageCheck Extension](./.github/workflows/check-extension-README.md) | A Github Workflow that runs various kinds of quality checks for a Magento Extension. |
-| [MageCheck Store](./.github/workflows/check-store-README.md)         | A Github Workflow that runs various kinds of quality checks for a Magento Store.     |
+| [Integration Test](./docs/workflows/integration.md)        | **Deprecated** — use MageCheck Extension instead. A Github Workflow that runs the Integration Tests of a Magento Package. |
+| [MageCheck Extension](./docs/workflows/check-extension.md) | A Github Workflow that runs various kinds of quality checks for a Magento Extension. |
+| [MageCheck Store](./docs/workflows/check-store.md)         | A Github Workflow that runs various kinds of quality checks for a Magento Store.     |
 
 ## Actions
 

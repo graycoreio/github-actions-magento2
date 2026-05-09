@@ -4,7 +4,7 @@ A Github Workflow that runs various kinds of quality checks for a Magento Extens
 
 ## Inputs
 
-See the [check-extension.yaml](./check-extension.yaml)
+See the [check-extension.yaml](../../.github/workflows/check-extension.yaml)
 
 | Input              | Description                                                                                                                                     | Required | Default                     |
 | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- | -------- | --------------------------- |

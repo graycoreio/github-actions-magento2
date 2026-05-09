@@ -2,11 +2,11 @@
 
 A Github Workflow that runs various kinds of quality checks for a Magento Store.
 
-Unlike [MageCheck Extension](./check-extension-README.md), this workflow automatically detects the Magento version from your store's `composer.lock` — no matrix computation required in the calling workflow.
+Unlike [MageCheck Extension](./check-extension.md), this workflow automatically detects the Magento version from your store's `composer.lock` — no matrix computation required in the calling workflow.
 
 ## Inputs
 
-See the [check-store.yaml](./check-store.yaml)
+See the [check-store.yaml](../../.github/workflows/check-store.yaml)
 
 | Input               | Description                                                                            | Required | Default   |
 | ------------------- | -------------------------------------------------------------------------------------- | -------- | --------- |
