@@ -90,6 +90,11 @@ runs:
       env:
         COMPOSER_AUTH: ${{ inputs.composer_auth }}
 
+    - run: mkdir -p ${{ steps.setup-magento-compute-directory.outputs.MAGENTO_DIRECTORY }}/app/etc
+      shell: bash
+      name: Ensure app/etc exists for magento composer plugin
+      if: inputs.mode == 'extension'
+
     - uses: graycoreio/github-actions-magento2/fix-magento-install@main
       name: Fix Magento Out of Box Install Issues
       with:
