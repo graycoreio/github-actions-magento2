@@ -22,16 +22,22 @@ field() {
   echo "$1" | grep "^${2}=" | cut -d= -f2-
 }
 
-# Default cache key
-OUT=$(bash "$SCRIPT" "_mageos" "8.3.0" "2.2.6")
-assert_eq "default: download-key" \
-  "composer | v5.8 | _mageos | 2.2.6 | 8.3.0" \
+# Default cache key (Linux)
+OUT=$(bash "$SCRIPT" "_mageos" "Linux" "8.3.0" "2.2.6")
+assert_eq "linux: download-key" \
+  "composer | v5.8 | Linux | _mageos | 2.2.6 | 8.3.0" \
+  "$(field "$OUT" download-key)"
+
+# OS segment differentiates macOS from Linux
+OUT=$(bash "$SCRIPT" "_mageos" "macOS" "8.3.0" "2.2.6")
+assert_eq "macos: download-key" \
+  "composer | v5.8 | macOS | _mageos | 2.2.6 | 8.3.0" \
   "$(field "$OUT" download-key)"
 
 # Custom composer_cache_key
-OUT=$(bash "$SCRIPT" "custom-v2" "8.1.5" "2.4.2")
+OUT=$(bash "$SCRIPT" "custom-v2" "Linux" "8.1.5" "2.4.2")
 assert_eq "custom key: download-key" \
-  "composer | v5.8 | custom-v2 | 2.4.2 | 8.1.5" \
+  "composer | v5.8 | Linux | custom-v2 | 2.4.2 | 8.1.5" \
   "$(field "$OUT" download-key)"
 
 echo ""

@@ -37,6 +37,7 @@ runs:
       run: |
         bash "${{ github.action_path }}/compute-cache-keys.sh" \
           "${{ inputs.composer_cache_key }}" \
+          "${{ runner.os }}" \
           "${{ steps.cache-magento-get-php-version.outputs.version }}" \
           "${{ steps.cache-magento-get-composer-version.outputs.version }}" \
           >> $GITHUB_OUTPUT
