@@ -50,7 +50,7 @@ jobs:
         steps:
         - uses: actions/checkout@v6
 
-        - uses: graycoreio/github-actions-magento2/setup-magento@cache-magento-overhaul
+        - uses: graycoreio/github-actions-magento2/setup-magento@main
           id: setup-magento
           with:
             php-version: ${{ matrix.php }}
@@ -75,7 +75,7 @@ jobs:
         - run: composer update --no-install
           working-directory: ${{ steps.setup-magento.outputs.path }}
 
-        - uses: graycoreio/github-actions-magento2/cache-magento@cache-magento-overhaul
+        - uses: graycoreio/github-actions-magento2/cache-magento@main
           with:
             composer_cache_key: ${{ inputs.composer_cache_key && format('{0} | {1}', inputs.composer_cache_key, matrix.magento) || matrix.magento }}
             working-directory: ${{ steps.setup-magento.outputs.path }}
@@ -115,7 +115,7 @@ jobs:
         steps:
         - uses: actions/checkout@v6
 
-        - uses: graycoreio/github-actions-magento2/setup-magento@cache-magento-overhaul
+        - uses: graycoreio/github-actions-magento2/setup-magento@main
           id: setup-magento
           with:
             php-version: ${{ matrix.php }}
@@ -142,7 +142,7 @@ jobs:
         - run: composer update --no-install
           working-directory: ${{ steps.setup-magento.outputs.path }}
 
-        - uses: graycoreio/github-actions-magento2/cache-magento@cache-magento-overhaul
+        - uses: graycoreio/github-actions-magento2/cache-magento@main
           with:
             composer_cache_key: ${{ inputs.composer_cache_key && format('{0} | {1}', inputs.composer_cache_key, matrix.magento) || matrix.magento }}
             working-directory: ${{ steps.setup-magento.outputs.path }}
@@ -173,7 +173,7 @@ jobs:
           tools: composer:v${{ matrix.composer }}
           coverage: none
 
-      - uses: graycoreio/github-actions-magento2/cache-magento@cache-magento-overhaul
+      - uses: graycoreio/github-actions-magento2/cache-magento@main
         with:
           composer_cache_key: ${{ inputs.composer_cache_key && format('{0} | {1}', inputs.composer_cache_key, matrix.magento) || matrix.magento }}
 
@@ -191,7 +191,7 @@ jobs:
       steps:
       - uses: actions/checkout@v6
 
-      - uses: graycoreio/github-actions-magento2/setup-magento@cache-magento-overhaul
+      - uses: graycoreio/github-actions-magento2/setup-magento@main
         id: setup-magento
         with:
           php-version: ${{ matrix.php }}
@@ -218,7 +218,7 @@ jobs:
       - run: composer update --no-install
         working-directory: ${{ steps.setup-magento.outputs.path }}
 
-      - uses: graycoreio/github-actions-magento2/cache-magento@cache-magento-overhaul
+      - uses: graycoreio/github-actions-magento2/cache-magento@main
         with:
           composer_cache_key: ${{ inputs.composer_cache_key && format('{0} | {1}', inputs.composer_cache_key, matrix.magento) || matrix.magento }}
           working-directory: ${{ steps.setup-magento.outputs.path }}
