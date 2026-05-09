@@ -11,23 +11,23 @@ The action operates in two modes:
 
 ## Inputs
 
-| Input | Required | Default | Description |
-|-------|----------|---------|-------------|
-| `php-version` | Yes | `8.4` | PHP version to install |
-| `mode` | Yes | `extension` | Either `extension` or `store` |
-| `magento_version` | No | `magento/project-community-edition:2.4.8-p3` | Magento version to install (extension mode only) |
-| `magento_repository` | No | `https://mirror.mage-os.org/` | Composer repository URL for Magento packages |
-| `tools` | No | - | PHP tools to install globally (e.g., `composer:v2`) |
-| `extensions` | No | - | Additional PHP extensions to install |
-| `coverage` | No | - | Code coverage driver (e.g., `xdebug`, `pcov`) |
-| `working-directory` | No | `.` | Working directory for the action |
-| `apply_fixes` | No | `false` | Apply Magento installation fixes (always applied in extension mode) |
-| `composer_auth` | No | - | Composer authentication credentials JSON |
+| Input                | Required | Default                                      | Description                                                         |
+| -------------------- | -------- | -------------------------------------------- | ------------------------------------------------------------------- |
+| `php-version`        | Yes      | `8.4`                                        | PHP version to install                                              |
+| `mode`               | Yes      | `extension`                                  | Either `extension` or `store`                                       |
+| `magento_version`    | No       | `magento/project-community-edition:2.4.8-p3` | Magento version to install (extension mode only)                    |
+| `magento_repository` | No       | `https://mirror.mage-os.org/`                | Composer repository URL for Magento packages                        |
+| `tools`              | No       | -                                            | PHP tools to install globally (e.g., `composer:v2`)                 |
+| `extensions`         | No       | -                                            | Additional PHP extensions to install                                |
+| `coverage`           | No       | -                                            | Code coverage driver (e.g., `xdebug`, `pcov`)                       |
+| `working-directory`  | No       | `.`                                          | Working directory for the action                                    |
+| `apply_fixes`        | No       | `false`                                      | Apply Magento installation fixes (always applied in extension mode) |
+| `composer_auth`      | No       | -                                            | Composer authentication credentials JSON                            |
 
 ## Outputs
 
-| Output | Description |
-|--------|-------------|
+| Output | Description                                         |
+| ------ | --------------------------------------------------- |
 | `path` | Absolute path to the Magento installation directory |
 
 ## Usage
@@ -51,7 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: graycoreio/github-actions-magento/setup-magento@main
+      - uses: graycoreio/github-actions-magento2/setup-magento@v7 # x-release-please-major
         id: setup-magento
         with:
           php-version: "8.3"
@@ -89,7 +89,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: graycoreio/github-actions-magento/setup-magento@main
+      - uses: graycoreio/github-actions-magento2/setup-magento@v7 # x-release-please-major
         id: setup-magento
         with:
           php-version: "8.3"

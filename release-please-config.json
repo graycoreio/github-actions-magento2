@@ -8,7 +8,11 @@
   "pull-request-title-pattern": "chore: release ${version}",
   "packages": {
     ".": {
-      "release-type": "node"
+      "release-type": "node",
+      "extra-files": [
+        { "type": "generic", "path": "*/README.md", "glob": true },
+        { "type": "generic", "path": ".github/workflows/*-README.md", "glob": true }
+      ]
     }
   }
 }

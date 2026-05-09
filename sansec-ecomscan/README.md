@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: graycoreio/github-actions-magento2/sansec-ecomscan@7.1.0
+      - uses: graycoreio/github-actions-magento2/sansec-ecomscan@v7 # x-release-please-major
         with:
           license: ${{ secrets.SANSEC_LICENSE_KEY }}
 ```
