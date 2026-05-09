@@ -20,8 +20,7 @@ on:
     - "!(**/*.md)"
 
 env:
-  PSEUDO_REPO_FOLDER: ../magento_repo
-  magento_folder: ../magento2
+  magento_folder: _ghamagento
   MAGENTO_COMPOSER_REPO: "https://mirror.mage-os.org/"
 
 jobs:
@@ -38,6 +37,18 @@ jobs:
         id: supported-version
       - run: echo ${{ steps.supported-version.outputs.matrix }}
 
+  compute_matrix_latest:
+    if: "!startsWith(github.head_ref, 'release-please')"
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.supported-version.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./supported-version
+        with:
+          kind: latest
+        id: supported-version
+
   setup-magento-store:
     needs: compute_matrix
     strategy:
@@ -47,51 +58,122 @@ jobs:
     steps:
     - uses: actions/checkout@v6
 
-    - run: |
-        PSEUDO_STORE_FULL_PATH=$(realpath "${{ env.PSEUDO_REPO_FOLDER }}")
-        echo "PSEUDO_STORE_FULL_PATH=$PSEUDO_STORE_FULL_PATH" >> $GITHUB_ENV
-      name: Generate Full Pseudo Store Path
-      shell: bash
-
     - name: Set PHP Version
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php }}
         tools: composer:v${{ matrix.composer }}
 
-    - uses: actions/cache@v5
-      id: setup-magento-store-cache
-      with:
-        key: setup-magento-ci | ${{ runner.os }} | ${{ matrix.magento }}
-        path: ${{ env.PSEUDO_STORE_FULL_PATH }}
-
-    - run: composer create-project --repository-url="${{ env.MAGENTO_COMPOSER_REPO }}" "${{ matrix.magento }}" "${{ env.PSEUDO_REPO_FOLDER }}" --no-install
+    - run: composer create-project --repository-url="${{ env.MAGENTO_COMPOSER_REPO }}" "${{ matrix.magento }}" "${{ env.magento_folder }}" --no-install
       name: Create Store to simulate a real Magento store in a real repo.
-      if: steps.setup-magento-store-cache.outputs.cache-hit != 'true'
       env:
         COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
     - uses: ./fix-magento-install
       name: Fix Magento Out of Box Install Issues
       with:
-        magento_directory: ${{ env.PSEUDO_REPO_FOLDER }}
-      if: steps.setup-magento-store-cache.outputs.cache-hit != 'true'
+        magento_directory: ${{ env.magento_folder }}
       env:
         COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
+
+    - run: composer update --no-install
+      working-directory: ${{ env.magento_folder }}
+
+    - uses: ./cache-magento
+      with:
+        composer_cache_key: ${{ matrix.magento }}
+        working-directory: ${{ env.magento_folder }}
+        stamp: true
 
     - run: composer install
       shell: bash
-      working-directory: "${{ env.PSEUDO_REPO_FOLDER }}"
-      if: steps.setup-magento-store-cache.outputs.cache-hit != 'true'
+      working-directory: "${{ env.magento_folder }}"
       env:
         COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
-    - run: git init && git config user.email "you@example.com" && git config user.name "Your Name" && git add . && git commit -m "init" && git clean -fdx
-      working-directory: "${{ env.PSEUDO_REPO_FOLDER }}"
-      if: steps.setup-magento-store-cache.outputs.cache-hit != 'true'
-
-    - run: cp -R ${{ env.PSEUDO_REPO_FOLDER }} ${{ env.magento_folder }}
+    - name: Write Magento .gitignore so git clean strips vendor/generated/var from the cached tree
+      working-directory: "${{ env.magento_folder }}"
       shell: bash
+      run: |
+        cat > .gitignore <<'EOF'
+        /.buildpath
+        /.cache
+        /.metadata
+        /.project
+        /.settings
+        /.vscode
+        atlassian*
+        /nbproject
+        /robots.txt
+        /pub/robots.txt
+        /sitemap
+        /sitemap.xml
+        /pub/sitemap
+        /pub/sitemap.xml
+        /.idea
+        /.gitattributes
+        /app/config_sandbox
+        /app/etc/config.php
+        /app/etc/env.php
+        /app/code/Magento/TestModule*
+        /lib/internal/flex/uploader/.actionScriptProperties
+        /lib/internal/flex/uploader/.flexProperties
+        /lib/internal/flex/uploader/.project
+        /lib/internal/flex/uploader/.settings
+        /lib/internal/flex/varien/.actionScriptProperties
+        /lib/internal/flex/varien/.flexLibProperties
+        /lib/internal/flex/varien/.project
+        /lib/internal/flex/varien/.settings
+        /node_modules
+        /.grunt
+        /Gruntfile.js
+        /package.json
+        /.php_cs
+        /.php_cs.cache
+        /.php-cs-fixer.php
+        /.php-cs-fixer.cache
+        /grunt-config.json
+        /pub/media/*.*
+        !/pub/media/.htaccess
+        /pub/media/attribute/*
+        !/pub/media/attribute/.htaccess
+        /pub/media/analytics/*
+        /pub/media/catalog/*
+        !/pub/media/catalog/.htaccess
+        /pub/media/customer/*
+        !/pub/media/customer/.htaccess
+        /pub/media/downloadable/*
+        !/pub/media/downloadable/.htaccess
+        /pub/media/favicon/*
+        /pub/media/import/*
+        !/pub/media/import/.htaccess
+        /pub/media/logo/*
+        /pub/media/custom_options/*
+        !/pub/media/custom_options/.htaccess
+        /pub/media/theme/*
+        /pub/media/theme_customization/*
+        !/pub/media/theme_customization/.htaccess
+        /pub/media/wysiwyg/*
+        !/pub/media/wysiwyg/.htaccess
+        /pub/media/tmp/*
+        !/pub/media/tmp/.htaccess
+        /pub/media/captcha/*
+        /pub/media/sitemap/*
+        !/pub/media/sitemap/.htaccess
+        /pub/static/*
+        !/pub/static/.htaccess
+
+        /var/*
+        !/var/.htaccess
+        /vendor/*
+        !/vendor/.htaccess
+        /generated/*
+        !/generated/.htaccess
+        .DS_Store
+        EOF
+
+    - run: git init && git config user.email "you@example.com" && git config user.name "Your Name" && git add . && git commit -m "init" && git clean -fdx
+      working-directory: "${{ env.magento_folder }}"
 
     - uses: ./setup-magento
       id: setup-magento
@@ -101,10 +183,12 @@ jobs:
         mode: store
         working-directory: ${{ env.magento_folder }}
         composer_auth: ${{ secrets.COMPOSER_AUTH }}
-    
+
     - uses: ./cache-magento
       with:
-        composer_cache_key:  '${{ matrix.magento }}'
+        composer_cache_key: ${{ matrix.magento }}
+        working-directory: ${{ env.magento_folder }}
+        stamp: true
 
     - run: composer install
       name: Composer install
@@ -114,24 +198,32 @@ jobs:
         COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
   setup-magento-extension:
-    if: "!startsWith(github.head_ref, 'release-please')"
+    needs: compute_matrix_latest
+    strategy:
+      matrix: ${{ fromJSON(needs.compute_matrix_latest.outputs.matrix) }}
+      fail-fast: false
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6 
+    - uses: actions/checkout@v6
 
     - uses: ./setup-magento
       id: setup-magento
       with:
-        php-version: 8.4
-        tools: composer:v2.8
+        php-version: ${{ matrix.php }}
+        tools: composer:v${{ matrix.composer }}
         mode: extension
         magento_repository: ${{ env.MAGENTO_COMPOSER_REPO }}
         composer_auth: ${{ secrets.COMPOSER_AUTH }}
-        magento_version: magento/project-community-edition:2.4.8-p3
+        magento_version: ${{ matrix.magento }}
+
+    - run: composer update --no-install
+      working-directory: ${{ steps.setup-magento.outputs.path }}
 
     - uses: ./cache-magento
       with:
-        composer_cache_key: 'magento/project-community-edition:2.4.8-p3'
+        composer_cache_key: ${{ matrix.magento }}
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        stamp: true
     
     - run: composer install
       name: Composer install
