@@ -7,11 +7,31 @@ inputs:
     required: false
     default: "__mageos"
     description: A key to version the composer cache. Can be incremented if you need to bust the cache.
+  working-directory:
+    required: false
+    default: "."
+    description: "The working directory where Magento is installed (location of vendor/ and composer.lock)"
+  stamp:
+    required: false
+    default: "false"
+    description: "Cache the vendor/ directory in addition to the Composer download cache"
+  exclude-from-stamp:
+    required: false
+    default: ""
+    description: |
+      Newline-separated list of Composer package names to exclude from the stamp cache (e.g. magento/module-foo).
+      magento/magento2-base and mage-os/magento2-base are always excluded regardless of this input.
 
 outputs:
   cache-hit:
     description: "A boolean value to indicate an exact match was found for the key"
     value: ${{ steps.cache-magento-cache.outputs.cache-hit }}
+  key:
+    description: "The cache key used for the Composer download cache"
+    value: ${{ steps.cache-magento-keys.outputs.download-key }}
+  stamp-key:
+    description: "The cache key used for the vendor/ stamp cache (only set when stamp: true)"
+    value: ${{ steps.cache-magento-keys.outputs.stamp-key }}
 
 runs:
   using: "composite"
@@ -31,6 +51,31 @@ runs:
       name: Compute Composer Version
       id: cache-magento-get-composer-version
 
+    - name: Validate working-directory is inside GITHUB_WORKSPACE
+      if: inputs.stamp == 'true'
+      shell: bash
+      run: |
+        WORKING_DIR="$(realpath '${{ inputs.working-directory }}')"
+        WORKSPACE="$(realpath '${{ github.workspace }}')"
+        if [[ "$WORKING_DIR" != "$WORKSPACE"* ]]; then
+          echo "::error::cache-magento: working-directory '${{ inputs.working-directory }}' resolves outside GITHUB_WORKSPACE. You cannot use the `stamp` cache in folders outside the workspace."
+          exit 1
+        fi
+
+    - uses: graycoreio/github-actions-magento2/get-magento-version@main
+      id: cache-magento-get-magento-version
+      with:
+        working-directory: ${{ inputs.working-directory }}
+
+    - name: Validate composer.lock exists for stamp cache (store mode)
+      if: inputs.stamp == 'true' && steps.cache-magento-get-magento-version.outputs.project != ''
+      shell: bash
+      run: |
+        if [[ ! -f "${{ inputs.working-directory }}/composer.lock" ]]; then
+          echo "::error::cache-magento: stamp: true on a store requires a '${{ inputs.working-directory }}/composer.lock' to exist."
+          exit 1
+        fi
+
     - name: Compute cache keys
       id: cache-magento-keys
       shell: bash
@@ -40,6 +85,8 @@ runs:
           "${{ runner.os }}" \
           "${{ steps.cache-magento-get-php-version.outputs.version }}" \
           "${{ steps.cache-magento-get-composer-version.outputs.version }}" \
+          "${{ steps.cache-magento-get-magento-version.outputs.project }}" \
+          "${{ hashFiles(format('{0}/composer.lock', inputs.working-directory)) }}" \
           >> $GITHUB_OUTPUT
 
     - name: "Cache Composer Packages"
@@ -47,7 +94,32 @@ runs:
       id: cache-magento-cache
       with:
         key: ${{ steps.cache-magento-keys.outputs.download-key }}
+        restore-keys: |
+          ${{ steps.cache-magento-keys.outputs.download-restore-key }}
         path: ${{ steps.cache-magento-composer-cache.outputs.dir }}
+
+    - name: Compute stamp paths
+      id: cache-magento-stamp-paths
+      if: inputs.stamp == 'true'
+      shell: bash
+      env:
+        EXCLUDE_FROM_STAMP: ${{ inputs.exclude-from-stamp }}
+        WORKING_DIR: ${{ inputs.working-directory }}
+      run: |
+        PATHS=$(bash "${{ github.action_path }}/compute-stamp-paths.sh" "$(realpath "$WORKING_DIR")" "$EXCLUDE_FROM_STAMP")
+        {
+          echo "paths<<EOF"
+          echo "$PATHS"
+          echo "EOF"
+        } >> "$GITHUB_OUTPUT"
+
+    - name: "Cache Vendor (Stamp)"
+      uses: actions/cache@v5
+      if: inputs.stamp == 'true'
+      with:
+        key: ${{ steps.cache-magento-keys.outputs.stamp-key }}
+        path: |
+          ${{ steps.cache-magento-stamp-paths.outputs.paths }}
 
 branding:
   icon: "code"
