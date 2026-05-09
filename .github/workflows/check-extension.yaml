@@ -27,8 +27,14 @@ on:
     composer_cache_key:
         type: string
         required: false
-        default: "_mageos"
+        default: ""
         description: A key to version the composer cache. Can be incremented if you need to bust the cache.
+
+    stamp:
+        type: boolean
+        required: false
+        default: false
+        description: "Cache the vendor/ directory in addition to the Composer download cache."
 
   secrets:
     composer_auth:
@@ -44,7 +50,7 @@ jobs:
         steps:
         - uses: actions/checkout@v6
 
-        - uses: graycoreio/github-actions-magento2/setup-magento@main
+        - uses: graycoreio/github-actions-magento2/setup-magento@cache-magento-overhaul
           id: setup-magento
           with:
             php-version: ${{ matrix.php }}
@@ -53,10 +59,6 @@ jobs:
             magento_version: ${{ matrix.magento }}
             magento_repository: ${{ inputs.magento_repository }}
             composer_auth: ${{ secrets.composer_auth }}
-
-        - uses: graycoreio/github-actions-magento2/cache-magento@main
-          with:
-            composer_cache_key: ${{ inputs.composer_cache_key }}
 
         - name: Add extension repository
           working-directory: ${{ steps.setup-magento.outputs.path }}
@@ -69,6 +71,15 @@ jobs:
         - name: Require extension
           working-directory: ${{ steps.setup-magento.outputs.path }}
           run: composer require "${{ steps.package.outputs.name }}:@dev" --no-install
+
+        - run: composer update --no-install
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+
+        - uses: graycoreio/github-actions-magento2/cache-magento@cache-magento-overhaul
+          with:
+            composer_cache_key: ${{ inputs.composer_cache_key && format('{0} | {1}', inputs.composer_cache_key, matrix.magento) || matrix.magento }}
+            working-directory: ${{ steps.setup-magento.outputs.path }}
+            stamp: ${{ inputs.stamp }}
 
         - name: Composer install
           working-directory: ${{ steps.setup-magento.outputs.path }}
@@ -104,7 +115,7 @@ jobs:
         steps:
         - uses: actions/checkout@v6
 
-        - uses: graycoreio/github-actions-magento2/setup-magento@main
+        - uses: graycoreio/github-actions-magento2/setup-magento@cache-magento-overhaul
           id: setup-magento
           with:
             php-version: ${{ matrix.php }}
@@ -113,10 +124,6 @@ jobs:
             magento_version: ${{ matrix.magento }}
             magento_repository: ${{ inputs.magento_repository }}
             composer_auth: ${{ secrets.composer_auth }}
-
-        - uses: graycoreio/github-actions-magento2/cache-magento@main
-          with:
-            composer_cache_key: ${{ inputs.composer_cache_key }}
 
         - name: Add extension repository
           working-directory: ${{ steps.setup-magento.outputs.path }}
@@ -131,6 +138,15 @@ jobs:
           run: composer require "${{ steps.package.outputs.name }}:@dev" --no-install
           env:
             COMPOSER_AUTH: ${{ secrets.composer_auth }}
+
+        - run: composer update --no-install
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+
+        - uses: graycoreio/github-actions-magento2/cache-magento@cache-magento-overhaul
+          with:
+            composer_cache_key: ${{ inputs.composer_cache_key && format('{0} | {1}', inputs.composer_cache_key, matrix.magento) || matrix.magento }}
+            working-directory: ${{ steps.setup-magento.outputs.path }}
+            stamp: ${{ inputs.stamp }}
 
         - name: Composer install
           working-directory: ${{ steps.setup-magento.outputs.path }}
@@ -157,6 +173,10 @@ jobs:
           tools: composer:v${{ matrix.composer }}
           coverage: none
 
+      - uses: graycoreio/github-actions-magento2/cache-magento@cache-magento-overhaul
+        with:
+          composer_cache_key: ${{ inputs.composer_cache_key && format('{0} | {1}', inputs.composer_cache_key, matrix.magento) || matrix.magento }}
+
       - uses: graycoreio/github-actions-magento2/coding-standard@main
         with:
           path: ${{ inputs.path }}
@@ -171,7 +191,7 @@ jobs:
       steps:
       - uses: actions/checkout@v6
 
-      - uses: graycoreio/github-actions-magento2/setup-magento@main
+      - uses: graycoreio/github-actions-magento2/setup-magento@cache-magento-overhaul
         id: setup-magento
         with:
           php-version: ${{ matrix.php }}
@@ -180,10 +200,6 @@ jobs:
           magento_version: ${{ matrix.magento }}
           magento_repository: ${{ inputs.magento_repository }}
           composer_auth: ${{ secrets.composer_auth }}
-
-      - uses: graycoreio/github-actions-magento2/cache-magento@main
-        with:
-          composer_cache_key: ${{ inputs.composer_cache_key }}
 
       - name: Add extension repository
         working-directory: ${{ steps.setup-magento.outputs.path }}
@@ -198,6 +214,15 @@ jobs:
         run: composer require "${{ steps.package.outputs.name }}:@dev" --no-install
         env:
           COMPOSER_AUTH: ${{ secrets.composer_auth }}
+
+      - run: composer update --no-install
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+
+      - uses: graycoreio/github-actions-magento2/cache-magento@cache-magento-overhaul
+        with:
+          composer_cache_key: ${{ inputs.composer_cache_key && format('{0} | {1}', inputs.composer_cache_key, matrix.magento) || matrix.magento }}
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          stamp: ${{ inputs.stamp }}
 
       - name: Composer install
         working-directory: ${{ steps.setup-magento.outputs.path }}
