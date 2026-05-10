@@ -3,7 +3,7 @@
   "bump-patch-for-minor-pre-major": true,
   "draft-pull-request": true,
   "prerelease": true,
-  "prerelease-type": "rc",
+  "prerelease-type": "rc.0",
   "include-component-in-tag": false,
   "include-v-in-tag": true,
   "pull-request-title-pattern": "chore: release ${version}",
