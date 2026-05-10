@@ -62,7 +62,7 @@ runs:
           exit 1
         fi
 
-    - uses: graycoreio/github-actions-magento2/get-magento-version@main
+    - uses: graycoreio/github-actions-magento2/get-magento-version@v8.0.0-rc.0
       id: cache-magento-get-magento-version
       with:
         working-directory: ${{ inputs.working-directory }}
