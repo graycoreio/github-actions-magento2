@@ -95,6 +95,22 @@ runs:
       name: Ensure app/etc exists for magento composer plugin
       if: inputs.mode == 'extension'
 
+    - name: Prevent Magento install from being mirrored into consumer vendor
+      if: inputs.mode == 'extension'
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        MAGENTO_DIRECTORY: ${{ steps.setup-magento-compute-directory.outputs.MAGENTO_DIRECTORY }}
+      run: |
+        line="/$MAGENTO_DIRECTORY export-ignore"
+        if [[ -f .gitattributes ]] && grep -qxF "$line" .gitattributes; then
+          exit 0
+        fi
+        if [[ -s .gitattributes && -n "$(tail -c1 .gitattributes)" ]]; then
+          printf '\n' >> .gitattributes
+        fi
+        printf '%s\n' "$line" >> .gitattributes
+
     - uses: graycoreio/github-actions-magento2/fix-magento-install@main
       name: Fix Magento Out of Box Install Issues
       with:

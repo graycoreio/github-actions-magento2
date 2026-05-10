@@ -68,14 +68,6 @@ jobs:
           id: package
           run: echo "name=$(jq -r .name ${{ github.workspace }}/${{ inputs.path }}/composer.json)" >> $GITHUB_OUTPUT
 
-        - name: Exclude store dir from path-repo copy
-          shell: bash
-          run: |
-            EXT_COMPOSER="${{ github.workspace }}/${{ inputs.path }}/composer.json"
-            tmp="$(mktemp)"
-            jq '.archive.exclude = ((.archive.exclude // []) + ["/_ghamagento"] | unique)' "$EXT_COMPOSER" > "$tmp"
-            mv "$tmp" "$EXT_COMPOSER"
-
         - name: Require extension
           working-directory: ${{ steps.setup-magento.outputs.path }}
           run: composer require "${{ steps.package.outputs.name }}:@dev" --no-install
@@ -140,14 +132,6 @@ jobs:
         - name: Get package name
           id: package
           run: echo "name=$(jq -r .name ${{ github.workspace }}/${{ inputs.path }}/composer.json)" >> $GITHUB_OUTPUT
-
-        - name: Exclude store dir from path-repo copy
-          shell: bash
-          run: |
-            EXT_COMPOSER="${{ github.workspace }}/${{ inputs.path }}/composer.json"
-            tmp="$(mktemp)"
-            jq '.archive.exclude = ((.archive.exclude // []) + ["/_ghamagento"] | unique)' "$EXT_COMPOSER" > "$tmp"
-            mv "$tmp" "$EXT_COMPOSER"
 
         - name: Require extension
           working-directory: ${{ steps.setup-magento.outputs.path }}
@@ -224,14 +208,6 @@ jobs:
       - name: Get package name
         id: package
         run: echo "name=$(jq -r .name ${{ github.workspace }}/${{ inputs.path }}/composer.json)" >> $GITHUB_OUTPUT
-
-      - name: Exclude store dir from path-repo copy
-        shell: bash
-        run: |
-          EXT_COMPOSER="${{ github.workspace }}/${{ inputs.path }}/composer.json"
-          tmp="$(mktemp)"
-          jq '.archive.exclude = ((.archive.exclude // []) + ["/_ghamagento"] | unique)' "$EXT_COMPOSER" > "$tmp"
-          mv "$tmp" "$EXT_COMPOSER"
 
       - name: Require extension
         working-directory: ${{ steps.setup-magento.outputs.path }}
