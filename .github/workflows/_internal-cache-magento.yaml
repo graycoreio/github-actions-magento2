@@ -6,13 +6,13 @@ on:
     paths:
       - "cache-magento/**"
       - ".github/workflows/_internal-cache-magento.yaml"
-      - "!(**/*.md)"
+      - "!**/*.md"
   pull_request:
     branches: [main]
     paths:
       - "cache-magento/**"
       - ".github/workflows/_internal-cache-magento.yaml"
-      - "!(**/*.md)"
+      - "!**/*.md"
 
 jobs:
   unit:

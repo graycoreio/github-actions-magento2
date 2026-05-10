@@ -10,7 +10,7 @@ on:
             - ".github/workflows/_internal_check_extension.yaml"
             - ".github/workflows/check-extension.yaml"
             - "supported-version/**"
-            - "!(**/*.md)"
+            - "!**/*.md"
     pull_request:
         branches:
             - main
@@ -19,7 +19,7 @@ on:
             - ".github/workflows/_internal_check_extension.yaml"
             - ".github/workflows/check-extension.yaml"
             - "supported-version/**"
-            - "!(**/*.md)"
+            - "!**/*.md"
 jobs:
   compute_matrix:
       if: "!startsWith(github.head_ref, 'release-please')"

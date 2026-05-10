@@ -9,7 +9,7 @@ on:
     - "setup-magento/**"
     - ".github/workflows/_internal-setup-magento.yaml"
     - "supported-version/**"
-    - "!(**/*.md)"
+    - "!**/*.md"
   pull_request:
     branches:
     - main
@@ -17,7 +17,7 @@ on:
     - "setup-magento/**"
     - ".github/workflows/_internal-setup-magento.yaml"
     - "supported-version/**"
-    - "!(**/*.md)"
+    - "!**/*.md"
 
 env:
   magento_folder: _ghamagento
