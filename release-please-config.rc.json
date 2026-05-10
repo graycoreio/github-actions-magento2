@@ -10,11 +10,7 @@
   "packages": {
     ".": {
       "release-type": "node",
-      "versioning": "prerelease",
-      "extra-files": [
-        { "type": "generic", "path": "*/README.md", "glob": true },
-        { "type": "generic", "path": "docs/workflows/*.md", "glob": true }
-      ]
+      "versioning": "prerelease"
     }
   }
 }
