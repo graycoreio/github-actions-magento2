@@ -95,7 +95,7 @@ runs:
       name: Ensure app/etc exists for magento composer plugin
       if: inputs.mode == 'extension'
 
-    - uses: graycoreio/github-actions-magento2/fix-magento-install@v8.0.0-rc.0
+    - uses: graycoreio/github-actions-magento2/fix-magento-install@main
       name: Fix Magento Out of Box Install Issues
       with:
         magento_directory: ${{ steps.setup-magento-compute-directory.outputs.MAGENTO_DIRECTORY }}
