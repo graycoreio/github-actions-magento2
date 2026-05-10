@@ -111,12 +111,7 @@ jobs:
 
       - name: Run unit tests
         working-directory: ${{ steps.setup-magento.outputs.path }}
-        run: |
-          if find app/code -name "*Test.php" -print -quit | grep -q .; then
-            vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist --testsuite Store_Unit_Tests
-          else
-            echo "No unit tests found in app/code, skipping."
-          fi
+        run: vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist --testsuite Store_Unit_Tests
 
   coding-standard:
     runs-on: ${{ matrix.os }}
