@@ -11,11 +11,6 @@ on:
         type: boolean
         required: false
         default: false
-      graduate:
-        description: 'Graduate the current RC to its final version (drops the -rc.N suffix).'
-        type: boolean
-        required: false
-        default: false
 
 env:
   RELEASE_BRANCH: release-please--branches--main--components--github-actions-magento2
@@ -28,34 +23,11 @@ jobs:
     outputs:
       releases_created: ${{ steps.release.outputs.releases_created }}
     steps:
-      - name: Reject conflicting inputs
-        if: inputs.release-candidate && inputs.graduate
-        run: |
-          echo "::error::release-candidate and graduate are mutually exclusive — pick one."
-          exit 1
-
-      - uses: actions/checkout@v6
-        if: inputs.graduate
-
-      - name: Compute graduate version
-        id: graduate
-        if: inputs.graduate
-        run: |
-          CURRENT=$(jq -r '."."' .release-please-manifest.json)
-          if [[ "$CURRENT" != *-* ]]; then
-            echo "::error::Manifest version $CURRENT has no prerelease suffix to graduate from."
-            exit 1
-          fi
-          GRADUATED="${CURRENT%%-*}"
-          echo "Graduating $CURRENT -> $GRADUATED"
-          echo "VERSION=${GRADUATED}" >> $GITHUB_OUTPUT
-
       - id: release
         uses: googleapis/release-please-action@v4
         with:
           token: ${{ secrets.GRAYCORE_GITHUB_TOKEN }}
-          versioning-strategy: ${{ inputs.release-candidate && 'prerelease' || '' }}
-          release-as: ${{ steps.graduate.outputs.VERSION || '' }}
+          config-file: ${{ inputs.release-candidate && 'release-please-config.rc.json' || 'release-please-config.json' }}
 
       - name: Check if release branch exists
         id: branch-check
