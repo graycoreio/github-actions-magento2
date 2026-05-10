@@ -101,7 +101,7 @@ jobs:
 
           cat > /tmp/testsuite.xml << 'EOF'
                   <testsuite name="Store_Unit_Tests">
-                      <directory>../../../app/code</directory>
+                      <directory>../../../app/code/*/*/Test/Unit</directory>
                   </testsuite>
           EOF
           sed -i '/<testsuites>/r /tmp/testsuite.xml' dev/tests/unit/phpunit.xml.dist
