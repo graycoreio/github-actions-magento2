@@ -25,7 +25,7 @@ jobs:
     name: A job to compute an installed Magento version.
     steps:
       - uses: actions/checkout@v6
-      - uses: graycoreio/github-actions-magento2/get-magento-version@v7 # x-release-please-major
+      - uses: graycoreio/github-actions-magento2/get-magento-version@v7.0.0 # x-release-please-version
         id: get-magento-version
       - run: echo version ${{ steps.get-magento-version.outputs.version }}
         shell: bash

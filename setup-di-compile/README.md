@@ -28,7 +28,7 @@ jobs:
       matrix: ${{ steps.supported-version.outputs.matrix }}
     steps:
       - uses: actions/checkout@v6
-      - uses: graycoreio/github-actions-magento2/supported-version@v7 # x-release-please-major
+      - uses: graycoreio/github-actions-magento2/supported-version@v7.0.0 # x-release-please-version
         id: supported-version
 
   compile:
@@ -40,19 +40,19 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: graycoreio/github-actions-magento2/setup-magento@v7 # x-release-please-major
+      - uses: graycoreio/github-actions-magento2/setup-magento@v7.0.0 # x-release-please-version
         id: setup-magento
         with:
           php-version: ${{ matrix.php }}
           tools: composer:v${{ matrix.composer }}
 
-      - uses: graycoreio/github-actions-magento2/cache-magento@v7 # x-release-please-major
+      - uses: graycoreio/github-actions-magento2/cache-magento@v7.0.0 # x-release-please-version
 
       - run: composer install
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
-      - uses: graycoreio/github-actions-magento2/setup-di-compile@v7 # x-release-please-major
+      - uses: graycoreio/github-actions-magento2/setup-di-compile@v7.0.0 # x-release-please-version
         with:
           path: ${{ steps.setup-magento.outputs.path }}
 ```

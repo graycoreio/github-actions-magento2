@@ -36,7 +36,7 @@ jobs:
         tools: composer:v2
         coverage: none
 
-    - uses: graycoreio/github-actions-magento2/coding-standard@v7 # x-release-please-major
+    - uses: graycoreio/github-actions-magento2/coding-standard@v7.0.0 # x-release-please-version
       with:
         path: app/code # Optional, defaults to .
         version: 25 # Optional, will use the latest if omitted.
