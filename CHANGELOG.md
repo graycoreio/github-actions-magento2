@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.0.0-rc.1](https://github.com/graycoreio/github-actions-magento2/compare/v8.0.0-rc.0...v8.0.0-rc.1) (2026-05-10)
+
+
+### Features
+
+* **setup-magento:** prevent Magento dir from being mirrored into vendor ([22627e1](https://github.com/graycoreio/github-actions-magento2/commit/22627e100059b090adaf2484a09db2d5568492ce))
+
+
+### Bug Fixes
+
+* **check-extension:** prevent recursively mirroring _ghamagento into _ghamagento ([b0131f0](https://github.com/graycoreio/github-actions-magento2/commit/b0131f0fa08dae3b41c6ae476ae5f81ac654c68b))
+* **check-store:** only run unit tests for unit tests ([ef06f45](https://github.com/graycoreio/github-actions-magento2/commit/ef06f4566ba2bd9e132d0fe85becb5a96b58aa38))
+
 ## [8.0.0-rc.0](https://github.com/graycoreio/github-actions-magento2/compare/v7.0.0...v8.0.0-rc.0) (2026-05-10)
 
 
