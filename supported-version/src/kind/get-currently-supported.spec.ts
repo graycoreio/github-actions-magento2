@@ -88,12 +88,14 @@ describe('getCurrentlySupportedVersions for magento-open-source', () => {
             'magento/project-community-edition:2.4.7-p9',
             'magento/project-community-edition:2.4.8-p4',
         ]],
-        ['2027-04-09T00:00:00Z', 'Day of v2.4.7 EoL', [
-            'magento/project-community-edition:2.4.7-p9',
-            'magento/project-community-edition:2.4.8-p4',
+        ['2027-05-31T00:00:00Z', 'Day of v2.4.7 EoL', [
+            'magento/project-community-edition:2.4.7-p10',
+            'magento/project-community-edition:2.4.8-p5',
+            'magento/project-community-edition:2.4.9',
         ]],
-        ['2027-04-10T00:00:00Z', 'Day after v2.4.7 EoL', [
-            'magento/project-community-edition:2.4.8-p4',
+        ['2027-06-01T00:00:00Z', 'Day after v2.4.7 EoL', [
+            'magento/project-community-edition:2.4.8-p5',
+            'magento/project-community-edition:2.4.9',
         ]],
     ])(
         'supportedVersions for %s',
