@@ -106,6 +106,12 @@ jobs:
           EOF
           sed -i '/<testsuites>/r /tmp/testsuite.xml' dev/tests/unit/phpunit.xml.dist
 
+          ## PHPUnit 12 (Magento 2.4.9) implicitly enables failOnEmptyTestSuite when --testsuite is passed.
+          ## Default it off only when the consumer hasn't set it themselves, so we don't clobber explicit configuration.
+          if ! grep -q 'failOnEmptyTestSuite=' dev/tests/unit/phpunit.xml.dist; then
+            sed -i 's|<phpunit |<phpunit failOnEmptyTestSuite="false" |' dev/tests/unit/phpunit.xml.dist
+          fi
+
           ## Disable allure (See https://github.com/magento/magento2/issues/36702 )
           sed -i '/<extensions>/,/<\/extensions>/d' dev/tests/unit/phpunit.xml.dist
 
