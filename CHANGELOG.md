@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.0.0-rc.2](https://github.com/graycoreio/github-actions-magento2/compare/v8.0.0-rc.1...v8.0.0-rc.2) (2026-05-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* **supported-versions:** forcibly bump all packages to the latest relevant release line of composer for LogLeak
+* **supported-versions:** This release brings support for the v2.4.9 version of Magento. This also brings backwards-incompatible infrastructure changes for the patch versions of Magento. See https://github.com/graycoreio/github-actions-magento2/pull/258 for more information.
+
+### Features
+
+* **check-extension:** pass along COMPOSER_AUTH where needed  ([#258](https://github.com/graycoreio/github-actions-magento2/issues/258)) ([c5221f0](https://github.com/graycoreio/github-actions-magento2/commit/c5221f0d68b7ecc892b7718326eabc6f093c108f))
+* **supported-versions:** forcibly bump all packages to the latest relevant release line of composer for LogLeak ([d1a31d2](https://github.com/graycoreio/github-actions-magento2/commit/d1a31d260dc54556ebd1ea4fb2e1764ad637694a))
+* **supported-versions:** updates for 2.4.9, 2.4.8-p5, 2.4.7-p19, 2.4.6-p15  ([#258](https://github.com/graycoreio/github-actions-magento2/issues/258)) ([d37f001](https://github.com/graycoreio/github-actions-magento2/commit/d37f001ab6607d2c23751db12d21a7a9e69543f3))
+
+
+### Bug Fixes
+
+* **check-store:** prevent error in phpunit 12 if no tests exists ([#258](https://github.com/graycoreio/github-actions-magento2/issues/258)) ([4fc491b](https://github.com/graycoreio/github-actions-magento2/commit/4fc491bc1a26b7b7089b562db5d4e4a89b6d0744))
+
 ## [8.0.0-rc.1](https://github.com/graycoreio/github-actions-magento2/compare/v8.0.0-rc.0...v8.0.0-rc.1) (2026-05-10)
 
 
