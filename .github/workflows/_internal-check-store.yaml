@@ -50,9 +50,12 @@ jobs:
           tools: composer:v${{ matrix.composer }}
           magento_version: ${{ matrix.magento }}
           mode: extension
+          composer_auth: ${{ secrets.COMPOSER_AUTH }}
 
       - run: composer update --no-install
         working-directory: ${{ steps.setup-magento.outputs.path }}
+        env:
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
       - uses: ./cache-magento
         with:
@@ -79,6 +82,8 @@ jobs:
 
       - run: composer install
         working-directory: ${{ steps.setup-magento.outputs.path }}
+        env:
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
       - uses: actions/upload-artifact@v7
         with:
@@ -99,3 +104,5 @@ jobs:
       path: "_ghamagento/"
       composer_cache_key: ${{ matrix.magento }}
       stamp: true
+    secrets:
+      composer_auth: ${{ secrets.COMPOSER_AUTH }}

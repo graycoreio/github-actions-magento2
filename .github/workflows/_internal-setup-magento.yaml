@@ -78,6 +78,8 @@ jobs:
 
     - run: composer update --no-install
       working-directory: ${{ env.magento_folder }}
+      env:
+        COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
     - uses: ./cache-magento
       with:
@@ -218,13 +220,15 @@ jobs:
 
     - run: composer update --no-install
       working-directory: ${{ steps.setup-magento.outputs.path }}
+      env:
+        COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
     - uses: ./cache-magento
       with:
         composer_cache_key: ${{ matrix.magento }}
         working-directory: ${{ steps.setup-magento.outputs.path }}
         stamp: true
-    
+
     - run: composer install
       name: Composer install
       shell: bash

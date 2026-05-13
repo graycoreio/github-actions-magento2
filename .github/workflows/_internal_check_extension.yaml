@@ -40,3 +40,5 @@ jobs:
       path: _test/demo-package
       matrix: ${{ needs.compute_matrix.outputs.matrix }}
       stamp: true
+    secrets:
+      composer_auth: ${{ secrets.COMPOSER_AUTH }}

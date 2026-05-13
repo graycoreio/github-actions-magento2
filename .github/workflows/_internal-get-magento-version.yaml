@@ -30,7 +30,9 @@ jobs:
       
       - run: composer create-project --repository-url="https://mirror.mage-os.org" "magento/project-community-edition:2.4.5-p1" ../magento2 --no-install
         shell: bash
-        name: Create Magento ${{ matrix.magento }} Project 
+        name: Create Magento ${{ matrix.magento }} Project
+        env:
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
       - uses: ./get-magento-version
         id: magento-version
