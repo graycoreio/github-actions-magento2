@@ -38,12 +38,12 @@ jobs:
       matrix: ${{ steps.supported-version.outputs.matrix }}
     steps:
       - uses: actions/checkout@v6
-      - uses: graycoreio/github-actions-magento2/supported-version@v7.0.0 # x-release-please-version
+      - uses: graycoreio/github-actions-magento2/supported-version@v8.0.0 # x-release-please-version
         id: supported-version
       - run: echo ${{ steps.supported-version.outputs.matrix }}
   check-extension:
     needs: compute_matrix
-    uses: graycoreio/github-actions-magento2/.github/workflows/check-extension.yaml@v7.0.0 # x-release-please-version
+    uses: graycoreio/github-actions-magento2/.github/workflows/check-extension.yaml@v8.0.0 # x-release-please-version
     with:
       matrix: ${{ needs.compute_matrix.outputs.matrix }}
 ```
