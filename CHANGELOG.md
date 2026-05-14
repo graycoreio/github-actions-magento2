@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.0.0](https://github.com/graycoreio/github-actions-magento2/compare/v8.0.0-rc.2...v8.0.0) (2026-05-14)
+
+
+### Miscellaneous Chores
+
+* graduate 8.0.0-rc.2 to 8.0.0 ([#262](https://github.com/graycoreio/github-actions-magento2/issues/262)) ([e6bb7be](https://github.com/graycoreio/github-actions-magento2/commit/e6bb7be5248a1431f06c07986066ab154c9d8531))
+
 ## [8.0.0-rc.2](https://github.com/graycoreio/github-actions-magento2/compare/v8.0.0-rc.1...v8.0.0-rc.2) (2026-05-13)
 
 
