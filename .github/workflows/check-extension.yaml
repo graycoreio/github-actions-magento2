@@ -165,10 +165,21 @@ jobs:
           with:
             path: ${{ steps.setup-magento.outputs.path }}
 
+    compute_latest_matrix:
+      runs-on: ubuntu-latest
+      outputs:
+        matrix: ${{ steps.supported-version.outputs.matrix }}
+      steps:
+        - uses: graycoreio/github-actions-magento2/supported-version@main
+          id: supported-version
+          with:
+            kind: latest
+
     coding-standard:
       runs-on:  ${{ matrix.os }}
+      needs: compute_latest_matrix
       strategy:
-          matrix: ${{ fromJSON(inputs.matrix) }}
+          matrix: ${{ fromJSON(needs.compute_latest_matrix.outputs.matrix) }}
           fail-fast: ${{ inputs.fail-fast }}
       steps:
       - uses: actions/checkout@v6
