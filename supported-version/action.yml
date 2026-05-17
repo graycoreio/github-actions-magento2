@@ -27,6 +27,11 @@ inputs:
     default: "true"
     description: "Whether to include a `services` key in each matrix entry with GitHub Actions service configurations."
 
+  service_preferences:
+    required: false
+    default: ""
+    description: "Comma-separated list of service implementations to prefer (e.g. `elasticsearch,valkey`). Each name overrides the per-tier default implementation pick. Errors on unknown names, tier collisions (two names sharing a tier), or implementations not supported by every matrix entry for your selected kind."
+
 outputs:
   matrix:
     description: "The Github Actions matrix of software technologies required to run Magento."

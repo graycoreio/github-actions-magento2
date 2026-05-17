@@ -223,13 +223,17 @@ describe('buildServicesForEntry', () => {
   describe('complete service output', () => {
     it('should build all services when all are available', () => {
       const entry = createTestEntry();
-      const services = buildServicesForEntry(entry);
+      const services = buildServicesForEntry(entry, {}, '/runner/ws');
 
-      expect(Object.keys(services)).toHaveLength(4);
+      expect(Object.keys(services).sort()).toEqual(
+        ['mysql', 'nginx', 'opensearch', 'php-fpm', 'rabbitmq', 'valkey']
+      );
       expect(services.mysql).toBeDefined();
       expect(services.opensearch).toBeDefined();
       expect(services.rabbitmq).toBeDefined();
       expect(services.valkey).toBeDefined();
+      expect(services.nginx).toBeDefined();
+      expect(services['php-fpm']).toBeDefined();
     });
 
     it('should handle entry with minimal services', () => {
@@ -239,11 +243,123 @@ describe('buildServicesForEntry', () => {
         opensearch: '',
         rabbitmq: '',
         redis: '',
-        valkey: ''
+        valkey: '',
+        nginx: '',
+        php: ''
       });
       const services = buildServicesForEntry(entry);
 
       expect(Object.keys(services)).toHaveLength(0);
+    });
+  });
+
+  describe('web tier (nginx + php-fpm)', () => {
+    it('emits both nginx and php-fpm when both data points are present', () => {
+      const entry = createTestEntry();
+      const services = buildServicesForEntry(entry, {}, '/runner/ws');
+
+      expect(services.nginx).toBeDefined();
+      expect(services['php-fpm']).toBeDefined();
+    });
+
+    it('uses the entry.nginx image for nginx', () => {
+      const entry = createTestEntry({ nginx: 'nginx:1.27-alpine' });
+      const services = buildServicesForEntry(entry, {}, '/runner/ws');
+
+      expect(services.nginx.image).toBe('nginx:1.27-alpine');
+    });
+
+    it('composes the php-fpm image from entry.php using mappia', () => {
+      const entry = createTestEntry({ php: '8.2' });
+      const services = buildServicesForEntry(entry, {}, '/runner/ws');
+
+      expect(services['php-fpm'].image).toBe('mappia/magento-php:fpm-alpine8.2');
+    });
+
+    it('mounts the runner workspace at /var/www/html on both services', () => {
+      const entry = createTestEntry();
+      const services = buildServicesForEntry(entry, {}, '/home/runner/work/foo/foo');
+
+      expect(services.nginx.volumes).toEqual(['/home/runner/work/foo/foo:/var/www/html']);
+      expect(services['php-fpm'].volumes).toEqual(['/home/runner/work/foo/foo:/var/www/html']);
+    });
+
+    it('exposes port 80 on nginx with the nginx -t healthcheck', () => {
+      const entry = createTestEntry();
+      const services = buildServicesForEntry(entry, {}, '/runner/ws');
+
+      expect(services.nginx.ports).toEqual(['80:80']);
+      expect(services.nginx.options).toContain('nginx -t');
+    });
+
+    it('skips both when entry.nginx is empty (they emit together or not at all)', () => {
+      const entry = createTestEntry({ nginx: '' });
+      const services = buildServicesForEntry(entry, {}, '/runner/ws');
+
+      expect(services.nginx).toBeUndefined();
+      expect(services['php-fpm']).toBeUndefined();
+    });
+
+    it('skips both when entry.php is empty (they emit together or not at all)', () => {
+      const entry = createTestEntry({ php: '' });
+      const services = buildServicesForEntry(entry, {}, '/runner/ws');
+
+      expect(services.nginx).toBeUndefined();
+      expect(services['php-fpm']).toBeUndefined();
+    });
+  });
+
+  describe('with service preferences', () => {
+    it('uses elasticsearch when search preference is elasticsearch, even if opensearch is available', () => {
+      const entry = createTestEntry();
+      const services = buildServicesForEntry(entry, { search: 'elasticsearch' });
+
+      expect(services.elasticsearch).toBeDefined();
+      expect(services.elasticsearch.image).toBe('elasticsearch:8.11.4');
+      expect(services.opensearch).toBeUndefined();
+    });
+
+    it('uses opensearch when search preference is opensearch (matches default)', () => {
+      const entry = createTestEntry();
+      const services = buildServicesForEntry(entry, { search: 'opensearch' });
+
+      expect(services.opensearch).toBeDefined();
+      expect(services.elasticsearch).toBeUndefined();
+    });
+
+    it('uses redis when cache preference is redis, even if valkey is available', () => {
+      const entry = createTestEntry();
+      const services = buildServicesForEntry(entry, { cache: 'redis' });
+
+      expect(services.redis).toBeDefined();
+      expect(services.redis.image).toBe('redis:7.2');
+      expect(services.valkey).toBeUndefined();
+    });
+
+    it('applies preferences across multiple tiers independently', () => {
+      const entry = createTestEntry();
+      const services = buildServicesForEntry(entry, { search: 'elasticsearch', cache: 'redis' });
+
+      expect(services.elasticsearch).toBeDefined();
+      expect(services.redis).toBeDefined();
+      expect(services.opensearch).toBeUndefined();
+      expect(services.valkey).toBeUndefined();
+    });
+
+    it('falls back to default-pick for tiers without a preference', () => {
+      const entry = createTestEntry();
+      const services = buildServicesForEntry(entry, { search: 'elasticsearch' });
+
+      expect(services.elasticsearch).toBeDefined();
+      expect(services.valkey).toBeDefined();
+    });
+
+    it('treats single-implementation-tier preferences as no-ops', () => {
+      const entry = createTestEntry();
+      const withPref = buildServicesForEntry(entry, { db: 'mysql', queue: 'rabbitmq' });
+      const withoutPref = buildServicesForEntry(entry);
+
+      expect(withPref).toEqual(withoutPref);
     });
   });
 });

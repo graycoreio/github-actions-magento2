@@ -3,6 +3,7 @@ export interface ServiceConfig {
     env?: Record<string, string>;
     ports?: string[];
     options?: string;
+    volumes?: string[];
 }
 
 export interface Services {

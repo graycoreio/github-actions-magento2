@@ -18,6 +18,7 @@ See the [action.yml](./action.yml)
 | custom_versions | The versions you want to support, as a comma-separated string, i.e. 'magento/project-community-edition:2.3.7-p3, magento/project-community-edition:2.4.2-p2' | false    | ''                    |
 | recent_time_frame | The time frame (from today) used when `kind` is `recent`. Combination of years (y), months (m), and days (d), e.g. `2y 2m 2d`.                               | false    | '2y'                  |
 | include_services | Whether to include a `services` key in each matrix entry with GitHub Actions service container configurations for MySQL, search engine, RabbitMQ, and cache.  | false    | 'true'                |
+| service_preferences | Comma-separated list of service implementations to prefer (e.g. `elasticsearch,valkey`). See [Service preferences](#service-preferences).                  | false    | ''                    |
 
 ## Kinds
 - `currently-supported` - The currently supported Magento Open Source versions by Adobe.
@@ -31,6 +32,47 @@ See the [action.yml](./action.yml)
 ## Projects
 - `mage-os`
 - `magento-open-source` (default)
+
+## Service preferences
+
+When `include_services: true` (the default), each matrix entry is enriched with a `services` map. Some tiers of services (for example, search) have more than one valid implementation across the supported Magento versions:
+
+- **search**: `opensearch` or `elasticsearch`
+- **cache**: `valkey` or `redis`
+
+By default the action picks `opensearch` over `elasticsearch` and `valkey` over `redis` wherever both are available for the matrix entry's Magento version. `service_preferences` lets the caller override that default pick by naming the implementation they want.
+
+Tiers without a preference fall back to the per-version default pick. Your preferences are **selective**, not **exclusive**.
+
+### Format
+
+A comma-separated list of service implementation names. Whitespace around names is tolerated.
+
+```yml
+with:
+  service_preferences: elasticsearch,valkey
+```
+
+### Accepted names
+
+| Name             | Tier   |
+|------------------|--------|
+| `mysql`          | db     |
+| `elasticsearch`  | search |
+| `opensearch`     | search |
+| `rabbitmq`       | queue  |
+| `redis`          | cache  |
+| `valkey`         | cache  |
+
+### Example
+
+```yml
+- uses: graycoreio/github-actions-magento2/supported-version@v8.0.0 # x-release-please-version
+  id: supported-version
+  with:
+    kind: currently-supported
+    service_preferences: opensearch,valkey
+```
 
 ## Usage
 

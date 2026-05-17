@@ -81,3 +81,28 @@ export const valkeyConfig: ServiceTemplate = {
     };
   }
 };
+
+/**
+ * Builds the nginx service config for the web tier. Takes the image
+ * (sourced from the matrix entry's `nginx` field) and the runner
+ * workspace path so the volume mount lands the Magento install at
+ * `/var/www/html` inside the container. Pairs with `buildPhpFpmConfig`
+ * — they're emitted together as the web tier.
+ */
+export const buildNginxConfig = (image: string, workspace: string): ServiceConfig => ({
+  image,
+  ports: ['80:80'],
+  volumes: [`${workspace}:/var/www/html`],
+  options: '--health-cmd "nginx -t" --health-interval=10s --health-retries=3 --health-timeout=5s --health-start-period=5s'
+});
+
+/**
+ * Builds the php-fpm service config for the web tier. Composes the
+ * image from the matrix entry's `php` version (the mappia magento-php
+ * image stream is the only widely-used Magento-aware php-fpm image).
+ * Pairs with `buildNginxConfig`.
+ */
+export const buildPhpFpmConfig = (phpVersion: string, workspace: string): ServiceConfig => ({
+  image: `mappia/magento-php:fpm-alpine${phpVersion}`,
+  volumes: [`${workspace}:/var/www/html`]
+});

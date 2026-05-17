@@ -5,8 +5,11 @@ import {
   opensearchConfig,
   rabbitmqConfig,
   redisConfig,
-  valkeyConfig
+  valkeyConfig,
+  buildNginxConfig,
+  buildPhpFpmConfig
 } from './service-config';
+import { ServicePreferences } from './preferences';
 
 interface SearchEngineChoice {
   type: 'opensearch' | 'elasticsearch';
@@ -19,10 +22,22 @@ interface CacheChoice {
 }
 
 /**
- * Determines which search engine to use for a matrix entry.
- * Prefers opensearch over elasticsearch.
+ * Picks the search engine for a matrix entry. Honors caller's `service_preferences`
+ * when set; otherwise prefers opensearch over elasticsearch.
  */
-function getSearchEngineChoice(entry: PackageMatrixVersion): SearchEngineChoice | null {
+const getSearchEngineChoice = (entry: PackageMatrixVersion, preference?: string): SearchEngineChoice | null => {
+  if (preference === 'opensearch') {
+    if (entry.opensearch && entry.opensearch.trim() !== '') {
+      return { type: 'opensearch', image: entry.opensearch };
+    }
+    return null;
+  }
+  if (preference === 'elasticsearch') {
+    if (entry.elasticsearch && entry.elasticsearch.trim() !== '') {
+      return { type: 'elasticsearch', image: entry.elasticsearch };
+    }
+    return null;
+  }
   if (entry.opensearch && entry.opensearch.trim() !== '') {
     return { type: 'opensearch', image: entry.opensearch };
   }
@@ -33,10 +48,22 @@ function getSearchEngineChoice(entry: PackageMatrixVersion): SearchEngineChoice 
 }
 
 /**
- * Determines which cache to use for a matrix entry.
- * Prefers valkey over redis.
+ * Picks the cache for a matrix entry. Honors caller's `service_preferences`
+ * when set; otherwise prefers valkey over redis.
  */
-function getCacheChoice(entry: PackageMatrixVersion): CacheChoice | null {
+const getCacheChoice = (entry: PackageMatrixVersion, preference?: string): CacheChoice | null => {
+  if (preference === 'valkey') {
+    if (entry.valkey && entry.valkey.trim() !== '') {
+      return { type: 'valkey', image: entry.valkey };
+    }
+    return null;
+  }
+  if (preference === 'redis') {
+    if (entry.redis && entry.redis.trim() !== '') {
+      return { type: 'redis', image: entry.redis };
+    }
+    return null;
+  }
   if (entry.valkey && entry.valkey.trim() !== '') {
     return { type: 'valkey', image: entry.valkey };
   }
@@ -47,18 +74,25 @@ function getCacheChoice(entry: PackageMatrixVersion): CacheChoice | null {
 }
 
 /**
- * Builds the services object for a single matrix entry.
+ * Builds the services object for a single matrix entry. Emits every
+ * tier the entry has data for: mysql, search (opensearch/elasticsearch),
+ * queue (rabbitmq), cache (valkey/redis), and web (nginx + php-fpm
+ * together). The web tier requires `workspace` so the volume mount
+ * has a real path; if the entry lacks either nginx or php data the
+ * web tier is skipped entirely (they're coupled — emit both or neither).
  */
-export function buildServicesForEntry(entry: PackageMatrixVersion): Services {
+export const buildServicesForEntry = (
+  entry: PackageMatrixVersion,
+  preferences: ServicePreferences = {},
+  workspace: string = ''
+): Services => {
   const services: Services = {};
 
-  // MySQL is always included if present
   if (entry.mysql && entry.mysql.trim() !== '') {
     services.mysql = mysqlConfig.getConfig(entry.mysql);
   }
 
-  // Search engine: prefer opensearch over elasticsearch
-  const searchEngine = getSearchEngineChoice(entry);
+  const searchEngine = getSearchEngineChoice(entry, preferences.search);
   if (searchEngine) {
     if (searchEngine.type === 'opensearch') {
       services.opensearch = opensearchConfig.getConfig(searchEngine.image);
@@ -67,19 +101,24 @@ export function buildServicesForEntry(entry: PackageMatrixVersion): Services {
     }
   }
 
-  // RabbitMQ
   if (entry.rabbitmq && entry.rabbitmq.trim() !== '') {
     services.rabbitmq = rabbitmqConfig.getConfig(entry.rabbitmq);
   }
 
-  // Cache: prefer valkey over redis
-  const cache = getCacheChoice(entry);
+  const cache = getCacheChoice(entry, preferences.cache);
   if (cache) {
     if (cache.type === 'valkey') {
       services.valkey = valkeyConfig.getConfig(cache.image);
     } else {
       services.redis = redisConfig.getConfig(cache.image);
     }
+  }
+
+  const nginxImage = (entry.nginx || '').trim();
+  const phpVersion = String(entry.php ?? '').trim();
+  if (nginxImage !== '' && phpVersion !== '') {
+    services.nginx = buildNginxConfig(nginxImage, workspace);
+    services['php-fpm'] = buildPhpFpmConfig(phpVersion, workspace);
   }
 
   return services;
