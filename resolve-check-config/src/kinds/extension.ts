@@ -12,7 +12,10 @@ export const EXTENSION_JOBS: Record<string, JobDefaults> = {
   'unit-test-extension': { services: [] },
   'compile-extension': { services: [] },
   'coding-standard': { services: [] },
-  'integration_test': { services: [] },
+  'integration_test': {
+    services: [],
+    requiredServices: ['db', 'search', 'queue', 'cache'],
+  },
 };
 
 export const KNOWN_JOBS_EXTENSION: readonly string[] = Object.keys(EXTENSION_JOBS);
