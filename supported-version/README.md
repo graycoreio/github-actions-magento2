@@ -67,7 +67,7 @@ with:
 ### Example
 
 ```yml
-- uses: graycoreio/github-actions-magento2/supported-version@v8.1.0 # x-release-please-version
+- uses: graycoreio/github-actions-magento2/supported-version@v8.2.0 # x-release-please-version
   id: supported-version
   with:
     kind: currently-supported
@@ -93,7 +93,7 @@ jobs:
     outputs:
       matrix: ${{ steps.supported-version.outputs.matrix }}
     steps:
-      - uses: graycoreio/github-actions-magento2/supported-version@v8.1.0 # x-release-please-version
+      - uses: graycoreio/github-actions-magento2/supported-version@v8.2.0 # x-release-please-version
         id: supported-version
       - run: echo ${{ steps.supported-version.outputs.matrix }}
 ```

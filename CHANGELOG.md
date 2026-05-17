@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.2.0](https://github.com/graycoreio/github-actions-magento2/compare/v8.1.0...v8.2.0) (2026-05-17)
+
+
+### Features
+
+* **check-extension:** allow configuraton via .github/check-extension.json ([#269](https://github.com/graycoreio/github-actions-magento2/issues/269)) ([0bf08ef](https://github.com/graycoreio/github-actions-magento2/commit/0bf08ef69291090e5fe3e3d47cb432c6c9107f30))
+* **resolve-check-config:** defined required integration test services required ([#269](https://github.com/graycoreio/github-actions-magento2/issues/269)) ([35c1ace](https://github.com/graycoreio/github-actions-magento2/commit/35c1ace2bc68be1356dc6565a8a05ff02e33d75d))
+
 ## [8.1.0](https://github.com/graycoreio/github-actions-magento2/compare/v8.0.0...v8.1.0) (2026-05-17)
 
 

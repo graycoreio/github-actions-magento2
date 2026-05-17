@@ -21,12 +21,12 @@ jobs:
     outputs:
       resolved: ${{ steps.resolve.outputs.resolved }}
     steps:
-      - uses: graycoreio/github-actions-magento2/supported-version@v8.1.0 # x-release-please-version
+      - uses: graycoreio/github-actions-magento2/supported-version@v8.2.0 # x-release-please-version
         id: supported-version
         with:
           kind: currently-supported
 
-      - uses: graycoreio/github-actions-magento2/resolve-check-config@v8.1.0 # x-release-please-version
+      - uses: graycoreio/github-actions-magento2/resolve-check-config@v8.2.0 # x-release-please-version
         id: resolve
         with:
           kind: store
