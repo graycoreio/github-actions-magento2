@@ -42,10 +42,23 @@ on:
       description: "Your composer credentials (typically a stringified json object of the contents of your auth.json)"
 
 jobs:
+    compute_resolved:
+        runs-on: ubuntu-latest
+        outputs:
+            resolved: ${{ steps.resolve.outputs.resolved }}
+        steps:
+            - uses: graycoreio/github-actions-magento2/resolve-check-config@main
+              id: resolve
+              with:
+                  kind: extension
+                  matrix: ${{ inputs.matrix }}
+
     unit-test-extension:
         runs-on:  ${{ matrix.os }}
+        needs: compute_resolved
+        if: ${{ fromJSON(needs.compute_resolved.outputs.resolved)['unit-test-extension'].enabled != false }}
         strategy:
-            matrix: ${{ fromJSON(inputs.matrix) }}
+            matrix: ${{ fromJSON(needs.compute_resolved.outputs.resolved)['unit-test-extension'].matrix }}
             fail-fast: ${{ inputs.fail-fast }}
         steps:
         - uses: actions/checkout@v6
@@ -113,8 +126,10 @@ jobs:
 
     compile-extension:
         runs-on:  ${{ matrix.os }}
+        needs: compute_resolved
+        if: ${{ fromJSON(needs.compute_resolved.outputs.resolved)['compile-extension'].enabled != false }}
         strategy:
-            matrix: ${{ fromJSON(inputs.matrix) }}
+            matrix: ${{ fromJSON(needs.compute_resolved.outputs.resolved)['compile-extension'].matrix }}
             fail-fast: ${{ inputs.fail-fast }}
         steps:
         - uses: actions/checkout@v6
@@ -201,8 +216,10 @@ jobs:
 
     integration_test:
       runs-on:  ${{ matrix.os }}
+      needs: compute_resolved
+      if: ${{ fromJSON(needs.compute_resolved.outputs.resolved)['integration_test'].enabled != false }}
       strategy:
-          matrix: ${{ fromJSON(inputs.matrix) }}
+          matrix: ${{ fromJSON(needs.compute_resolved.outputs.resolved)['integration_test'].matrix }}
           fail-fast: ${{ inputs.fail-fast }}
       services: ${{ matrix.services }}
       steps:

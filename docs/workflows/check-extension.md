@@ -18,6 +18,23 @@ See the [check-extension.yaml](../../.github/workflows/check-extension.yaml)
 
 The Magento matrix format outlined by the [supported versions action.](https://github.com/graycoreio/github-actions-magento2/tree/main/supported-version/supported.json)
 
+## Configuration
+
+Each check can be toggled on/off through an optional `.github/check-extension.json` file in the repo that calls this workflow. 
+
+You can learn more about this file here in the [`resolve-check-config` action.](../../resolve-check-config/README.md): 
+
+Reference the published JSON Schema with `$schema` to get autocompletion and inline validation in editors that support it:
+
+```json
+{
+  "$schema": "https://raw.githubusercontent.com/graycoreio/github-actions-magento2/main/resolve-check-config/check-extension.schema.json",
+  "jobs": {
+    "integration_test": false
+  }
+}
+```
+
 ## Usage
 
 ```yml
