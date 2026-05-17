@@ -1,0 +1,67 @@
+name: "Configure nginx service container"
+author: "Graycore"
+description: "Pushes a Magento-aware nginx config into an already-running nginx service container, restarts it, and waits for the container healthcheck to pass."
+
+inputs:
+  container_id:
+    description: "The ID of the running nginx service container. Pass the value of `job.services.nginx.id` (replace `nginx` with whatever you named the service in `services:`)."
+    required: true
+  magento_path:
+    description: "Path to the Magento store, relative to the GitHub workspace. The workspace is mounted at /var/www/html in both the nginx and php-fpm service containers, so this is combined with that prefix to compute MAGE_ROOT."
+    required: false
+    default: "."
+  health_timeout_seconds:
+    description: "How long to wait for nginx to become healthy after the config is pushed and the container is restarted."
+    required: false
+    default: "10"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Push nginx config
+      shell: bash
+      env:
+        NGINX_CID: ${{ inputs.container_id }}
+        ACTION_PATH: ${{ github.action_path }}
+        MAGENTO_PATH: ${{ inputs.magento_path }}
+      run: |
+        case "$MAGENTO_PATH" in
+          ""|".") MAGE_ROOT="/var/www/html" ;;
+          /*) MAGE_ROOT="$MAGENTO_PATH" ;;
+          *) MAGE_ROOT="/var/www/html/$MAGENTO_PATH" ;;
+        esac
+        MAGE_ROOT="${MAGE_ROOT%/}"
+
+        sed "s|__MAGE_ROOT__|$MAGE_ROOT|g" "$ACTION_PATH/conf.d/default.conf" > /tmp/default.conf
+
+        docker cp /tmp/default.conf "$NGINX_CID:/etc/nginx/conf.d/default.conf"
+
+        echo "--- default.conf in container ---"
+        docker exec "$NGINX_CID" cat /etc/nginx/conf.d/default.conf
+        docker exec "$NGINX_CID" nginx -t
+
+    - name: Restart nginx and wait for healthy
+      shell: bash
+      env:
+        NGINX_CID: ${{ inputs.container_id }}
+        TIMEOUT: ${{ inputs.health_timeout_seconds }}
+      run: |
+        docker restart "$NGINX_CID"
+        deadline=$(( $(date +%s) + TIMEOUT ))
+        last=""
+        while [ "$(date +%s)" -lt "$deadline" ]; do
+          last=$(docker inspect --format '{{.State.Health.Status}}' "$NGINX_CID" 2>/dev/null || echo "")
+          running=$(docker inspect --format '{{.State.Running}}' "$NGINX_CID" 2>/dev/null || echo "")
+          echo "running=$running health=$last"
+          if [ "$last" = "healthy" ]; then
+            exit 0
+          fi
+          sleep 2
+        done
+        echo "nginx did not reach healthy state within ${TIMEOUT}s (last=$last)"
+        docker logs "$NGINX_CID" 2>&1 | tail -80 || true
+        exit 1
+
+branding:
+  icon: "code"
+  color: "green"
