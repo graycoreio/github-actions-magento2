@@ -46,18 +46,18 @@ jobs:
           name: ${{ inputs.store_artifact_name }}
           path: ${{ inputs.path }}
 
-      - uses: graycoreio/github-actions-magento2/get-magento-version@v8.1.0
+      - uses: graycoreio/github-actions-magento2/get-magento-version@main
         id: get-magento-version
         with:
           working-directory: ${{ inputs.path }}
 
-      - uses: graycoreio/github-actions-magento2/supported-version@v8.1.0
+      - uses: graycoreio/github-actions-magento2/supported-version@main
         id: supported-version
         with:
           kind: custom
           custom_versions: ${{ steps.get-magento-version.outputs.project }}:${{ fromJSON(steps.get-magento-version.outputs.version) }}
 
-      - uses: graycoreio/github-actions-magento2/resolve-check-config@v8.1.0
+      - uses: graycoreio/github-actions-magento2/resolve-check-config@main
         id: resolve
         with:
           kind: store
@@ -80,7 +80,7 @@ jobs:
           name: ${{ inputs.store_artifact_name }}
           path: ${{ inputs.path }}
 
-      - uses: graycoreio/github-actions-magento2/setup-magento@v8.1.0
+      - uses: graycoreio/github-actions-magento2/setup-magento@main
         id: setup-magento
         with:
           php-version: ${{ matrix.php }}
@@ -89,7 +89,7 @@ jobs:
           working-directory: ${{ inputs.path }}
           composer_auth: ${{ secrets.composer_auth }}
 
-      - uses: graycoreio/github-actions-magento2/cache-magento@v8.1.0
+      - uses: graycoreio/github-actions-magento2/cache-magento@main
         with:
           composer_cache_key: ${{ inputs.composer_cache_key }}
           working-directory: ${{ steps.setup-magento.outputs.path }}
@@ -143,7 +143,7 @@ jobs:
           name: ${{ inputs.store_artifact_name }}
           path: ${{ inputs.path }}
 
-      - uses: graycoreio/github-actions-magento2/setup-magento@v8.1.0
+      - uses: graycoreio/github-actions-magento2/setup-magento@main
         id: setup-magento
         with:
           php-version: ${{ matrix.php }}
@@ -152,7 +152,7 @@ jobs:
           working-directory: ${{ inputs.path }}
           composer_auth: ${{ secrets.composer_auth }}
 
-      - uses: graycoreio/github-actions-magento2/cache-magento@v8.1.0
+      - uses: graycoreio/github-actions-magento2/cache-magento@main
         with:
           composer_cache_key: ${{ inputs.composer_cache_key }}
           working-directory: ${{ steps.setup-magento.outputs.path }}
@@ -177,7 +177,7 @@ jobs:
           EOF
           fi
 
-      - uses: graycoreio/github-actions-magento2/coding-standard@v8.1.0
+      - uses: graycoreio/github-actions-magento2/coding-standard@main
         with:
           path: ${{ steps.setup-magento.outputs.path }}
           composer_auth: ${{ secrets.composer_auth }}
@@ -200,7 +200,7 @@ jobs:
           name: ${{ inputs.store_artifact_name }}
           path: ${{ inputs.path }}
 
-      - uses: graycoreio/github-actions-magento2/setup-magento@v8.1.0
+      - uses: graycoreio/github-actions-magento2/setup-magento@main
         id: setup-magento
         with:
           php-version: ${{ matrix.php }}
@@ -209,7 +209,7 @@ jobs:
           working-directory: ${{ inputs.path }}
           composer_auth: ${{ secrets.composer_auth }}
 
-      - uses: graycoreio/github-actions-magento2/cache-magento@v8.1.0
+      - uses: graycoreio/github-actions-magento2/cache-magento@main
         with:
           composer_cache_key: ${{ inputs.composer_cache_key }}
           working-directory: ${{ steps.setup-magento.outputs.path }}
@@ -221,7 +221,7 @@ jobs:
         env:
           COMPOSER_AUTH: ${{ secrets.composer_auth }}
 
-      - uses: graycoreio/github-actions-magento2/setup-install@v8.1.0
+      - uses: graycoreio/github-actions-magento2/setup-install@main
         id: setup-install
         with:
           services: ${{ toJSON(matrix.services) }}
@@ -229,15 +229,15 @@ jobs:
           container_id: ${{ job.services['php-fpm'].id }}
           extra_args: --magento-init-params=MAGE_MODE=developer
 
-      - uses: graycoreio/github-actions-magento2/configure-service-nginx@v8.1.0
+      - uses: graycoreio/github-actions-magento2/configure-service-nginx@main
         with:
           container_id: ${{ job.services.nginx.id }}
           magento_path: ${{ inputs.path }}
 
-      - uses: graycoreio/github-actions-magento2/smoke-test@v8.1.0
+      - uses: graycoreio/github-actions-magento2/smoke-test@main
         with:
           kind: page
 
-      - uses: graycoreio/github-actions-magento2/smoke-test@v8.1.0
+      - uses: graycoreio/github-actions-magento2/smoke-test@main
         with:
           kind: graphql
