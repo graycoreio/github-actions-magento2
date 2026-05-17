@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.1.0](https://github.com/graycoreio/github-actions-magento2/compare/v8.0.0...v8.1.0) (2026-05-17)
+
+
+### Features
+
+* **check-store:** add smoke-test action and use resolve-check-config ([#255](https://github.com/graycoreio/github-actions-magento2/issues/255)) ([e39dd46](https://github.com/graycoreio/github-actions-magento2/commit/e39dd46f9c53a0d2625cd5d19ad1cf18565b8c5c))
+* **configure-service-nginx:** add ability to adjust nginx conf after init ([#255](https://github.com/graycoreio/github-actions-magento2/issues/255)) ([0c7d14d](https://github.com/graycoreio/github-actions-magento2/commit/0c7d14d88573d92c81654b1107ef6a9e4d918cff))
+* **resolve-check-config:** add ability to use a config file to adjust jobs ([#255](https://github.com/graycoreio/github-actions-magento2/issues/255)) ([b98313e](https://github.com/graycoreio/github-actions-magento2/commit/b98313e10044a0a6a04546d3ff8ebe3a3f284f5b))
+* **setup-install:** add a container_id input to run setup:install against a specific container ([#255](https://github.com/graycoreio/github-actions-magento2/issues/255)) ([6d4ca8d](https://github.com/graycoreio/github-actions-magento2/commit/6d4ca8d669164d840d99e8af721309abb9f204ea))
+* **smoke-test:** add simple smoke test action ([#255](https://github.com/graycoreio/github-actions-magento2/issues/255)) ([b790da1](https://github.com/graycoreio/github-actions-magento2/commit/b790da18597e58a9013cc0f7e2c923f08c82f813))
+* **supported-version:** add service_preferences and support for php-fpm and nginx ([#255](https://github.com/graycoreio/github-actions-magento2/issues/255)) ([e89f6ad](https://github.com/graycoreio/github-actions-magento2/commit/e89f6ad2e08fcaa03cba92c8371e60ba67b3cf62))
+
+
+### Bug Fixes
+
+* **check-extension:** only run coding-standard on most recent version of Magento ([#265](https://github.com/graycoreio/github-actions-magento2/issues/265)) ([8e82fcc](https://github.com/graycoreio/github-actions-magento2/commit/8e82fcc89354c83523781c1f5fd4622dec19ca7b))
+
 ## [8.0.0](https://github.com/graycoreio/github-actions-magento2/compare/v8.0.0-rc.2...v8.0.0) (2026-05-14)
 
 
