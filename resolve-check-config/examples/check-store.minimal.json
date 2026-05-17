@@ -1,0 +1,6 @@
+{
+  "$schema": "../check-store.schema.json",
+  "jobs": {
+    "smoke-test": false
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "$schema": "../check-extension.schema.json",
+  "jobs": {
+    "integration_test": false
+  }
+}

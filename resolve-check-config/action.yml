@@ -1,0 +1,27 @@
+name: "Resolve check config"
+author: "Graycore"
+description: "Reads .github/check-<kind>.json (or a path you specify), validates job names against the known list for that workflow kind, and emits a per-job filtered version of the supported-version matrix. Missing config file is treated as 'all jobs enabled with their default tier list.'"
+
+inputs:
+  kind:
+    required: true
+    description: "Which reusable workflow this config belongs to: `store` or `extension`. Selects the default `config_path`, the known-job list used for validation, and the per-job default tier list."
+  matrix:
+    required: true
+    description: "The matrix JSON emitted by the `supported-version` action. Each entry's `services` map is filtered per-job based on the resolved tier list and embedded in the per-job `matrix` output."
+  config_path:
+    required: false
+    default: ""
+    description: "Path to the check-config JSON file, relative to the runner workspace. Defaults to `.github/check-<kind>.json`. Missing file is fine — every known job is emitted with its default tier list."
+
+outputs:
+  resolved:
+    description: "The per-job resolved configuration as a JSON object. Each top-level key is a known job name for the selected kind; values are objects with `enabled` (boolean) and `matrix` (a copy of the supported-version matrix where every entry's `services` is filtered to the tiers the job needs). Consumers default-enable omitted jobs via `fromJSON(...)['<job>'].enabled != false` and use `fromJSON(...)['<job>'].matrix` for `strategy.matrix`."
+
+runs:
+  using: "node24"
+  main: "dist/index.js"
+
+branding:
+  icon: "check-square"
+  color: "green"

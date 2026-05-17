@@ -1,0 +1,21 @@
+{
+  "name": "@graycoreio/github-actions-magento2-resolve-check-config",
+  "version": "1.0.0",
+  "description": "A Github Action that reads .github/<workflow>.json, validates it against the known job list, and emits resolved per-job configuration.",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "build": "npx esbuild --outfile=dist/index.js --platform=node --bundle --minify src/index.ts",
+    "test": "jest"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "0.0.0-PLACEHOLDER"
+  },
+  "devDependencies": {
+    "@types/jest": "0.0.0-PLACEHOLDER",
+    "jest": "0.0.0-PLACEHOLDER",
+    "ts-jest": "0.0.0-PLACEHOLDER"
+  }
+}

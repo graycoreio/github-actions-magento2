@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/graycoreio/github-actions-magento2/main/resolve-check-config/check-store.schema.json",
+  "title": "graycoreio check-store config",
+  "description": "Configuration consumed by the check-store reusable workflow. Per-job toggles and settings live under `jobs`. Top-level remains open for future global keys.",
+  "type": "object",
+  "properties": {
+    "jobs": {
+      "type": "object",
+      "description": "Per-job configuration. Each key is a job name declared by check-store; unknown keys are rejected.",
+      "properties": {
+        "unit-test": { "$ref": "#/$defs/jobConfig" },
+        "coding-standard": { "$ref": "#/$defs/jobConfig" },
+        "smoke-test": { "$ref": "#/$defs/jobConfig" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "jobConfig": {
+      "description": "How a single job should be configured. Boolean form is shorthand for { enabled: <bool> }; object form allows extra per-job keys.",
+      "oneOf": [
+        { "type": "boolean" },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Whether the job should run. Defaults to true when the key is present.",
+              "default": true
+            }
+          },
+          "additionalProperties": true
+        }
+      ]
+    }
+  }
+}

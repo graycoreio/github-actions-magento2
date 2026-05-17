@@ -1,0 +1,14 @@
+{
+  "$schema": "../check-store.schema.json",
+  "jobs": {
+    "unit-test": true,
+    "coding-standard": true,
+    "integration-test": {
+      "services": ["search", "queue", "cache"]
+    },
+    "smoke-test": {
+      "services": ["search", "queue", "cache", "nginx", "php-fpm"],
+      "probes": ["page", "graphql"]
+    }
+  }
+}

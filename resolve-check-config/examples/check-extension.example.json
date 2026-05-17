@@ -1,0 +1,11 @@
+{
+  "$schema": "../check-extension.schema.json",
+  "jobs": {
+    "unit-test-extension": true,
+    "compile-extension": true,
+    "coding-standard": true,
+    "integration_test": {
+      "services": ["search", "cache"]
+    }
+  }
+}
