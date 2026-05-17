@@ -24,6 +24,24 @@ See the [check-store.yaml](../../.github/workflows/check-store.yaml)
 
 - **Unit Tests** — runs PHPUnit against custom code in `app/code`. Skipped automatically if no test files are found.
 - **Coding Standard** — runs the Magento Coding Standard against `app/code`. Uses your `phpcs.xml` (or `.phpcs.xml`, `phpcs.xml.dist`, `.phpcs.xml.dist`) if one exists, otherwise a sensible default is generated.
+- **Smoke Test** — boots your store against the supported-version service set (mysql, search, queue, cache, nginx, php-fpm) and runs the smoke probes against it.
+
+## Configuration
+
+Each check can be toggled on/off through an optional `.github/check-store.json` file in the repo that calls this workflow. 
+
+You can learn more about this file here in the [`resolve-check-config` action.](../../resolve-check-config/README.md): 
+
+Reference the published JSON Schema with `$schema` to get autocompletion and inline validation in editors that support it:
+
+```json
+{
+  "$schema": "https://raw.githubusercontent.com/graycoreio/github-actions-magento2/main/resolve-check-config/check-store.schema.json",
+  "jobs": {
+    "coding-standard": false
+  }
+}
+```
 
 ## Usage
 
