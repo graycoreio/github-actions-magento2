@@ -1,0 +1,77 @@
+name: "Magento Smoke Test"
+author: "Graycore"
+description: "Hits a running Magento instance with a basic page or GraphQL probe and asserts the response looks right."
+
+inputs:
+  kind:
+    description: "Which probe to run: `page` (GET / with title check) or `graphql` (POST /graphql with storeConfig query)."
+    required: true
+  host:
+    description: "Host (and optional port) to probe. Defaults to `localhost`."
+    required: false
+    default: "localhost"
+  timeout:
+    description: "curl --max-time in seconds."
+    required: false
+    default: "60"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Validate kind
+      shell: bash
+      env:
+        KIND: ${{ inputs.kind }}
+      run: |
+        case "$KIND" in
+          page|graphql) ;;
+          *) echo "FATAL: kind must be 'page' or 'graphql' (got '$KIND')"; exit 1 ;;
+        esac
+
+    - name: Smoke test page
+      if: inputs.kind == 'page'
+      shell: bash
+      env:
+        HOST: ${{ inputs.host }}
+        TIMEOUT: ${{ inputs.timeout }}
+      run: |
+        status=$(curl -sS --max-time "$TIMEOUT" \
+          -o /tmp/smoke-page.html -w "%{http_code}" "http://$HOST/")
+        if [ "$status" != "200" ]; then
+          echo "Page returned HTTP $status"
+          head -c 4000 /tmp/smoke-page.html
+          exit 1
+        fi
+        if ! grep -qE '<title>[[:space:]]*[^<[:space:]][^<]*</title>' /tmp/smoke-page.html; then
+          echo "Page missing non-empty <title>"
+          head -c 4000 /tmp/smoke-page.html
+          exit 1
+        fi
+
+    - name: Smoke test GraphQL
+      if: inputs.kind == 'graphql'
+      shell: bash
+      env:
+        HOST: ${{ inputs.host }}
+        TIMEOUT: ${{ inputs.timeout }}
+      run: |
+        status=$(curl -sS --max-time "$TIMEOUT" \
+          -H "Content-Type: application/json" \
+          -X POST \
+          -d '{"query":"{ storeConfig { store_code } }"}' \
+          -o /tmp/smoke-graphql.json -w "%{http_code}" \
+          "http://$HOST/graphql")
+        if [ "$status" != "200" ]; then
+          echo "GraphQL returned HTTP $status"
+          cat /tmp/smoke-graphql.json
+          exit 1
+        fi
+        if ! jq -e '.data.storeConfig.store_code' /tmp/smoke-graphql.json > /dev/null; then
+          echo "GraphQL response missing data.storeConfig.store_code"
+          cat /tmp/smoke-graphql.json
+          exit 1
+        fi
+
+branding:
+  icon: "check-circle"
+  color: "green"
