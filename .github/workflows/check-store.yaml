@@ -35,7 +35,7 @@ jobs:
   compute_matrix:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.supported-version.outputs.matrix }}
+      resolved: ${{ steps.resolve.outputs.resolved }}
     steps:
       - uses: actions/checkout@v6
         if: inputs.store_artifact_name == ''
@@ -57,11 +57,18 @@ jobs:
           kind: custom
           custom_versions: ${{ steps.get-magento-version.outputs.project }}:${{ fromJSON(steps.get-magento-version.outputs.version) }}
 
+      - uses: graycoreio/github-actions-magento2/resolve-check-config@main
+        id: resolve
+        with:
+          kind: store
+          matrix: ${{ steps.supported-version.outputs.matrix }}
+
   unit-test:
     runs-on: ${{ matrix.os }}
     needs: compute_matrix
+    if: ${{ fromJSON(needs.compute_matrix.outputs.resolved)['unit-test'].enabled != false }}
     strategy:
-      matrix: ${{ fromJSON(needs.compute_matrix.outputs.matrix) }}
+      matrix: ${{ fromJSON(needs.compute_matrix.outputs.resolved)['unit-test'].matrix }}
 
     steps:
       - uses: actions/checkout@v6
@@ -122,8 +129,9 @@ jobs:
   coding-standard:
     runs-on: ${{ matrix.os }}
     needs: compute_matrix
+    if: ${{ fromJSON(needs.compute_matrix.outputs.resolved)['coding-standard'].enabled != false }}
     strategy:
-      matrix: ${{ fromJSON(needs.compute_matrix.outputs.matrix) }}
+      matrix: ${{ fromJSON(needs.compute_matrix.outputs.resolved)['coding-standard'].matrix }}
 
     steps:
       - uses: actions/checkout@v6
@@ -173,3 +181,63 @@ jobs:
         with:
           path: ${{ steps.setup-magento.outputs.path }}
           composer_auth: ${{ secrets.composer_auth }}
+
+  smoke-test:
+    runs-on: ${{ matrix.os }}
+    needs: compute_matrix
+    if: ${{ fromJSON(needs.compute_matrix.outputs.resolved)['smoke-test'].enabled != false }}
+    services: ${{ matrix.services }}
+    strategy:
+      matrix: ${{ fromJSON(needs.compute_matrix.outputs.resolved)['smoke-test'].matrix }}
+
+    steps:
+      - uses: actions/checkout@v6
+        if: inputs.store_artifact_name == ''
+
+      - uses: actions/download-artifact@v8
+        if: inputs.store_artifact_name != ''
+        with:
+          name: ${{ inputs.store_artifact_name }}
+          path: ${{ inputs.path }}
+
+      - uses: graycoreio/github-actions-magento2/setup-magento@main
+        id: setup-magento
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v${{ matrix.composer }}
+          mode: store
+          working-directory: ${{ inputs.path }}
+          composer_auth: ${{ secrets.composer_auth }}
+
+      - uses: graycoreio/github-actions-magento2/cache-magento@main
+        with:
+          composer_cache_key: ${{ inputs.composer_cache_key }}
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          stamp: ${{ inputs.stamp }}
+
+      - name: Composer install
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        run: composer install
+        env:
+          COMPOSER_AUTH: ${{ secrets.composer_auth }}
+
+      - uses: graycoreio/github-actions-magento2/setup-install@main
+        id: setup-install
+        with:
+          services: ${{ toJSON(matrix.services) }}
+          path: ${{ steps.setup-magento.outputs.path }}
+          container_id: ${{ job.services['php-fpm'].id }}
+          extra_args: --magento-init-params=MAGE_MODE=developer
+
+      - uses: graycoreio/github-actions-magento2/configure-service-nginx@main
+        with:
+          container_id: ${{ job.services.nginx.id }}
+          magento_path: ${{ inputs.path }}
+
+      - uses: graycoreio/github-actions-magento2/smoke-test@main
+        with:
+          kind: page
+
+      - uses: graycoreio/github-actions-magento2/smoke-test@main
+        with:
+          kind: graphql
