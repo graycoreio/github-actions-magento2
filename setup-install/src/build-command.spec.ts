@@ -173,4 +173,100 @@ describe('buildInstallArgs', () => {
             ]);
         });
     });
+
+    describe('container mode', () => {
+        it('uses the mysql network alias and the internal port from ports[0]', () => {
+            const services: Services = {
+                mysql: { ...MYSQL_SERVICE, ports: ['33060:3306'] },
+            };
+            expect(buildInstallArgs(services, true)).toEqual([
+                ...BASE_ARGS,
+                '--db-host=mysql:3306',
+                '--db-name=magento_integration_tests',
+                '--db-user=user',
+                '--db-password=password',
+            ]);
+        });
+
+        it('uses the opensearch alias and parses the internal port', () => {
+            const services: Services = {
+                opensearch: { image: 'opensearchproject/opensearch:2.19.1', ports: ['19200:9200'] },
+            };
+            expect(buildInstallArgs(services, true)).toEqual([
+                ...BASE_ARGS,
+                '--search-engine=opensearch',
+                '--opensearch-host=opensearch',
+                '--opensearch-port=9200',
+            ]);
+        });
+
+        it('uses the elasticsearch alias and parses the internal port', () => {
+            const services: Services = {
+                elasticsearch: { image: 'elasticsearch:8.11.4', ports: ['19200:9200'] },
+            };
+            expect(buildInstallArgs(services, true)).toEqual([
+                ...BASE_ARGS,
+                '--search-engine=elasticsearch8',
+                '--elasticsearch-host=elasticsearch',
+                '--elasticsearch-port=9200',
+            ]);
+        });
+
+        it('uses the rabbitmq alias and parses the internal port', () => {
+            const services: Services = {
+                rabbitmq: { image: 'rabbitmq:4.0-management', ports: ['15672:5672'] },
+            };
+            expect(buildInstallArgs(services, true)).toEqual([
+                ...BASE_ARGS,
+                '--amqp-host=rabbitmq',
+                '--amqp-port=5672',
+                '--amqp-user=guest',
+                '--amqp-password=guest',
+            ]);
+        });
+
+        it('uses the valkey alias when valkey is the cache service', () => {
+            const services: Services = {
+                valkey: { image: 'valkey:8.0', ports: ['16379:6379'] },
+            };
+            expect(buildInstallArgs(services, true)).toEqual([
+                ...BASE_ARGS,
+                '--session-save=redis',
+                '--session-save-redis-host=valkey',
+                '--session-save-redis-port=6379',
+                '--cache-backend=redis',
+                '--cache-backend-redis-server=valkey',
+                '--cache-backend-redis-port=6379',
+            ]);
+        });
+
+        it('uses the redis alias when redis is the cache service', () => {
+            const services: Services = {
+                redis: { image: 'redis:7.2', ports: ['16379:6379'] },
+            };
+            expect(buildInstallArgs(services, true)).toEqual([
+                ...BASE_ARGS,
+                '--session-save=redis',
+                '--session-save-redis-host=redis',
+                '--session-save-redis-port=6379',
+                '--cache-backend=redis',
+                '--cache-backend-redis-server=redis',
+                '--cache-backend-redis-port=6379',
+            ]);
+        });
+
+        it('falls back to default internal ports when ports are absent', () => {
+            const services: Services = {
+                mysql: { ...MYSQL_SERVICE, ports: undefined },
+                opensearch: { image: 'opensearchproject/opensearch:2.19.1' },
+                rabbitmq: { image: 'rabbitmq:4.0-management' },
+                valkey: { image: 'valkey:8.0' },
+            };
+            const args = buildInstallArgs(services, true);
+            expect(args).toContain('--db-host=mysql:3306');
+            expect(args).toContain('--opensearch-port=9200');
+            expect(args).toContain('--amqp-port=5672');
+            expect(args).toContain('--session-save-redis-port=6379');
+        });
+    });
 });

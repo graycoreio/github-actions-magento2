@@ -18,6 +18,11 @@ inputs:
     default: ""
     description: "Additional raw flags to append to the setup:install command."
 
+  container_id:
+    required: false
+    default: ""
+    description: "When set, runs setup:install via `docker exec` inside the container with this `container_id` (typically the value of `job.services['php-fpm'].id`) and uses service-network aliases (mysql, redis, etc.) instead of runner-side localhost when running setup:install."
+
 outputs:
   command:
     description: "The full bin/magento setup:install command that was run."
