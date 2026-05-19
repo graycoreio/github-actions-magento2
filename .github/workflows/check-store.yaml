@@ -270,7 +270,9 @@ jobs:
         id: detect-e2e
         working-directory: ${{ inputs.path }}
         run: |
-          if [ -f package.json ]; then
+          if [ -d dev/tests/e2e ] \
+            && [ "$(find dev/tests/e2e -type f | wc -l)" -gt 0 ] \
+            && [ -f package.json ]; then
             echo "enabled=true" >> "$GITHUB_OUTPUT"
           else
             echo "enabled=false" >> "$GITHUB_OUTPUT"
