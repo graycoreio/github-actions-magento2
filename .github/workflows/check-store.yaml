@@ -289,6 +289,7 @@ jobs:
           stamp: ${{ inputs.stamp }}
 
       - name: Composer install
+        if: steps.detect-e2e.outputs.enabled == 'true'
         working-directory: ${{ steps.setup-magento.outputs.path }}
         run: composer install
         env:
@@ -310,6 +311,7 @@ jobs:
           magento_path: ${{ inputs.path }}
 
       - uses: actions/setup-node@v4
+        if: steps.detect-e2e.outputs.enabled == 'true'
         with:
           cache: npm
 
