@@ -241,3 +241,84 @@ jobs:
       - uses: graycoreio/github-actions-magento2/smoke-test@main
         with:
           kind: graphql
+          
+  e2e-test:
+    runs-on: ${{ matrix.os }}
+    needs: compute_matrix
+    if: ${{ fromJSON(needs.compute_matrix.outputs.resolved)['e2e-test'].enabled != false }}
+    services: ${{ matrix.services }}
+    strategy:
+      matrix: ${{ fromJSON(needs.compute_matrix.outputs.resolved)['e2e-test'].matrix }}
+
+    steps:
+      - uses: actions/checkout@v6
+        if: inputs.store_artifact_name == ''
+
+      - uses: actions/download-artifact@v8
+        if: inputs.store_artifact_name != ''
+        with:
+          name: ${{ inputs.store_artifact_name }}
+          path: ${{ inputs.path }}
+
+      - uses: graycoreio/github-actions-magento2/setup-magento@main
+        id: setup-magento
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v${{ matrix.composer }}
+          mode: store
+          working-directory: ${{ inputs.path }}
+          composer_auth: ${{ secrets.composer_auth }}
+
+      - name: Detect E2E npm contract
+        id: detect-e2e
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        run: |
+          if [ -d dev/tests/e2e ] \
+            && [ "$(find dev/tests/e2e -type f | wc -l)" -gt 0 ] \
+            && [ -f package.json ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::No package.json found, skipping E2E"
+          fi
+
+      - uses: graycoreio/github-actions-magento2/cache-magento@main
+        if: steps.detect-e2e.outputs.enabled == 'true'
+        with:
+          composer_cache_key: ${{ inputs.composer_cache_key }}
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          stamp: ${{ inputs.stamp }}
+
+      - name: Composer install
+        if: steps.detect-e2e.outputs.enabled == 'true'
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        run: composer install
+        env:
+          COMPOSER_AUTH: ${{ secrets.composer_auth }}
+
+      - uses: graycoreio/github-actions-magento2/setup-install@main
+        if: steps.detect-e2e.outputs.enabled == 'true'
+        id: setup-install
+        with:
+          services: ${{ toJSON(matrix.services) }}
+          path: ${{ steps.setup-magento.outputs.path }}
+          container_id: ${{ job.services['php-fpm'].id }}
+          extra_args: --magento-init-params=MAGE_MODE=developer
+
+      - uses: graycoreio/github-actions-magento2/configure-service-nginx@main
+        if: steps.detect-e2e.outputs.enabled == 'true'
+        with:
+          container_id: ${{ job.services.nginx.id }}
+          magento_path: ${{ inputs.path }}
+
+      - uses: actions/setup-node@v4
+        if: steps.detect-e2e.outputs.enabled == 'true'
+        with:
+          cache: npm
+
+      - name: Run E2E tests
+        if: steps.detect-e2e.outputs.enabled == 'true'
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        run: |
+          npm ci
+          npm run test:e2e
