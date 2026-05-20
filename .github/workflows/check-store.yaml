@@ -260,9 +260,18 @@ jobs:
           name: ${{ inputs.store_artifact_name }}
           path: ${{ inputs.path }}
 
+      - uses: graycoreio/github-actions-magento2/setup-magento@main
+        id: setup-magento
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v${{ matrix.composer }}
+          mode: store
+          working-directory: ${{ inputs.path }}
+          composer_auth: ${{ secrets.composer_auth }}
+
       - name: Detect E2E npm contract
         id: detect-e2e
-        working-directory: ${{ inputs.path }}
+        working-directory: ${{ steps.setup-magento.outputs.path }}
         run: |
           if [ -d dev/tests/e2e ] \
             && [ "$(find dev/tests/e2e -type f | wc -l)" -gt 0 ] \
@@ -272,16 +281,6 @@ jobs:
             echo "enabled=false" >> "$GITHUB_OUTPUT"
             echo "::notice::No package.json found, skipping E2E"
           fi
-
-      - uses: graycoreio/github-actions-magento2/setup-magento@main
-        if: steps.detect-e2e.outputs.enabled == 'true'
-        id: setup-magento
-        with:
-          php-version: ${{ matrix.php }}
-          tools: composer:v${{ matrix.composer }}
-          mode: store
-          working-directory: ${{ inputs.path }}
-          composer_auth: ${{ secrets.composer_auth }}
 
       - uses: graycoreio/github-actions-magento2/cache-magento@main
         if: steps.detect-e2e.outputs.enabled == 'true'
