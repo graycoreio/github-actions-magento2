@@ -4,7 +4,6 @@
   "description": "Github Actions for Magento 2",
   "scripts": {
     "test": "cd supported-version && npm run test && cd - && cd setup-install && npm run test && cd -",
-    "test:e2e": "ts-node dev/tests/e2e/**/*.ts",
     "release": "standard-version"
   },
   "private": true,
