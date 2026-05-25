@@ -1,5 +1,7 @@
 import { buildServicesForEntry } from './build-services';
 import { PackageMatrixVersion } from '../matrix/matrix-type';
+import mageOsMinimalIndividual from '../versions/mage-os-minimal/individual.json';
+import mageOsMinimalComposite from '../versions/mage-os-minimal/composite.json';
 
 const createTestEntry = (overrides: Partial<PackageMatrixVersion> = {}): PackageMatrixVersion => ({
   magento: 'magento/project-community-edition:2.4.7',
@@ -360,6 +362,19 @@ describe('buildServicesForEntry', () => {
       const withoutPref = buildServicesForEntry(entry);
 
       expect(withPref).toEqual(withoutPref);
+    });
+  });
+
+  describe('mage-os-minimal', () => {
+    const minimalEntries: [string, PackageMatrixVersion][] = [
+      ...Object.entries(mageOsMinimalIndividual as unknown as Record<string, PackageMatrixVersion>),
+      ...Object.entries(mageOsMinimalComposite as unknown as Record<string, PackageMatrixVersion>)
+    ];
+
+    it.each(minimalEntries)('omits rabbitmq from services for %s', (_key, entry) => {
+      const services = buildServicesForEntry(entry);
+
+      expect(services.rabbitmq).toBeUndefined();
     });
   });
 });
