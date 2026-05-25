@@ -38,6 +38,10 @@ OUT=$(bash "$SCRIPT" "$FIXTURES/mage-os")
 assert_eq "mage-os: version" '"1.0.0"'                           "$(field "$OUT" version)"
 assert_eq "mage-os: project" "mage-os/project-community-edition" "$(field "$OUT" project)"
 
+OUT=$(bash "$SCRIPT" "$FIXTURES/mage-os-minimal")
+assert_eq "mage-os-minimal: version" '"3.0.0"'                       "$(field "$OUT" version)"
+assert_eq "mage-os-minimal: project" "mage-os/project-minimal-edition" "$(field "$OUT" project)"
+
 OUT=$(bash "$SCRIPT" "$FIXTURES/store-json")
 assert_eq "store json: version" '"2.4.6-p1"'                       "$(field "$OUT" version)"
 assert_eq "store json: project" "magento/project-community-edition" "$(field "$OUT" project)"

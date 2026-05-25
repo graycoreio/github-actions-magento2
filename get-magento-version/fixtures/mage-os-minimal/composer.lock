@@ -1,0 +1,9 @@
+{
+    "packages": [
+        {
+            "name": "mage-os/product-minimal-edition",
+            "version": "3.0.0"
+        }
+    ],
+    "packages-dev": []
+}

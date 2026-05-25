@@ -2,7 +2,7 @@
 set -uo pipefail
 
 WORKING_DIR="${1:-.}"
-PATTERN="magento/product-(community|enterprise)-edition|mage-os/product-community-edition"
+PATTERN="magento/product-(community|enterprise)-edition|mage-os/product-(community|minimal)-edition"
 
 cd "$WORKING_DIR"
 
