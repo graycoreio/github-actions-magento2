@@ -15,6 +15,9 @@ outputs:
   project:
     description: 'The Magento project package name (e.g. magento/project-community-edition)'
     value: ${{ steps.get-magento-version.outputs.project }}
+  supported_version_project:
+    description: 'The `project` value to pass to the supported-version action (e.g. `magento-open-source`, `mage-os`, `mage-os-minimal`). Empty when no Magento project is detected.'
+    value: ${{ steps.get-magento-version.outputs.supported_version_project }}
 
 runs:
   using: "composite"
