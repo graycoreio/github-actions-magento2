@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.4.0](https://github.com/graycoreio/github-actions-magento2/compare/v8.3.0...v8.4.0) (2026-05-25)
+
+
+### Features
+
+* remove rabbitmq from supported-version for mage-os/minimal ([83f9433](https://github.com/graycoreio/github-actions-magento2/commit/83f9433da0d7f20efbf090fd8ed75a0a39000797))
+
 ## [8.3.0](https://github.com/graycoreio/github-actions-magento2/compare/v8.2.0...v8.3.0) (2026-05-25)
 
 
