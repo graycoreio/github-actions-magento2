@@ -54,6 +54,7 @@ jobs:
       - uses: graycoreio/github-actions-magento2/supported-version@main
         id: supported-version
         with:
+          project: ${{ steps.get-magento-version.outputs.supported_version_project }}
           kind: custom
           custom_versions: ${{ steps.get-magento-version.outputs.project }}:${{ fromJSON(steps.get-magento-version.outputs.version) }}
 
