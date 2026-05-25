@@ -4,6 +4,7 @@ import {Project} from "../projects";
 describe('isKnownProject', () => {
   it('returns `true` for known projects', () => {
       expect(isKnownProject("mage-os")).toBe(true)
+      expect(isKnownProject("mage-os-minimal")).toBe(true)
       expect(isKnownProject("magento-open-source")).toBe(true)
   });
 

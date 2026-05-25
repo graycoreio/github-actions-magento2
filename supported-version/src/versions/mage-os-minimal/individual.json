@@ -1,0 +1,17 @@
+{
+    "mage-os/project-minimal-edition:3.0.0": {
+        "magento": "mage-os/project-minimal-edition:3.0.0",
+        "upstream": "2.4.9",
+        "php": 8.5,
+        "composer": "2.9.8",
+        "mysql": "mysql:8.4",
+        "opensearch": "opensearchproject/opensearch:3",
+        "rabbitmq": "rabbitmq:4.2-management",
+        "valkey": "valkey/valkey:9",
+        "varnish": "varnish:8",
+        "nginx": "nginx:1.28",
+        "os": "ubuntu-latest",
+        "release": "2026-05-19T00:00:00+0000",
+        "eol": "2029-05-19T00:00:00+0000"
+    }
+}

@@ -3,11 +3,13 @@ import { PackageMatrixVersion } from "../matrix/matrix-type";
 
 const individual = {
     'mage-os': require('./mage-os/individual.json'),
+    'mage-os-minimal': require('./mage-os-minimal/individual.json'),
     'magento-open-source': require('./magento-open-source/individual.json')
 }
 
 const composite = {
     'mage-os': require('./mage-os/composite.json'),
+    'mage-os-minimal': require('./mage-os-minimal/composite.json'),
     'magento-open-source': require('./magento-open-source/composite.json')
 }
 

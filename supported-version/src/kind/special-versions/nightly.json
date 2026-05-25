@@ -1,4 +1,5 @@
 {
   "mage-os": ["mage-os/project-community-edition:next"],
+  "mage-os-minimal": ["mage-os/project-minimal-edition:next"],
   "magento-open-source": ["magento/project-community-edition:next"]
 }

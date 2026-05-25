@@ -9,7 +9,7 @@ inputs:
     default: "currently-supported"
   project:
     required: false
-    description: "The project to return the supported versions for. Allowed values are `mage-os` and `magento-open-source`"
+    description: "The project to return the supported versions for. Allowed values are `mage-os`, `mage-os-minimal`, and `magento-open-source`"
     # The default value is what it is to keep backward compatibility
     default: "magento-open-source"
   custom_versions:

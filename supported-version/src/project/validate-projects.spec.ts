@@ -4,6 +4,7 @@ describe('validateProject', () => {
     it('returns `true` if its a valid project', () => {
         expect(validateProject("magento-open-source")).toBe(true);
         expect(validateProject("mage-os")).toBe(true);
+        expect(validateProject("mage-os-minimal")).toBe(true);
     });
     
     it('throws a helpful exception if it is an invalid project', () => {
