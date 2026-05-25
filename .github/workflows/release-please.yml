@@ -28,7 +28,7 @@ jobs:
       releases_created: ${{ steps.release.outputs.releases_created }}
     steps:
       - id: release
-        uses: googleapis/release-please-action@v4
+        uses: googleapis/release-please-action@v5
         with:
           token: ${{ secrets.GRAYCORE_GITHUB_TOKEN }}
           config-file: ${{ inputs.release-mode == 'rc' && 'release-please-config.rc.json' || (inputs.release-mode == 'graduate' && 'release-please-config.graduate.json' || 'release-please-config.json') }}
