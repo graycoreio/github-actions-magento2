@@ -33,7 +33,7 @@ The `composer.lock` hash is derived from `working-directory/composer.lock` using
 ### Extension (download cache only)
 
 ```yml
-- uses: graycoreio/github-actions-magento2/cache-magento@v8.2.0 # x-release-please-version
+- uses: graycoreio/github-actions-magento2/cache-magento@v8.3.0 # x-release-please-version
   with:
     composer_cache_key: ${{ inputs.composer_cache_key }}
 ```
@@ -41,13 +41,13 @@ The `composer.lock` hash is derived from `working-directory/composer.lock` using
 ### Extension or store (download + vendor stamp cache)
 
 ```yml
-- uses: graycoreio/github-actions-magento2/setup-magento@v8.2.0 # x-release-please-version
+- uses: graycoreio/github-actions-magento2/setup-magento@v8.3.0 # x-release-please-version
   id: setup-magento
   with:
     mode: extension # or store
     # ...
 
-- uses: graycoreio/github-actions-magento2/cache-magento@v8.2.0 # x-release-please-version
+- uses: graycoreio/github-actions-magento2/cache-magento@v8.3.0 # x-release-please-version
   with:
     composer_cache_key: ${{ inputs.composer_cache_key }}
     working-directory: ${{ steps.setup-magento.outputs.path }}
@@ -69,7 +69,7 @@ As such, use `stamp: true` when `composer.lock` is stable across most runs — a
 > **Dependabot / Renovate:** Each time a Dependabot or Renovate PR is merged, the remaining open PRs rebase and each produces a new `composer.lock`. This cascades into a large number of unique cache entries, inflating storage costs without delivering proportional compute savings — because automated PRs are not waiting on fast feedback. The fix is to disable stamp caching for automated dependency PRs entirely:
 >
 > ```yml
-> - uses: graycoreio/github-actions-magento2/cache-magento@v8.2.0 # x-release-please-version
+> - uses: graycoreio/github-actions-magento2/cache-magento@v8.3.0 # x-release-please-version
 >   with:
 >     stamp: ${{ github.actor != 'dependabot[bot]' }}
 > ```
