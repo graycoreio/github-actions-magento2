@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.3.0](https://github.com/graycoreio/github-actions-magento2/compare/v8.2.0...v8.3.0) (2026-05-25)
+
+
+### Features
+
+* **check-store:** use the project when computing underlying version requirements ([fa8e597](https://github.com/graycoreio/github-actions-magento2/commit/fa8e59736563d5969f5c8ebaccd23c48f0628721))
+* **get-magento-version:** add support for MageOS minimal distro ([863444a](https://github.com/graycoreio/github-actions-magento2/commit/863444afbd137d32157392b964f06503f021ee6c))
+* **get-magento-version:** emit supported-version project name as an output ([1ea5a10](https://github.com/graycoreio/github-actions-magento2/commit/1ea5a10ef67d6fda8d10e078895adc9bea434477))
+* **supported-version:** add support for MageOS 3 ([1e63c01](https://github.com/graycoreio/github-actions-magento2/commit/1e63c019edb63ee0bcd4576b4125b73520ca8864))
+* **supported-version:** add support for MageOS Minimal edition ([befe080](https://github.com/graycoreio/github-actions-magento2/commit/befe0807f7636c125d7e650f2d08012b28554a54))
+
 ## [8.2.0](https://github.com/graycoreio/github-actions-magento2/compare/v8.1.0...v8.2.0) (2026-05-17)
 
 
