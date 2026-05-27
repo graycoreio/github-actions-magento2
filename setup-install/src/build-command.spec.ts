@@ -8,6 +8,7 @@ const BASE_ARGS = [
     '--admin-firstname=Admin',
     '--admin-lastname=User',
     '--backend-frontname=admin',
+    '--no-interaction',
 ];
 
 const MYSQL_SERVICE = {
@@ -59,6 +60,10 @@ describe('buildInstallArgs', () => {
 
         it('returns only base args when services is empty', () => {
             expect(buildInstallArgs({})).toEqual(BASE_ARGS);
+        });
+
+        it('runs non-interactively', () => {
+            expect(buildInstallArgs(null)).toContain('--no-interaction');
         });
     });
 

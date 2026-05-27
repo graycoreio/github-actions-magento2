@@ -24,6 +24,7 @@ const BASE_ARGS = [
     '--admin-firstname=Admin',
     '--admin-lastname=User',
     '--backend-frontname=admin',
+    '--no-interaction',
 ];
 
 const parsePort = (svc: ServiceConfig | undefined, index: 0 | 1, fallback: string): string => {
