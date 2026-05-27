@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.5.0](https://github.com/graycoreio/github-actions-magento2/compare/v8.4.0...v8.5.0) (2026-05-27)
+
+
+### Features
+
+* **setup-install:** run with --no-interaction ([32a5fd2](https://github.com/graycoreio/github-actions-magento2/commit/32a5fd2badfe558e7dced9606765d0d44632c6f0))
+
 ## [8.4.0](https://github.com/graycoreio/github-actions-magento2/compare/v8.3.0...v8.4.0) (2026-05-25)
 
 
