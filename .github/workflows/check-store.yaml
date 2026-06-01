@@ -236,9 +236,14 @@ jobs:
           magento_path: ${{ inputs.path }}
 
       - uses: graycoreio/github-actions-magento2/smoke-test@main
+        if: contains(fromJSON(needs.compute_matrix.outputs.resolved)['smoke-test'].probes, 'page')
         with:
           kind: page
 
+      ## graphql is opt-in: editions without GraphQL modules (e.g. mage-os
+      ## minimal) have no /graphql endpoint. Enable it per store via
+      ## `.github/check-store.json` -> jobs.smoke-test.probes: ["page", "graphql"].
       - uses: graycoreio/github-actions-magento2/smoke-test@main
+        if: contains(fromJSON(needs.compute_matrix.outputs.resolved)['smoke-test'].probes, 'graphql')
         with:
           kind: graphql

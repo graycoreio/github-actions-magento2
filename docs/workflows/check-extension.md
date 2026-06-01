@@ -24,7 +24,7 @@ Each check can be toggled on/off through an optional `.github/check-extension.js
 
 You can learn more about this file here in the [`resolve-check-config` action.](../../resolve-check-config/README.md): 
 
-Reference the published JSON Schema with `$schema` to get autocompletion and inline validation in editors that support it:
+Reference the published JSON Schema with `$schema` to get autocompletion and inline validation in editors that support it — see [`check-extension.schema.json`](../../resolve-check-config/check-extension.schema.json):
 
 ```json
 {

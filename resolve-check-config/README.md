@@ -4,6 +4,13 @@ Reads `.github/check-<kind>.json` (or a path you specify), validates job names a
 
 A missing config file is fine — every known job is emitted with its default tier list.
 
+## Schemas
+
+Reference the published JSON Schema from your config's `$schema` key for autocompletion and inline validation in editors that support it:
+
+- [`check-store.schema.json`](./check-store.schema.json) — config for the [MageCheck Store](../docs/workflows/check-store.md) workflow
+- [`check-extension.schema.json`](./check-extension.schema.json) — config for the [MageCheck Extension](../docs/workflows/check-extension.md) workflow 
+
 ## Inputs
 
 | Input         | Description                                                                                                                                            | Required | Default                       |

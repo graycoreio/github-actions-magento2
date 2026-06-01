@@ -31,6 +31,10 @@ describe('STORE_JOBS', () => {
     ]);
   });
 
+  it('defaults smoke-test to the page probe only (graphql is opt-in)', () => {
+    expect(STORE_JOBS['smoke-test'].probes).toEqual(['page']);
+  });
+
   it('exposes empty service defaults for unit-test and coding-standard', () => {
     expect(STORE_JOBS['unit-test'].services).toEqual([]);
     expect(STORE_JOBS['coding-standard'].services).toEqual([]);
@@ -77,6 +81,31 @@ describe('resolveStoreConfig', () => {
       MATRIX,
     );
     expect(resolved['smoke-test'].enabled).toBe(false);
+  });
+
+  it('emits the default page-only probe list for smoke-test', () => {
+    const resolved = resolveStoreConfig({}, MATRIX);
+    expect(resolved['smoke-test'].probes).toEqual(['page']);
+  });
+
+  it('honors a smoke-test probes override', () => {
+    const resolved = resolveStoreConfig(
+      { jobs: { 'smoke-test': { probes: ['page', 'graphql'] } } },
+      MATRIX,
+    );
+    expect(resolved['smoke-test'].probes).toEqual(['page', 'graphql']);
+  });
+
+  it('does not emit probes on jobs without a probe concept', () => {
+    const resolved = resolveStoreConfig({}, MATRIX);
+    expect(resolved['unit-test'].probes).toBeUndefined();
+    expect(resolved['coding-standard'].probes).toBeUndefined();
+  });
+
+  it('rejects probes on a job that does not support it', () => {
+    expect(() => resolveStoreConfig({ jobs: { 'unit-test': { probes: ['page'] } } }, MATRIX)).toThrowError(
+      /job "unit-test" does not support "probes"/
+    );
   });
 
   it('throws on a typo in the job name', () => {

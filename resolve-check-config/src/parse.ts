@@ -1,34 +1,67 @@
 import { JobDefaults, Kind, Matrix, MatrixEntry, RawConfig, RawJobConfig, ResolvedConfig, ResolvedJobConfig, Services } from './types';
 import { isTier, servicesForTiers, Tier } from './tier-map';
+import { isProbe, Probe } from './probe';
 
 /**
- * Normalizes a single raw job entry to (enabled, tiers). Accepts
- * the boolean shorthand and the object form. Validates the shape
- * and the `services` tier list; throws on unexpected input. The
- * caller supplies the per-job default tiers, used when `services`
- * is omitted from the entry.
+ * Normalizes the `probes` value from a job entry. Returns the
+ * caller's list when present (validated), the job's default probe
+ * list when omitted, or `undefined` for jobs that have no probe
+ * concept. Throws if a job without probe defaults is given `probes`.
+ */
+export const normalizeProbes = (
+  jobName: string,
+  raw: unknown,
+  defaults: readonly Probe[] | undefined,
+): readonly Probe[] | undefined => {
+  if (raw === undefined) {
+    return defaults;
+  }
+  if (defaults === undefined) {
+    throw new Error(`check-config: job "${jobName}" does not support "probes"`);
+  }
+  if (!Array.isArray(raw)) {
+    throw new Error(`check-config: job "${jobName}".probes must be an array of probe names`);
+  }
+  const probes: Probe[] = [];
+  for (const value of raw) {
+    if (!isProbe(value)) {
+      throw new Error(`check-config: job "${jobName}".probes contains unknown probe "${String(value)}"`);
+    }
+    probes.push(value);
+  }
+  return probes;
+}
+
+/**
+ * Normalizes a single raw job entry to (enabled, tiers, probes).
+ * Accepts the boolean shorthand and the object form. Validates the
+ * shape, the `services` tier list, and the `probes` list; throws on
+ * unexpected input. The caller supplies the per-job defaults, used
+ * when `services`/`probes` are omitted from the entry. `probes` is
+ * `undefined` for jobs that declare no probe defaults.
  */
 export const normalizeJobEntry = (
   jobName: string,
   raw: RawJobConfig | undefined,
   defaults: JobDefaults,
-): { enabled: boolean; tiers: readonly Tier[] } => {
+): { enabled: boolean; tiers: readonly Tier[]; probes?: readonly Probe[] } => {
   if (raw === undefined) {
-    return { enabled: true, tiers: defaults.services };
+    return { enabled: true, tiers: defaults.services, probes: defaults.probes };
   }
   if (typeof raw === 'boolean') {
-    return { enabled: raw, tiers: defaults.services };
+    return { enabled: raw, tiers: defaults.services, probes: defaults.probes };
   }
   if (raw === null || typeof raw !== 'object' || Array.isArray(raw)) {
     throw new Error(
       `check-config: job "${jobName}" must be a boolean or an object (got ${Array.isArray(raw) ? 'array' : typeof raw})`
     );
   }
-  const { enabled, services } = raw as { enabled?: unknown; services?: unknown };
+  const { enabled, services, probes } = raw as { enabled?: unknown; services?: unknown; probes?: unknown };
   const enabledValue = enabled === undefined ? true : Boolean(enabled);
+  const resolvedProbes = normalizeProbes(jobName, probes, defaults.probes);
 
   if (services === undefined) {
-    return { enabled: enabledValue, tiers: defaults.services };
+    return { enabled: enabledValue, tiers: defaults.services, probes: resolvedProbes };
   }
   if (!Array.isArray(services)) {
     throw new Error(`check-config: job "${jobName}".services must be an array of tier names`);
@@ -40,7 +73,7 @@ export const normalizeJobEntry = (
     }
     tiers.push(value);
   }
-  return { enabled: enabledValue, tiers };
+  return { enabled: enabledValue, tiers, probes: resolvedProbes };
 }
 
 /**
@@ -117,12 +150,16 @@ export const resolveJobs = (
   const resolved: ResolvedConfig = {};
   for (const [name, defaults] of Object.entries(jobs)) {
     const entry = (rawJobs as Record<string, RawJobConfig>)[name];
-    const { enabled, tiers } = normalizeJobEntry(name, entry, defaults);
+    const { enabled, tiers, probes } = normalizeJobEntry(name, entry, defaults);
     const finalTiers = mergeRequiredTiers(tiers, defaults.requiredServices);
-    resolved[name] = {
+    const resolvedEntry: ResolvedJobConfig = {
       enabled,
       matrix: filterMatrixForJob(matrix, finalTiers),
-    } as ResolvedJobConfig;
+    };
+    if (probes !== undefined) {
+      resolvedEntry.probes = [...probes];
+    }
+    resolved[name] = resolvedEntry;
   }
   return resolved;
 }

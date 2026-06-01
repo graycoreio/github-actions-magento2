@@ -1,4 +1,5 @@
 import { Tier } from './tier-map';
+import { Probe } from './probe';
 
 /**
  * Which reusable workflow a config belongs to. Selects the known-job
@@ -53,10 +54,15 @@ export interface Matrix {
  * regardless of caller overrides. Use it for tiers a job structurally
  * cannot run without (e.g. mysql for a running store smoke-test) and
  * which therefore should not appear in the user-facing schema enum.
+ *
+ * `probes` is the default smoke-test probe list used when the caller
+ * does not override it. Only jobs that declare it support the
+ * `probes` config key; omit it for jobs that have no probe concept.
  */
 export interface JobDefaults {
   services: readonly Tier[];
   requiredServices?: readonly Tier[];
+  probes?: readonly Probe[];
 }
 
 /**
@@ -67,6 +73,7 @@ export interface JobDefaults {
 export interface ResolvedJobConfig {
   enabled: boolean;
   matrix: Matrix;
+  probes?: Probe[];
   [key: string]: unknown;
 }
 
@@ -83,11 +90,12 @@ export interface ResolvedConfig {
  * Shape of a single per-job entry in the user's JSON config file.
  * - `true` / `false`: shorthand for `{ enabled: true|false }`
  * - object: explicit enabled flag plus an optional tier list under
- *   `services` (validated against the per-kind schema).
+ *   `services` and an optional probe list under `probes` (both
+ *   validated against the per-kind schema).
  */
 export type RawJobConfig =
   | boolean
-  | { enabled?: boolean; services?: string[]; [key: string]: unknown };
+  | { enabled?: boolean; services?: string[]; probes?: string[]; [key: string]: unknown };
 
 /**
  * Top-level shape of the user's JSON config file. Job toggles live

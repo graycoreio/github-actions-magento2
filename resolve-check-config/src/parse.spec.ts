@@ -3,6 +3,7 @@ import {
   filterMatrixForJob,
   mergeRequiredTiers,
   normalizeJobEntry,
+  normalizeProbes,
   parseMatrixInput,
   parseRawConfig,
   resolveJobs,
@@ -24,6 +25,7 @@ const MATRIX: Matrix = {
 
 const noDefaults: JobDefaults = { services: [] };
 const smokeDefaults: JobDefaults = { services: ['search', 'queue', 'cache', 'web'] };
+const probeDefaults: JobDefaults = { services: [], probes: ['page'] };
 
 describe('normalizeJobEntry', () => {
   it('defaults enabled=true and uses the default tiers when entry is undefined', () => {
@@ -95,6 +97,66 @@ describe('normalizeJobEntry', () => {
     expect(() => normalizeJobEntry('smoke-test', { services: ['llm'] } as never, smokeDefaults)).toThrowError(
       /services contains unknown tier "llm"/
     );
+  });
+
+  it('carries the default probes when the entry omits them', () => {
+    expect(normalizeJobEntry('smoke-test', { services: [] }, probeDefaults)).toEqual({
+      enabled: true,
+      tiers: [],
+      probes: ['page'],
+    });
+  });
+
+  it('carries the default probes for the boolean shorthand', () => {
+    expect(normalizeJobEntry('smoke-test', true, probeDefaults)).toEqual({
+      enabled: true,
+      tiers: [],
+      probes: ['page'],
+    });
+  });
+
+  it('overrides the default probes when probes is set', () => {
+    expect(normalizeJobEntry('smoke-test', { probes: ['page', 'graphql'] }, probeDefaults)).toEqual({
+      enabled: true,
+      tiers: [],
+      probes: ['page', 'graphql'],
+    });
+  });
+
+  it('omits probes for a job that declares no probe defaults', () => {
+    expect(normalizeJobEntry('unit-test', { services: [] }, noDefaults).probes).toBeUndefined();
+  });
+});
+
+describe('normalizeProbes', () => {
+  it('returns the defaults when probes is omitted', () => {
+    expect(normalizeProbes('smoke-test', undefined, ['page'])).toEqual(['page']);
+  });
+
+  it('returns undefined for a job with no probe defaults when omitted', () => {
+    expect(normalizeProbes('unit-test', undefined, undefined)).toBeUndefined();
+  });
+
+  it('throws when probes is set on a job that does not support it', () => {
+    expect(() => normalizeProbes('unit-test', ['page'], undefined)).toThrowError(
+      /job "unit-test" does not support "probes"/
+    );
+  });
+
+  it('throws when probes is not an array', () => {
+    expect(() => normalizeProbes('smoke-test', 'page', ['page'])).toThrowError(
+      /probes must be an array of probe names/
+    );
+  });
+
+  it('throws when probes contains an unknown probe', () => {
+    expect(() => normalizeProbes('smoke-test', ['rest'], ['page'])).toThrowError(
+      /probes contains unknown probe "rest"/
+    );
+  });
+
+  it('accepts an empty probes array', () => {
+    expect(normalizeProbes('smoke-test', [], ['page'])).toEqual([]);
   });
 });
 

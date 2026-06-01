@@ -14,6 +14,7 @@ export const STORE_JOBS: Record<string, JobDefaults> = {
   'smoke-test': {
     services: [],
     requiredServices: ['db', 'search', 'queue', 'cache', 'web'],
+    probes: ['page'],
   },
 };
 

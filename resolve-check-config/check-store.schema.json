@@ -11,7 +11,7 @@
       "properties": {
         "unit-test": { "$ref": "#/$defs/jobConfig" },
         "coding-standard": { "$ref": "#/$defs/jobConfig" },
-        "smoke-test": { "$ref": "#/$defs/jobConfig" }
+        "smoke-test": { "$ref": "#/$defs/smokeJobConfig" }
       },
       "additionalProperties": false
     }
@@ -29,6 +29,29 @@
               "type": "boolean",
               "description": "Whether the job should run. Defaults to true when the key is present.",
               "default": true
+            }
+          },
+          "additionalProperties": true
+        }
+      ]
+    },
+    "smokeJobConfig": {
+      "description": "How the smoke-test job should be configured. Boolean form is shorthand for { enabled: <bool> }; object form adds a `probes` list on top of `enabled`.",
+      "oneOf": [
+        { "type": "boolean" },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Whether the job should run. Defaults to true when the key is present.",
+              "default": true
+            },
+            "probes": {
+              "type": "array",
+              "description": "Which smoke-test probes to run. Defaults to [\"page\"]. Add \"graphql\" to also probe the GraphQL endpoint — only for editions that ship GraphQL modules (the mage-os minimal edition does not, so /graphql 404s there).",
+              "items": { "enum": ["page", "graphql"] },
+              "default": ["page"]
             }
           },
           "additionalProperties": true
