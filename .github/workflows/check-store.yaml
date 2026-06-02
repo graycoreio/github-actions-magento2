@@ -322,9 +322,27 @@ jobs:
         with:
           cache: npm
 
-      - name: Run E2E tests
+      - name: Install Magento sample data
         if: steps.detect-e2e.outputs.enabled == 'true'
         working-directory: ${{ steps.setup-magento.outputs.path }}
         run: |
+          bin/magento sampledata:deploy
+          composer update
+          bin/magento setup:upgrade
+          bin/magento indexer:reindex
+          bin/magento cache:flush
+
+      - name: Install MageOS E2E suite
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        run: |
+          mkdir -p dev/tests
+          git clone \
+            --branch ci/tests-e2e-playwright-elgentos-hyva \
+            https://github.com/digitalrisedorset/mageos-magento2.git \
+            dev/tests/e2e
+
+      - name: Run E2E tests
+        working-directory: ${{ steps.setup-magento.outputs.path }}/dev/tests/e2e
+        run: |
           npm ci
-          npm run test:e2e
+          npx playwright test
