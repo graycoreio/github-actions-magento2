@@ -253,7 +253,7 @@ jobs:
     needs: compute_matrix
     services: ${{ matrix.services }}
     strategy:
-      matrix: ${{ fromJSON(needs.compute_matrix.outputs.resolved)['e2e-test'].matrix }}
+      matrix: ${{ fromJSON(needs.compute_matrix.outputs.matrix) }}
 
     steps:
       - uses: actions/checkout@v6
