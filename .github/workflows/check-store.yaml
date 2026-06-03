@@ -251,7 +251,6 @@ jobs:
   e2e-test:
     runs-on: ${{ matrix.os }}
     needs: compute_matrix
-    if: ${{ fromJSON(needs.compute_matrix.outputs.resolved)['e2e-test'].enabled != false }}
     services: ${{ matrix.services }}
     strategy:
       matrix: ${{ fromJSON(needs.compute_matrix.outputs.resolved)['e2e-test'].matrix }}
@@ -289,21 +288,18 @@ jobs:
           fi
 
       - uses: graycoreio/github-actions-magento2/cache-magento@main
-        if: steps.detect-e2e.outputs.enabled == 'true'
         with:
           composer_cache_key: ${{ inputs.composer_cache_key }}
           working-directory: ${{ steps.setup-magento.outputs.path }}
           stamp: ${{ inputs.stamp }}
 
       - name: Composer install
-        if: steps.detect-e2e.outputs.enabled == 'true'
         working-directory: ${{ steps.setup-magento.outputs.path }}
         run: composer install
         env:
           COMPOSER_AUTH: ${{ secrets.composer_auth }}
 
       - uses: graycoreio/github-actions-magento2/setup-install@main
-        if: steps.detect-e2e.outputs.enabled == 'true'
         id: setup-install
         with:
           services: ${{ toJSON(matrix.services) }}
@@ -329,8 +325,7 @@ jobs:
           bin/magento sampledata:deploy
           composer update
           bin/magento setup:upgrade
-          bin/magento indexer:reindex
-          bin/magento cache:flush
+          bin/magento indexer:reindex      
 
       - name: Install MageOS E2E suite
         working-directory: ${{ steps.setup-magento.outputs.path }}
