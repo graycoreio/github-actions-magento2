@@ -9,3 +9,10 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    # TS subpackages pin deps to 0.0.0-PLACEHOLDER; real versions are managed
+    # in the root package.json Keep Dependabot out of them so it stops 
+    # "bumping" the placeholder (see PR #267).
+    exclude-paths:
+      - "resolve-check-config/**"
+      - "setup-install/**"
+      - "supported-version/**"
