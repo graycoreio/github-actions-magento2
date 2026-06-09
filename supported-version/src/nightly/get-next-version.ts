@@ -3,7 +3,7 @@ import { Repository } from "./repository";
 /**
  * Get the next version of Magento, as determined by the repository.
  */
-export const getNextVersion = (repository: Repository, date: Date) => {
+export const getNextVersion = (repository: Repository, _date: Date) => {
     switch(repository){
         case "https://nightly.mage-os.org":
         case "https://upstream-nightly.mage-os.org":

@@ -42,5 +42,5 @@ export const getUsableVersions = (project: string): string[] => {
 
             return true;
         })
-        .map(([key, value]) => key);
+        .map(([key]) => key);
 }

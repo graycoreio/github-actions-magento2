@@ -15,7 +15,7 @@ export const getRecentVersions = (project: string, date: Date, durationStr: stri
 
     const allVersions = getIndividualVersionsForProject(project)
     return Object.entries(<Record<string,PackageMatrixVersion>>allVersions)
-        .filter(([key, value]) => {
+        .filter(([, value]) => {
             const dayOfRelease = new Date(value.release);
             dayOfRelease.setSeconds(dayOfRelease.getSeconds() + 1);
             const dateAfterRelease = new Date(value.release);
@@ -27,5 +27,5 @@ export const getRecentVersions = (project: string, date: Date, durationStr: stri
 
             return date >= dayOfRelease && date <= dateAfterRelease;
         })
-        .map(([key, value]) => key);
+        .map(([key]) => key);
 }
