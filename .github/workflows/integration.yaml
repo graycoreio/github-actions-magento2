@@ -185,7 +185,7 @@ jobs:
       uses: actions/upload-artifact@v7
       if: failure()
       with:
-        name: sandbox-data-${{ steps.magento-version.outputs.version }}
+        name: sandbox-data-${{ fromJSON(steps.magento-version.outputs.version) }}
         path: /home/runner/work/infrastructure/magento2/dev/tests/integration/tmp/sandbox-*
         retention-days: 3
 
