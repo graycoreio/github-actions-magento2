@@ -16,3 +16,7 @@ updates:
       - "resolve-check-config/**"
       - "setup-install/**"
       - "supported-version/**"
+    # @types/node tracks the Node runtime version, not the latest release;
+    # bumping it ahead of the pinned Node version is noise.
+    ignore:
+      - dependency-name: "@types/node"
