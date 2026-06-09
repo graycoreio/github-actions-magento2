@@ -2,5 +2,8 @@
     "compilerOptions": {
         "resolveJsonModule": true,
         "esModuleInterop": true,
+        "typeRoots": ["../node_modules/@types"],
+        "types": ["jest"],
+        "target": "ES2022"
     }
 }

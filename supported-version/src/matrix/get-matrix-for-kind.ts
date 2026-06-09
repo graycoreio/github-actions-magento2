@@ -12,13 +12,13 @@ export const getMatrixForKind = (kind: string, project: string, versions = "", r
     
     switch(kind){
         case 'latest': 
-          return getMatrixForVersions(project, latestJson[project]);
+          return getMatrixForVersions(project, latestJson[project as keyof typeof latestJson]);
         case 'currently-supported':
           return getMatrixForVersions(project, getCurrentlySupportedVersions(project, new Date()));
         case 'usable':
           return getMatrixForVersions(project, getUsableVersions(project));
         case 'nightly':
-          return amendMatrixForNext(getMatrixForVersions(project, nightlyJson[project]), 'https://upstream-nightly.mage-os.org', getDayBefore());
+          return amendMatrixForNext(getMatrixForVersions(project, nightlyJson[project as keyof typeof nightlyJson]), 'https://upstream-nightly.mage-os.org', getDayBefore());
         case 'all':
           return getMatrixForVersions(project, Object.keys(getIndividualVersionsForProject(project)));
         case 'custom':

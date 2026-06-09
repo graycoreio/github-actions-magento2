@@ -2,7 +2,7 @@ import { customVersionsValidator } from "./validations/custom-versions-validator
 import { isKnownKind } from "./validations/is-known-kind";
 import { KindValidator } from "./validator";
 
-export const validateKind: KindValidator = (kind, custom_versions = null): boolean => {
+export const validateKind: KindValidator = (kind, custom_versions): boolean => {
     return validators.reduce((acc, el) => el(kind, custom_versions), true);
 }
 
