@@ -176,7 +176,7 @@ export const parseRawConfig = (jsonText: string): RawConfig => {
   try {
     parsed = JSON.parse(trimmed);
   } catch (e) {
-    throw new Error(`check-config: failed to parse JSON: ${(e as Error).message}`);
+    throw new Error(`check-config: failed to parse JSON: ${(e as Error).message}`, { cause: e });
   }
   if (parsed === null || typeof parsed !== 'object' || Array.isArray(parsed)) {
     throw new Error(`check-config: top-level value must be an object`);
@@ -198,7 +198,7 @@ export const parseMatrixInput = (jsonText: string): Matrix => {
   try {
     parsed = JSON.parse(trimmed);
   } catch (e) {
-    throw new Error(`check-config: failed to parse \`matrix\` input as JSON: ${(e as Error).message}`);
+    throw new Error(`check-config: failed to parse \`matrix\` input as JSON: ${(e as Error).message}`, { cause: e });
   }
   if (parsed === null || typeof parsed !== 'object' || Array.isArray(parsed)) {
     throw new Error('check-config: `matrix` must be a JSON object');
