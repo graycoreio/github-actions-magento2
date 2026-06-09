@@ -35,16 +35,16 @@ describe('parseServicePreferences', () => {
   });
 
   it('throws on unknown service name', () => {
-    expect(() => parseServicePreferences('foobar')).toThrowError(/unknown service "foobar"/);
+    expect(() => parseServicePreferences('foobar')).toThrow(/unknown service "foobar"/);
   });
 
   it('throws on a collision in the search tier', () => {
-    expect(() => parseServicePreferences('elasticsearch,opensearch')).toThrowError(
+    expect(() => parseServicePreferences('elasticsearch,opensearch')).toThrow(
       /collision in tier "search"/
     );
   });
 
   it('throws on a collision in the cache tier', () => {
-    expect(() => parseServicePreferences('redis,valkey')).toThrowError(/collision in tier "cache"/);
+    expect(() => parseServicePreferences('redis,valkey')).toThrow(/collision in tier "cache"/);
   });
 });

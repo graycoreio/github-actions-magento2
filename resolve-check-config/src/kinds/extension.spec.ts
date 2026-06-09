@@ -88,13 +88,13 @@ describe('resolveExtensionConfig', () => {
   });
 
   it('throws on a typo in the job name', () => {
-    expect(() => resolveExtensionConfig({ jobs: { 'inteegration_test': false } }, MATRIX)).toThrowError(
+    expect(() => resolveExtensionConfig({ jobs: { 'inteegration_test': false } }, MATRIX)).toThrow(
       /unknown job "inteegration_test" for kind "extension"/
     );
   });
 
   it('throws when a store-only job name is used', () => {
-    expect(() => resolveExtensionConfig({ jobs: { 'smoke-test': false } }, MATRIX)).toThrowError(
+    expect(() => resolveExtensionConfig({ jobs: { 'smoke-test': false } }, MATRIX)).toThrow(
       /unknown job "smoke-test" for kind "extension"/
     );
   });

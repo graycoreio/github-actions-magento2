@@ -29,10 +29,10 @@ describe('resolveConfig', () => {
   });
 
   it('rejects a job name from the other kind', () => {
-    expect(() => resolveConfig({ jobs: { 'smoke-test': false } }, 'extension', MATRIX)).toThrowError(
+    expect(() => resolveConfig({ jobs: { 'smoke-test': false } }, 'extension', MATRIX)).toThrow(
       /unknown job "smoke-test" for kind "extension"/
     );
-    expect(() => resolveConfig({ jobs: { 'unit-test-extension': false } }, 'store', MATRIX)).toThrowError(
+    expect(() => resolveConfig({ jobs: { 'unit-test-extension': false } }, 'store', MATRIX)).toThrow(
       /unknown job "unit-test-extension" for kind "store"/
     );
   });

@@ -6,11 +6,11 @@ describe('validateKind', () => {
     });
 
     it('throws a helpful exception if its an invalid kind', () => {
-        expect(() => validateKind(<any>"taco")).toThrowError();
+        expect(() => validateKind(<any>"taco")).toThrow();
     })
 
     it('throws a helpful exception if custom versions are provided with the wrong kind', () => {
-        expect(() => validateKind(<any>"latest", [])).toThrowError();
+        expect(() => validateKind(<any>"latest", [])).toThrow();
     })
     
     it('returns `true` for kind `custom` with a custom versions', () => {

@@ -62,7 +62,7 @@ describe('getMatrixForKind for mage-os', () => {
     });
     
     it('errors for invalid `custom``', () => {
-        expect(() => getMatrixForKind("custom", project)).toThrowError();
+        expect(() => getMatrixForKind("custom", project)).toThrow();
     });
 })
 
@@ -133,6 +133,6 @@ describe('getMatrixForKind for magento-open-source', () => {
     });
 
     it('errors for invalid `custom``', () => {
-        expect(() => getMatrixForKind("custom", project)).toThrowError();
+        expect(() => getMatrixForKind("custom", project)).toThrow();
     });
 })

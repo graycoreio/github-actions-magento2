@@ -9,7 +9,7 @@ describe('getIndividialVersionsForProject', () => {
     })
 
     it('throws error if no individual versions are specified for given project', () => {
-        expect(() => getIndividualVersionsForProject(<Project>"ahsoka")).toThrowError()
+        expect(() => getIndividualVersionsForProject(<Project>"ahsoka")).toThrow()
     })
 })
 
@@ -21,6 +21,6 @@ describe('getCompositeVersionsForProject', () => {
     })
 
     it('throws error if no composite versions are specified for given project', () => {
-        expect(() => getCompositeVersionsForProject(<Project>"spock")).toThrowError()
+        expect(() => getCompositeVersionsForProject(<Project>"spock")).toThrow()
     })
 })

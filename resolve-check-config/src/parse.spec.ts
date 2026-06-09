@@ -78,23 +78,23 @@ describe('normalizeJobEntry', () => {
   });
 
   it('throws when entry is a non-array primitive other than boolean', () => {
-    expect(() => normalizeJobEntry('unit-test', 'true' as never, noDefaults)).toThrowError(
+    expect(() => normalizeJobEntry('unit-test', 'true' as never, noDefaults)).toThrow(
       /must be a boolean or an object/
     );
   });
 
   it('throws when entry is an array', () => {
-    expect(() => normalizeJobEntry('unit-test', [] as never, noDefaults)).toThrowError(/got array/);
+    expect(() => normalizeJobEntry('unit-test', [] as never, noDefaults)).toThrow(/got array/);
   });
 
   it('throws when services is not an array', () => {
-    expect(() => normalizeJobEntry('smoke-test', { services: 'search' } as never, smokeDefaults)).toThrowError(
+    expect(() => normalizeJobEntry('smoke-test', { services: 'search' } as never, smokeDefaults)).toThrow(
       /services must be an array of tier names/
     );
   });
 
   it('throws when services contains an unknown tier', () => {
-    expect(() => normalizeJobEntry('smoke-test', { services: ['llm'] } as never, smokeDefaults)).toThrowError(
+    expect(() => normalizeJobEntry('smoke-test', { services: ['llm'] } as never, smokeDefaults)).toThrow(
       /services contains unknown tier "llm"/
     );
   });
@@ -138,19 +138,19 @@ describe('normalizeProbes', () => {
   });
 
   it('throws when probes is set on a job that does not support it', () => {
-    expect(() => normalizeProbes('unit-test', ['page'], undefined)).toThrowError(
+    expect(() => normalizeProbes('unit-test', ['page'], undefined)).toThrow(
       /job "unit-test" does not support "probes"/
     );
   });
 
   it('throws when probes is not an array', () => {
-    expect(() => normalizeProbes('smoke-test', 'page', ['page'])).toThrowError(
+    expect(() => normalizeProbes('smoke-test', 'page', ['page'])).toThrow(
       /probes must be an array of probe names/
     );
   });
 
   it('throws when probes contains an unknown probe', () => {
-    expect(() => normalizeProbes('smoke-test', ['rest'], ['page'])).toThrowError(
+    expect(() => normalizeProbes('smoke-test', ['rest'], ['page'])).toThrow(
       /probes contains unknown probe "rest"/
     );
   });
@@ -295,13 +295,13 @@ describe('resolveJobs', () => {
   });
 
   it('throws on unknown job names with the kind in the message', () => {
-    expect(() => resolveJobs({ jobs: { taco: false } }, 'store', jobs, MATRIX)).toThrowError(
+    expect(() => resolveJobs({ jobs: { taco: false } }, 'store', jobs, MATRIX)).toThrow(
       /unknown job "taco" for kind "store"/
     );
   });
 
   it('throws when `jobs` is not an object', () => {
-    expect(() => resolveJobs({ jobs: 'oops' } as never, 'store', jobs, MATRIX)).toThrowError(
+    expect(() => resolveJobs({ jobs: 'oops' } as never, 'store', jobs, MATRIX)).toThrow(
       /`jobs` must be an object/
     );
   });
@@ -323,19 +323,19 @@ describe('parseRawConfig', () => {
   });
 
   it('throws on syntactically invalid JSON', () => {
-    expect(() => parseRawConfig('{not json}')).toThrowError(/failed to parse JSON/);
+    expect(() => parseRawConfig('{not json}')).toThrow(/failed to parse JSON/);
   });
 
   it('throws when top level is an array', () => {
-    expect(() => parseRawConfig('[]')).toThrowError(/top-level value must be an object/);
+    expect(() => parseRawConfig('[]')).toThrow(/top-level value must be an object/);
   });
 
   it('throws when top level is a primitive', () => {
-    expect(() => parseRawConfig('"hello"')).toThrowError(/top-level value must be an object/);
+    expect(() => parseRawConfig('"hello"')).toThrow(/top-level value must be an object/);
   });
 
   it('throws when top level is null', () => {
-    expect(() => parseRawConfig('null')).toThrowError(/top-level value must be an object/);
+    expect(() => parseRawConfig('null')).toThrow(/top-level value must be an object/);
   });
 });
 
@@ -346,22 +346,22 @@ describe('parseMatrixInput', () => {
   });
 
   it('throws on empty input', () => {
-    expect(() => parseMatrixInput('')).toThrowError(/`matrix` input is required/);
+    expect(() => parseMatrixInput('')).toThrow(/`matrix` input is required/);
   });
 
   it('throws on invalid JSON', () => {
-    expect(() => parseMatrixInput('{nope}')).toThrowError(/failed to parse `matrix` input/);
+    expect(() => parseMatrixInput('{nope}')).toThrow(/failed to parse `matrix` input/);
   });
 
   it('throws when top level is an array', () => {
-    expect(() => parseMatrixInput('[]')).toThrowError(/`matrix` must be a JSON object/);
+    expect(() => parseMatrixInput('[]')).toThrow(/`matrix` must be a JSON object/);
   });
 
   it('throws when include is missing', () => {
-    expect(() => parseMatrixInput('{}')).toThrowError(/`matrix.include` must be an array/);
+    expect(() => parseMatrixInput('{}')).toThrow(/`matrix.include` must be an array/);
   });
 
   it('throws when include is not an array', () => {
-    expect(() => parseMatrixInput('{"include": "nope"}')).toThrowError(/`matrix.include` must be an array/);
+    expect(() => parseMatrixInput('{"include": "nope"}')).toThrow(/`matrix.include` must be an array/);
   });
 });

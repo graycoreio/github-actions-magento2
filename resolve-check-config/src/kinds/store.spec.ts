@@ -103,19 +103,19 @@ describe('resolveStoreConfig', () => {
   });
 
   it('rejects probes on a job that does not support it', () => {
-    expect(() => resolveStoreConfig({ jobs: { 'unit-test': { probes: ['page'] } } }, MATRIX)).toThrowError(
+    expect(() => resolveStoreConfig({ jobs: { 'unit-test': { probes: ['page'] } } }, MATRIX)).toThrow(
       /job "unit-test" does not support "probes"/
     );
   });
 
   it('throws on a typo in the job name', () => {
-    expect(() => resolveStoreConfig({ jobs: { 'smkoe-test': false } }, MATRIX)).toThrowError(
+    expect(() => resolveStoreConfig({ jobs: { 'smkoe-test': false } }, MATRIX)).toThrow(
       /unknown job "smkoe-test" for kind "store"/
     );
   });
 
   it('throws when an extension-only job name is used', () => {
-    expect(() => resolveStoreConfig({ jobs: { 'unit-test-extension': false } }, MATRIX)).toThrowError(
+    expect(() => resolveStoreConfig({ jobs: { 'unit-test-extension': false } }, MATRIX)).toThrow(
       /unknown job "unit-test-extension" for kind "store"/
     );
   });

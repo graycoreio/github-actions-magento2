@@ -13,14 +13,14 @@ describe('isKind / assertKind', () => {
 
   it('rejects other strings', () => {
     expect(isKind('taco')).toBe(false);
-    expect(() => assertKind('taco')).toThrowError(/`kind` must be 'store' or 'extension'/);
+    expect(() => assertKind('taco')).toThrow(/`kind` must be 'store' or 'extension'/);
   });
 
   it('rejects empty input', () => {
-    expect(() => assertKind('')).toThrowError(/`kind` must be 'store' or 'extension'/);
+    expect(() => assertKind('')).toThrow(/`kind` must be 'store' or 'extension'/);
   });
 
   it('rejects non-string input', () => {
-    expect(() => assertKind(undefined)).toThrowError(/`kind` must be 'store' or 'extension'/);
+    expect(() => assertKind(undefined)).toThrow(/`kind` must be 'store' or 'extension'/);
   });
 });

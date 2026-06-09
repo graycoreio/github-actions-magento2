@@ -31,7 +31,7 @@ describe('validatePreferencesAgainstMatrix', () => {
       baseEntry({ version: '2.4.7' }),
       baseEntry({ version: '2.4.5', opensearch: '' }),
     ];
-    expect(() => validatePreferencesAgainstMatrix({ search: 'opensearch' }, entries)).toThrowError(
+    expect(() => validatePreferencesAgainstMatrix({ search: 'opensearch' }, entries)).toThrow(
       /not satisfied for:\n\s+- magento 2\.4\.5 \(supported: elasticsearch\)/
     );
   });
@@ -41,14 +41,14 @@ describe('validatePreferencesAgainstMatrix', () => {
       baseEntry({ version: '2.4.5', opensearch: '' }),
       baseEntry({ version: '2.4.4', opensearch: '' }),
     ];
-    expect(() => validatePreferencesAgainstMatrix({ search: 'opensearch' }, entries)).toThrowError(
+    expect(() => validatePreferencesAgainstMatrix({ search: 'opensearch' }, entries)).toThrow(
       /magento 2\.4\.5[\s\S]*magento 2\.4\.4/
     );
   });
 
   it('reports "<none>" when the entry supports nothing in the tier', () => {
     const entries = [baseEntry({ version: '2.4.0', opensearch: '', elasticsearch: '' })];
-    expect(() => validatePreferencesAgainstMatrix({ search: 'opensearch' }, entries)).toThrowError(
+    expect(() => validatePreferencesAgainstMatrix({ search: 'opensearch' }, entries)).toThrow(
       /magento 2\.4\.0 \(supported: <none>\)/
     );
   });

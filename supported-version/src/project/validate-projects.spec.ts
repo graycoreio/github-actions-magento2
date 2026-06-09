@@ -8,6 +8,6 @@ describe('validateProject', () => {
     });
     
     it('throws a helpful exception if it is an invalid project', () => {
-        expect(() => validateProject(<any>"quark")).toThrowError();
+        expect(() => validateProject(<any>"quark")).toThrow();
     })
 })

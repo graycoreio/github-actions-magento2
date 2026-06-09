@@ -9,6 +9,6 @@ describe('isKnownProject', () => {
   });
 
   it('throws a message if for unknown projects', () => {
-      expect(() => isKnownProject(<Project>"bingo")).toThrowError()
+      expect(() => isKnownProject(<Project>"bingo")).toThrow()
   });
 })
