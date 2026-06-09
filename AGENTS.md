@@ -13,7 +13,7 @@ docs/                       # General documentation
 other-root-level-folders    # Individual GitHub Actions (all are external/public)
 ```
 
-Most actions are **composite** (bash scripts in `action.yml`). Two are **TypeScript bundled**: `supported-version` and `setup-install`.
+Most actions are **composite** (bash scripts in `action.yml`). Three are **TypeScript bundled**: `supported-version`, `setup-install`, and `resolve-check-config`.
 
 ## Commands
 
@@ -28,6 +28,7 @@ cd actionName && npm test
 # Build a TypeScript action (must be committed after source changes)
 cd supported-version && npm run build
 cd setup-install && npm run build
+cd resolve-check-config && npm run build
 ```
 
 Build uses `esbuild` and outputs `dist/index.js`. The `dist/` file **must be committed** — GitHub Actions runs the bundled output directly.
@@ -50,7 +51,7 @@ Build uses `esbuild` and outputs `dist/index.js`. The `dist/` file **must be com
 
 ## @test-agent
 
-Writes and updates Jest specs for TypeScript actions (`supported-version`, `setup-install`). Scope is limited to `**/*.spec.ts` files.
+Writes and updates Jest specs for TypeScript actions (`supported-version`, `setup-install`, `resolve-check-config`). Scope is limited to `**/*.spec.ts` files.
 
 ### Style
 
