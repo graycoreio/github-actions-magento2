@@ -42,7 +42,8 @@ describe('STORE_JOBS', () => {
       'db',
       'search',
       'web',
-  ]);
+    ]);
+  });
 
   it('exposes empty service defaults for unit-test and coding-standard', () => {
     expect(STORE_JOBS['unit-test'].services).toEqual([]);
