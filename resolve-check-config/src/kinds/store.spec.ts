@@ -17,7 +17,7 @@ const MATRIX: Matrix = {
 
 describe('STORE_JOBS', () => {
   it('declares the check-store jobs', () => {
-    expect(Object.keys(STORE_JOBS).sort()).toEqual(['coding-standard', 'smoke-test', 'unit-test']);
+    expect(Object.keys(STORE_JOBS).sort()).toEqual(['coding-standard', 'e2e-test', 'smoke-test', 'unit-test']);
   });
 
   it('declares smoke-test required tiers (end-user cannot toggle)', () => {
@@ -35,6 +35,15 @@ describe('STORE_JOBS', () => {
     expect(STORE_JOBS['smoke-test'].probes).toEqual(['page']);
   });
 
+  it('declares e2e-test required tiers (end-user cannot toggle)', () => {
+    expect(STORE_JOBS['e2e-test'].services).toEqual([]);
+    expect([...STORE_JOBS['e2e-test'].requiredServices!].sort()).toEqual([
+      'cache',
+      'db',
+      'search',
+      'web',
+  ]);
+
   it('exposes empty service defaults for unit-test and coding-standard', () => {
     expect(STORE_JOBS['unit-test'].services).toEqual([]);
     expect(STORE_JOBS['coding-standard'].services).toEqual([]);
@@ -48,7 +57,7 @@ describe('STORE_JOBS', () => {
 describe('resolveStoreConfig', () => {
   it('emits every known job with default tier expansion, always including mysql for smoke-test', () => {
     const resolved = resolveStoreConfig({}, MATRIX);
-    expect(Object.keys(resolved).sort()).toEqual(['coding-standard', 'smoke-test', 'unit-test']);
+    expect(Object.keys(resolved).sort()).toEqual(['coding-standard', 'e2e-test', 'smoke-test', 'unit-test']);
     expect(resolved['unit-test'].matrix.include[0].services).toEqual({});
     expect(Object.keys(resolved['smoke-test'].matrix.include[0].services!).sort()).toEqual([
       'mysql',
@@ -73,6 +82,21 @@ describe('resolveStoreConfig', () => {
       'rabbitmq',
       'valkey',
     ]);
+  });
+
+  it('disables e2e-test by default (opt-in job)', () => {
+    const resolved = resolveStoreConfig({}, MATRIX);
+    expect(resolved['e2e-test'].enabled).toBe(false);
+    expect(resolved['unit-test'].enabled).toBe(true);
+    expect(resolved['smoke-test'].enabled).toBe(true);
+  });
+
+  it('enables e2e-test when the caller opts in', () => {
+    const resolved = resolveStoreConfig(
+      { jobs: { 'e2e-test': true } },
+      MATRIX,
+    );
+    expect(resolved['e2e-test'].enabled).toBe(true);
   });
 
   it('honors enabled=false for a job', () => {

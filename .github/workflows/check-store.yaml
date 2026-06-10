@@ -58,11 +58,13 @@ jobs:
           kind: custom
           custom_versions: ${{ steps.get-magento-version.outputs.project }}:${{ fromJSON(steps.get-magento-version.outputs.version) }}
 
-      - uses: graycoreio/github-actions-magento2/resolve-check-config@main
+      ## TODO: restore to graycoreio/github-actions-magento2/resolve-check-config@main before merge
+      - uses: digitalrisedorset/github-actions-magento2/resolve-check-config@feat/check-store-e2e-support
         id: resolve
         with:
           kind: store
           matrix: ${{ steps.supported-version.outputs.matrix }}
+          config_path: ${{ inputs.path }}/.github/check-store.json
 
   unit-test:
     runs-on: ${{ matrix.os }}
@@ -251,9 +253,10 @@ jobs:
   e2e-test:
     runs-on: ${{ matrix.os }}
     needs: compute_matrix
+    if: ${{ fromJSON(needs.compute_matrix.outputs.resolved)['e2e-test'].enabled != false }}
     services: ${{ matrix.services }}
     strategy:
-      matrix: ${{ fromJSON(needs.compute_matrix.outputs.matrix) }}
+      matrix: ${{ fromJSON(needs.compute_matrix.outputs.resolved)['e2e-test'].matrix }}
 
     steps:
       - uses: actions/checkout@v6

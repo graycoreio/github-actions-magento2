@@ -16,6 +16,11 @@ export const STORE_JOBS: Record<string, JobDefaults> = {
     requiredServices: ['db', 'search', 'queue', 'cache', 'web'],
     probes: ['page'],
   },
+  'e2e-test': {
+    services: [],
+    requiredServices: ['db', 'search', 'cache', 'web'],
+    enabledByDefault: false,
+  },
 };
 
 export const KNOWN_JOBS_STORE: readonly string[] = Object.keys(STORE_JOBS);

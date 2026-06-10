@@ -3,6 +3,7 @@
   "jobs": {
     "unit-test": true,
     "coding-standard": true,
+    "e2e-test": true,
     "integration-test": {
       "services": ["search", "queue", "cache"]
     },
