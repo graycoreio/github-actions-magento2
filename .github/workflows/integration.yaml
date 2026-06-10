@@ -183,7 +183,7 @@ jobs:
 
     - name: Upload test sandbox dir
       uses: actions/upload-artifact@v7
-      if: failure()
+      if: failure() && steps.magento-version.outputs.version != ''
       with:
         name: sandbox-data-${{ fromJSON(steps.magento-version.outputs.version) }}
         path: /home/runner/work/infrastructure/magento2/dev/tests/integration/tmp/sandbox-*
