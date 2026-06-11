@@ -342,5 +342,10 @@ jobs:
       - name: Run E2E tests
         working-directory: ${{ steps.setup-magento.outputs.path }}/dev/tests/e2e
         run: |
-          npm ci
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+          
           npx playwright test
