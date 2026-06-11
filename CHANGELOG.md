@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.6.0](https://github.com/graycoreio/github-actions-magento2/compare/v8.5.0...v8.6.0) (2026-06-10)
+
+
+### Features
+
+* **resolve-check-config:** graphql smoke test opt-out by default ([a097371](https://github.com/graycoreio/github-actions-magento2/commit/a097371e379bb481e0a077fa7c673c5004e948b8))
+
+
+### Bug Fixes
+
+* **check-extension, integration:** prevent crash on docker pull failure ([b7c6614](https://github.com/graycoreio/github-actions-magento2/commit/b7c6614ac37ec3d5c4d6b3797e13f8c249e13e6a))
+* **check-extension,integration:** remove quotes from version names when upladoing sandbox data ([8f695ed](https://github.com/graycoreio/github-actions-magento2/commit/8f695ed7f8513df196dfad1bd6804dd87e502909))
+* **tsconfig:** set ES2022 target for jest typechecking ([7f6945e](https://github.com/graycoreio/github-actions-magento2/commit/7f6945e30be5d7610a2ab64e9d7147be0cbeaf20))
+
 ## [8.5.0](https://github.com/graycoreio/github-actions-magento2/compare/v8.4.0...v8.5.0) (2026-05-27)
 
 
