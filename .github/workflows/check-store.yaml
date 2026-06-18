@@ -343,6 +343,28 @@ jobs:
           mv mageos-elgentos-e2e/dev/tests/e2e dev/tests/        
           rm -rf mageos-elgentos-e2e
 
+      - name: Inspect E2E installation
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        run: |
+          echo "PWD:"
+          pwd
+      
+          echo
+          echo "Root:"
+          ls -la
+      
+          echo
+          echo "dev/tests:"
+          ls -la dev/tests || true
+      
+          echo
+          echo "dev/tests/e2e:"
+          ls -la dev/tests/e2e || true
+      
+          echo
+          echo "Find package.json:"
+          find . -name package.json | sort
+
       - name: Generate E2E .env
         working-directory: ${{ steps.setup-magento.outputs.path }}/dev/tests/e2e
         # values below come from setup-install/src/build-command.ts and should be refactored later
