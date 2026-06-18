@@ -337,7 +337,10 @@ jobs:
           git clone \
             --branch ci/tests-e2e-playwright-elgentos-hyva \
             https://github.com/digitalrisedorset/mageos-magento2.git \
-            dev/tests/e2e
+            mageos-elgentos-e2e
+            mkdir -p dev/tests        
+            mv mageos-elgentos-e2e/dev/tests/e2e dev/tests/        
+            rm -rf mageos-elgentos-e2e
 
       - name: Run E2E tests
         working-directory: ${{ steps.setup-magento.outputs.path }}/dev/tests/e2e
