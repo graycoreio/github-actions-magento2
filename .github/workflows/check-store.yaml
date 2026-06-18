@@ -366,4 +366,14 @@ jobs:
             npm install
           fi
           
-          npx playwright test
+      - name: E2E Healthcheck
+        run: npx playwright test tests/healthcheck.spec.ts --project=chromium
+      
+      - name: E2E Home
+        run: npx playwright test tests/home.spec.ts --project=chromium
+
+      - name: E2E Category
+        run: npx playwright test tests/category.spec.ts --project=chromium
+
+      - name: E2E Product
+        run: npx playwright test tests/product.spec.ts --project=chromium
