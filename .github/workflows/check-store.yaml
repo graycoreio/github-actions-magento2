@@ -367,13 +367,17 @@ jobs:
           fi
           
       - name: E2E Healthcheck
-        run: npx playwright test tests/healthcheck.spec.ts --project=chromium
-      
+        working-directory: ${{ steps.setup-magento.outputs.path }}/dev/tests/e2e
+        run: npx playwright test tests/healthcheck.spec.ts
+
       - name: E2E Home
-        run: npx playwright test tests/home.spec.ts --project=chromium
+        working-directory: ${{ steps.setup-magento.outputs.path }}/dev/tests/e2e
+        run: npx playwright test tests/home.spec.ts
 
       - name: E2E Category
-        run: npx playwright test tests/category.spec.ts --project=chromium
+        working-directory: ${{ steps.setup-magento.outputs.path }}/dev/tests/e2e
+        run: npx playwright test tests/category.spec.ts
 
       - name: E2E Product
-        run: npx playwright test tests/product.spec.ts --project=chromium
+        working-directory: ${{ steps.setup-magento.outputs.path }}/dev/tests/e2e
+        run: npx playwright test tests/product.spec.ts
