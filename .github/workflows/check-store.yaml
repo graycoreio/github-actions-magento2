@@ -334,13 +334,28 @@ jobs:
         working-directory: ${{ steps.setup-magento.outputs.path }}
         run: |
           mkdir -p dev/tests
+          
           git clone \
             --branch ci/tests-e2e-playwright-elgentos-hyva \
             https://github.com/digitalrisedorset/mageos-magento2.git \
-            mageos-elgentos-e2e
-            mkdir -p dev/tests        
-            mv mageos-elgentos-e2e/dev/tests/e2e dev/tests/        
-            rm -rf mageos-elgentos-e2e
+            mageos-elgentos-e2e  
+          
+          mv mageos-elgentos-e2e/dev/tests/e2e dev/tests/        
+          rm -rf mageos-elgentos-e2e
+
+      - name: Generate E2E .env
+        working-directory: ${{ steps.setup-magento.outputs.path }}/dev/tests/e2e
+        # values below come from setup-install/src/build-command.ts and should be refactored later
+        run: |
+          cat > .env <<EOF
+          PLAYWRIGHT_BASE_URL=http://localhost/
+          PLAYWRIGHT_PRODUCTION_URL=http://localhost/
+          PLAYWRIGHT_REVIEW_URL=http://localhost/
+          MAGENTO_ADMIN_SLUG=admin
+          MAGENTO_ADMIN_USERNAME=admin
+          MAGENTO_ADMIN_PASSWORD=admin123
+          MAGENTO_THEME_LOCALE=en_US
+          EOF
 
       - name: Run E2E tests
         working-directory: ${{ steps.setup-magento.outputs.path }}/dev/tests/e2e
