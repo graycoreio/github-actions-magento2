@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
-    - uses: graycoreio/github-actions-magento2/fix-magento-install@v8.6.0 # x-release-please-version
+    - uses: graycoreio/github-actions-magento2/fix-magento-install@v8.7.0 # x-release-please-version
       with:
         magento_directory: path/to/magento
 ```

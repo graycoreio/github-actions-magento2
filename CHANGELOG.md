@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.7.0](https://github.com/graycoreio/github-actions-magento2/compare/v8.6.0...v8.7.0) (2026-06-22)
+
+
+### Features
+
+* **supported-version:** add Mage-OS 3.1.0 (Magento 2.4.9) ([3d28c89](https://github.com/graycoreio/github-actions-magento2/commit/3d28c89194004e67b162df06f1eb281810001cca))
+
 ## [8.6.0](https://github.com/graycoreio/github-actions-magento2/compare/v8.5.0...v8.6.0) (2026-06-10)
 
 
