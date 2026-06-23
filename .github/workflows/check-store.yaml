@@ -366,6 +366,9 @@ jobs:
             npm install
           fi
           
+          npx playwright install --with-deps chromium
+          npx playwright test tests/healthcheck.spec.ts
+          
       - name: E2E Healthcheck
         working-directory: ${{ steps.setup-magento.outputs.path }}/dev/tests/e2e
         run: npx playwright test tests/healthcheck.spec.ts
