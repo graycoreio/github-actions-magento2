@@ -19,5 +19,5 @@ jobs:
     if: "!startsWith(github.head_ref, 'release-please')"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - run: bash cache-magento/test.sh
