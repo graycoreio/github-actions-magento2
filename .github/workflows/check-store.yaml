@@ -311,18 +311,15 @@ jobs:
           extra_args: --magento-init-params=MAGE_MODE=developer
 
       - uses: graycoreio/github-actions-magento2/configure-service-nginx@main
-        #if: steps.detect-e2e.outputs.enabled == 'true'
         with:
           container_id: ${{ job.services.nginx.id }}
           magento_path: ${{ inputs.path }}
 
       - uses: actions/setup-node@v4
-        #if: steps.detect-e2e.outputs.enabled == 'true'
         with:
           cache: npm
 
       - name: Install Magento sample data
-        #if: steps.detect-e2e.outputs.enabled == 'true'
         working-directory: ${{ steps.setup-magento.outputs.path }}
         run: |
           bin/magento sampledata:deploy
