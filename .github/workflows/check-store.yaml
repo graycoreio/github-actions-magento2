@@ -319,11 +319,18 @@ jobs:
         with:
           node-version: 24
 
-      - name: Prepare writable directories
+      - name: Prepare Magento writable directories
         working-directory: ${{ steps.setup-magento.outputs.path }}
         run: |
-          mkdir -p var/page_cache var/cache var/session generated
-          chmod -R 775 var generated pub/static pub/media
+          mkdir -p var generated pub/static pub/media
+
+          chmod -R u+rwX,g+rwX \
+            var \
+            generated \
+            pub/static \
+            pub/media
+
+          chmod +x bin/magento
 
       - name: Install Magento sample data
         working-directory: ${{ steps.setup-magento.outputs.path }}
