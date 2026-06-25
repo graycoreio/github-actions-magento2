@@ -58,11 +58,13 @@ jobs:
           kind: custom
           custom_versions: ${{ steps.get-magento-version.outputs.project }}:${{ fromJSON(steps.get-magento-version.outputs.version) }}
 
-      - uses: graycoreio/github-actions-magento2/resolve-check-config@main
+      ## TODO: restore to graycoreio/github-actions-magento2/resolve-check-config@main before merge
+      - uses: digitalrisedorset/github-actions-magento2/resolve-check-config@feat/check-store-e2e-support
         id: resolve
         with:
           kind: store
           matrix: ${{ steps.supported-version.outputs.matrix }}
+          config_path: ${{ inputs.path }}/.github/check-store.json
 
   unit-test:
     runs-on: ${{ matrix.os }}
@@ -247,3 +249,157 @@ jobs:
         if: contains(fromJSON(needs.compute_matrix.outputs.resolved)['smoke-test'].probes, 'graphql')
         with:
           kind: graphql
+          
+  e2e-test:
+    runs-on: ${{ matrix.os }}
+    needs: compute_matrix
+    if: ${{ fromJSON(needs.compute_matrix.outputs.resolved)['e2e-test'].enabled != false }}
+    services: ${{ matrix.services }}
+    strategy:
+      matrix: ${{ fromJSON(needs.compute_matrix.outputs.resolved)['e2e-test'].matrix }}
+
+    steps:
+      - uses: actions/checkout@v6
+        if: inputs.store_artifact_name == ''
+
+      - uses: actions/download-artifact@v8
+        if: inputs.store_artifact_name != ''
+        with:
+          name: ${{ inputs.store_artifact_name }}
+          path: ${{ inputs.path }}
+
+      - uses: graycoreio/github-actions-magento2/setup-magento@main
+        id: setup-magento
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v${{ matrix.composer }}
+          mode: store
+          working-directory: ${{ inputs.path }}
+          composer_auth: ${{ secrets.composer_auth }}
+
+      - name: Detect E2E npm contract
+        id: detect-e2e
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        run: |
+          if [ -d dev/tests/e2e ] \
+            && [ "$(find dev/tests/e2e -type f | wc -l)" -gt 0 ] \
+            && [ -f package.json ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::No package.json found, skipping E2E"
+          fi
+
+      - uses: graycoreio/github-actions-magento2/cache-magento@main
+        with:
+          composer_cache_key: ${{ inputs.composer_cache_key }}
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          stamp: ${{ inputs.stamp }}
+
+      - name: Composer install
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        run: composer install
+        env:
+          COMPOSER_AUTH: ${{ secrets.composer_auth }}
+
+      - uses: graycoreio/github-actions-magento2/setup-install@main
+        id: setup-install
+        with:
+          services: ${{ toJSON(matrix.services) }}
+          path: ${{ steps.setup-magento.outputs.path }}
+          container_id: ${{ job.services['php-fpm'].id }}
+          extra_args: --magento-init-params=MAGE_MODE=developer
+
+      - uses: graycoreio/github-actions-magento2/configure-service-nginx@main
+        with:
+          container_id: ${{ job.services.nginx.id }}
+          magento_path: ${{ inputs.path }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Prepare Magento writable directories
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        run: |
+          mkdir -p var generated pub/static pub/media
+
+          chmod -R u+rwX,g+rwX \
+            var \
+            generated \
+            pub/static \
+            pub/media
+
+          chmod +x bin/magento
+
+      - name: Install Magento sample data
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        run: |
+          bin/magento sampledata:deploy
+          composer update
+          bin/magento setup:upgrade
+          bin/magento indexer:reindex      
+
+      - name: Install MageOS E2E suite
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        run: |
+          mkdir -p dev/tests
+          
+          git clone \
+            --branch ci/tests-e2e-playwright-elgentos-hyva \
+            https://github.com/digitalrisedorset/mageos-magento2.git \
+            mageos-elgentos-e2e  
+          
+          mv mageos-elgentos-e2e/dev/tests/e2e dev/tests/        
+          rm -rf mageos-elgentos-e2e
+
+      - name: Generate E2E .env
+        working-directory: ${{ steps.setup-magento.outputs.path }}/dev/tests/e2e
+        # values below come from setup-install/src/build-command.ts and should be refactored later
+        run: |
+          cat > .env <<EOF
+          PLAYWRIGHT_BASE_URL=http://localhost/
+          PLAYWRIGHT_PRODUCTION_URL=http://localhost/
+          PLAYWRIGHT_REVIEW_URL=http://localhost/
+          MAGENTO_ADMIN_SLUG=admin
+          MAGENTO_ADMIN_USERNAME=admin
+          MAGENTO_ADMIN_PASSWORD=admin123
+          MAGENTO_THEME_LOCALE=en_US
+          EOF
+
+      - name: Run E2E tests
+        working-directory: ${{ steps.setup-magento.outputs.path }}/dev/tests/e2e
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+          
+          npx playwright install --with-deps chromium
+          npx playwright test tests/healthcheck.spec.ts
+          
+      - name: E2E Healthcheck
+        working-directory: ${{ steps.setup-magento.outputs.path }}/dev/tests/e2e
+        run: npx playwright test tests/healthcheck.spec.ts
+
+      - name: E2E Home
+        working-directory: ${{ steps.setup-magento.outputs.path }}/dev/tests/e2e
+        run: npx playwright test tests/home.spec.ts
+
+      - name: E2E Category
+        working-directory: ${{ steps.setup-magento.outputs.path }}/dev/tests/e2e
+        run: npx playwright test tests/category.spec.ts
+
+      - name: E2E Product
+        working-directory: ${{ steps.setup-magento.outputs.path }}/dev/tests/e2e
+        run: npx playwright test tests/product.spec.ts
+
+      - name: Upload Playwright artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-artifacts
+          path: |
+            ${{ steps.setup-magento.outputs.path }}/dev/tests/e2e/playwright-report
+            ${{ steps.setup-magento.outputs.path }}/dev/tests/e2e/test-results

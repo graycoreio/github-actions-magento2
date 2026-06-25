@@ -58,11 +58,15 @@ export interface Matrix {
  * `probes` is the default smoke-test probe list used when the caller
  * does not override it. Only jobs that declare it support the
  * `probes` config key; omit it for jobs that have no probe concept.
+ * `enabledByDefault` controls the `enabled` value emitted when the
+ * caller's config omits the job entirely. Defaults to `true`; set
+ * `false` for opt-in jobs.
  */
 export interface JobDefaults {
   services: readonly Tier[];
   requiredServices?: readonly Tier[];
   probes?: readonly Probe[];
+  enabledByDefault?: boolean;
 }
 
 /**
