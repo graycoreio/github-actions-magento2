@@ -319,26 +319,27 @@ jobs:
         with:
           node-version: 24
 
-      - name: Prepare Magento writable directories
+      - uses: graycoreio/github-actions-magento2/run-magento-command@main
+        with:
+          container_id: ${{ job.services['php-fpm'].id }}
+          path: /var/www/html/${{ steps.setup-magento.outputs.path }}
+          command: sampledata:deploy
+
+      - name: Composer update
         working-directory: ${{ steps.setup-magento.outputs.path }}
-        run: |
-          mkdir -p var generated pub/static pub/media
+        run: composer update
 
-          chmod -R u+rwX,g+rwX \
-            var \
-            generated \
-            pub/static \
-            pub/media
+      - uses: graycoreio/github-actions-magento2/run-magento-command@main
+        with:
+          container_id: ${{ job.services['php-fpm'].id }}
+          path: ${{ steps.setup-magento.outputs.path }}
+          command: setup:upgrade
 
-          chmod +x bin/magento
-
-      - name: Install Magento sample data
-        working-directory: ${{ steps.setup-magento.outputs.path }}
-        run: |
-          bin/magento sampledata:deploy
-          composer update
-          bin/magento setup:upgrade
-          bin/magento indexer:reindex      
+      - uses: graycoreio/github-actions-magento2/run-magento-command@main
+        with:
+          container_id: ${{ job.services['php-fpm'].id }}
+          path: ${{ steps.setup-magento.outputs.path }}
+          command: indexer:reindex
 
       - name: Install MageOS E2E suite
         working-directory: ${{ steps.setup-magento.outputs.path }}
