@@ -46,7 +46,7 @@ export const normalizeJobEntry = (
   defaults: JobDefaults,
 ): { enabled: boolean; tiers: readonly Tier[]; probes?: readonly Probe[] } => {
   if (raw === undefined) {
-    return { enabled: true, tiers: defaults.services, probes: defaults.probes };
+    return { enabled: defaults.enabledByDefault ?? true, tiers: defaults.services, probes: defaults.probes };
   }
   if (typeof raw === 'boolean') {
     return { enabled: raw, tiers: defaults.services, probes: defaults.probes };

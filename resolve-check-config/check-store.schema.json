@@ -11,7 +11,11 @@
       "properties": {
         "unit-test": { "$ref": "#/$defs/jobConfig" },
         "coding-standard": { "$ref": "#/$defs/jobConfig" },
-        "smoke-test": { "$ref": "#/$defs/smokeJobConfig" }
+        "smoke-test": { "$ref": "#/$defs/smokeJobConfig" },
+        "e2e-test": {
+          "$ref": "#/$defs/jobConfig",
+          "description": "Opt-in: e2e-test does not run unless enabled here."
+        }
       },
       "additionalProperties": false
     }

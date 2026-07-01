@@ -1,0 +1,32 @@
+name: "Run Magento command"
+author: "Graycore"
+description: "Executes a Magento CLI command inside the PHP service container."
+
+inputs:
+  container_id:
+    description: "PHP container ID"
+    required: true
+
+  path:
+    description: "Magento root path inside the PHP container"
+    required: false
+    default: "."
+
+  command:
+    description: "Magento CLI arguments, e.g. 'cache:flush' or 'setup:upgrade --keep-generated'"
+    required: true
+
+runs:
+  using: "node24"
+  main: "dist/index.js"
+
+branding:
+  icon: "terminal"
+  color: "gray-dark"
+
+outputs:
+  stdout:
+    description: "Standard output of the Magento command"
+
+  exit_code:
+    description: "Exit code of the command"
