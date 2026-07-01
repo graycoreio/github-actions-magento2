@@ -319,27 +319,29 @@ jobs:
         with:
           node-version: 24
 
-      - uses: graycoreio/github-actions-magento2/run-magento-command@feature/ci-magento-runtime
-        with:
-          container_id: ${{ job.services['php-fpm'].id }}
-          path: /var/www/html/${{ steps.setup-magento.outputs.path }}
-          command: sampledata:deploy
-
-      - name: Composer update
+      # TODO:
+      # setup-install already executes Magento CLI commands through `docker exec`.
+      # Consider extracting this pattern into a reusable `run-magento-command`
+      # action once the E2E workflow has stabilised.
+      - name: Install Magento sample data
         working-directory: ${{ steps.setup-magento.outputs.path }}
-        run: composer update
-
-      - uses: graycoreio/github-actions-magento2/run-magento-command@feature/ci-magento-runtime
-        with:
-          container_id: ${{ job.services['php-fpm'].id }}
-          path: ${{ steps.setup-magento.outputs.path }}
-          command: setup:upgrade
-
-      - uses: graycoreio/github-actions-magento2/run-magento-command@feature/ci-magento-runtime
-        with:
-          container_id: ${{ job.services['php-fpm'].id }}
-          path: ${{ steps.setup-magento.outputs.path }}
-          command: indexer:reindex
+        run: |
+          docker exec \
+            -w /var/www/html/${{ steps.setup-magento.outputs.path }} \
+            ${{ job.services['php-fpm'].id }} \
+            php bin/magento sampledata:deploy
+          
+          composer update
+          
+          docker exec \
+            -w /var/www/html/${{ steps.setup-magento.outputs.path }} \
+            ${{ job.services['php-fpm'].id }} \
+            php bin/magento setup:upgrade
+          
+          docker exec \
+            -w /var/www/html/${{ steps.setup-magento.outputs.path }} \
+            ${{ job.services['php-fpm'].id }} \
+            php bin/magento indexer:reindex
 
       - name: Install MageOS E2E suite
         working-directory: ${{ steps.setup-magento.outputs.path }}
