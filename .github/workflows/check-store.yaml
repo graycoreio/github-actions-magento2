@@ -37,7 +37,7 @@ jobs:
     outputs:
       resolved: ${{ steps.resolve.outputs.resolved }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         if: inputs.store_artifact_name == ''
 
       - uses: actions/download-artifact@v8
@@ -74,7 +74,7 @@ jobs:
       matrix: ${{ fromJSON(needs.compute_matrix.outputs.resolved)['unit-test'].matrix }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         if: inputs.store_artifact_name == ''
 
       - uses: actions/download-artifact@v8
@@ -137,7 +137,7 @@ jobs:
       matrix: ${{ fromJSON(needs.compute_matrix.outputs.resolved)['coding-standard'].matrix }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         if: inputs.store_artifact_name == ''
 
       - uses: actions/download-artifact@v8
@@ -194,7 +194,7 @@ jobs:
       matrix: ${{ fromJSON(needs.compute_matrix.outputs.resolved)['smoke-test'].matrix }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         if: inputs.store_artifact_name == ''
 
       - uses: actions/download-artifact@v8

@@ -21,7 +21,7 @@ jobs:
     if: "!startsWith(github.head_ref, 'release-please')"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Set PHP Version
         uses: shivammathur/setup-php@v2
         with:
@@ -53,7 +53,7 @@ jobs:
     if: "!startsWith(github.head_ref, 'release-please')"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Create mock extension composer.json
         shell: bash

@@ -1,6 +1,6 @@
 {
   "name": "@graycoreio/github-actions-magento2",
-  "version": "8.6.0",
+  "version": "8.7.0",
   "description": "Github Actions for Magento 2",
   "scripts": {
     "test": "cd supported-version && npm run test && cd - && cd setup-install && npm run test && cd -",
@@ -21,17 +21,17 @@
     "@actions/core": "^3.0.1",
     "@actions/exec": "^3.0.0",
     "@eslint/js": "^10.0.1",
-    "semver": "^7.8.3"
+    "semver": "^7.8.5"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/node": "^24.10.4",
     "@types/semver": "^7.7.1",
-    "esbuild": "^0.28.0",
-    "eslint": "^10.4.1",
+    "esbuild": "^0.28.1",
+    "eslint": "^10.5.0",
     "jest": "^30.4.2",
     "ts-jest": "^29.4.11",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.61.0"
+    "typescript-eslint": "^8.61.1"
   }
 }

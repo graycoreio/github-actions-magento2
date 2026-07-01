@@ -47,7 +47,7 @@ jobs:
 
       - name: Checkout release PR branch
         if: steps.branch-check.outputs.EXISTS == 'true'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: ${{ env.RELEASE_BRANCH }}
           token: ${{ secrets.GRAYBOT_PIN_BACK_PAT }}
@@ -91,7 +91,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ref: main
           token: ${{ secrets.GRAYBOT_PIN_BACK_PAT }}
