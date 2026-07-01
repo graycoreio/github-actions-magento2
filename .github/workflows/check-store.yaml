@@ -335,7 +335,8 @@ jobs:
           path: ${{ steps.setup-magento.outputs.path }}
           command: setup:upgrade
 
-      - uses: graycoreio/github-actions-magento2/run-magento-command@main
+      #- uses: graycoreio/github-actions-magento2/run-magento-command@main
+      - uses: ./run-magento-command
         with:
           container_id: ${{ job.services['php-fpm'].id }}
           path: ${{ steps.setup-magento.outputs.path }}
