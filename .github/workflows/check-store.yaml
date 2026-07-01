@@ -319,7 +319,8 @@ jobs:
         with:
           node-version: 24
 
-      - uses: graycoreio/github-actions-magento2/run-magento-command@main
+      #- uses: graycoreio/github-actions-magento2/run-magento-command@main
+      - uses: ./run-magento-command
         with:
           container_id: ${{ job.services['php-fpm'].id }}
           path: /var/www/html/${{ steps.setup-magento.outputs.path }}
@@ -329,7 +330,8 @@ jobs:
         working-directory: ${{ steps.setup-magento.outputs.path }}
         run: composer update
 
-      - uses: graycoreio/github-actions-magento2/run-magento-command@main
+      #- uses: graycoreio/github-actions-magento2/run-magento-command@main
+      - uses: ./run-magento-command
         with:
           container_id: ${{ job.services['php-fpm'].id }}
           path: ${{ steps.setup-magento.outputs.path }}
