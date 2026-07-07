@@ -323,32 +323,26 @@ jobs:
       # setup-install already executes Magento CLI commands through `docker exec`.
       # Consider extracting this pattern into a reusable `run-magento-command`
       # action once the E2E workflow has stabilised.
-      - name: Install Magento sample data
+      - name: Install sample data
         run: |
-          WORKSPACE="$GITHUB_WORKSPACE"
-          RUNNER_PATH="${{ steps.setup-magento.outputs.path }}"
-          
-          echo "Workspace: $WORKSPACE"
-          echo "Runner path: $RUNNER_PATH"
-          
-          RELATIVE=$(realpath --relative-to="$WORKSPACE" \
-            "$(realpath "$RUNNER_PATH")")
-          
-          CONTAINER_PATH="/var/www/html/$RELATIVE"
-          
-          echo "Container path: $CONTAINER_PATH"
-          
-          magento() {
-            docker exec \
-            -w "$CONTAINER_PATH" \
-            "${{ job.services['php-fpm'].id }}" \
-            php bin/magento "$@"
-          }
-            
+          source .github/scripts/magento.sh \
+            "${{ steps.setup-magento.outputs.path }}" \
+            "${{ job.services['php-fpm'].id }}"
+
           magento sampledata:deploy
-          composer update
-          magento setup:upgrade
-          magento indexer:reindex
+          
+      - name: Composer update
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        run: composer update
+        
+      - name: Upgrade Magento
+        run: |
+          source .github/scripts/magento.sh \
+             "${{ steps.setup-magento.outputs.path }}" \
+             "${{ job.services['php-fpm'].id }}"
+          
+           magento setup:upgrade
+           magento indexer:reindex
 
       - name: Install MageOS E2E suite
         working-directory: ${{ steps.setup-magento.outputs.path }}
