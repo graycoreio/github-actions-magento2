@@ -324,8 +324,25 @@ jobs:
       # Consider extracting this pattern into a reusable `run-magento-command`
       # action once the E2E workflow has stabilised.
       - name: Install Magento sample data
-        working-directory: /var/www/html/_gmagento
         run: |
+          WORKSPACE="$GITHUB_WORKSPACE"
+          RUNNER_PATH="${{ steps.setup-magento.outputs.path }}"
+          
+          echo "Workspace: $WORKSPACE"
+          echo "Runner path: $RUNNER_PATH"
+          
+          RELATIVE=$(realpath --relative-to="$WORKSPACE" \
+            "$(realpath "$RUNNER_PATH")")
+          
+          CONTAINER_PATH="/var/www/html/$RELATIVE"
+          
+          echo "Container path: $CONTAINER_PATH"
+          
+          docker exec \
+            -w "$CONTAINER_PATH" \
+            ${{ job.services['php-fpm'].id }} \
+            pwd
+              
           docker exec \
             -w /var/www/html/_ghamagento \
             ${{ job.services['php-fpm'].id }} \
