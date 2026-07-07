@@ -327,6 +327,18 @@ jobs:
         working-directory: ${{ steps.setup-magento.outputs.path }}
         run: |
           docker exec \
+            ${{ job.services['php-fpm'].id }} \
+            pwd
+
+          docker exec \
+            ${{ job.services['php-fpm'].id }} \
+            ls -la /var/www/html
+
+          docker exec \
+            ${{ job.services['php-fpm'].id }} \
+            find /var/www/html -maxdepth 2 -name app
+
+          docker exec \
             -w /var/www/html/${{ steps.setup-magento.outputs.path }} \
             ${{ job.services['php-fpm'].id }} \
             php bin/magento sampledata:deploy
