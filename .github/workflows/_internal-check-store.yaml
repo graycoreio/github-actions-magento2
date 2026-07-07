@@ -85,12 +85,19 @@ jobs:
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
+      - name: Opt in to e2e-test
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        run: |
+          mkdir -p .github
+          echo '{ "jobs": { "e2e-test": true } }' > .github/check-store.json
+
       - uses: actions/upload-artifact@v7
         with:
           name: store-fixture-${{ matrix.version }}
           path: |
             ${{ steps.setup-magento.outputs.path }}
             !${{ steps.setup-magento.outputs.path }}/vendor
+          include-hidden-files: true
           retention-days: 3
 
   check-store:
