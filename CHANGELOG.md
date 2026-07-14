@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.8.0](https://github.com/graycoreio/github-actions-magento2/compare/v8.7.0...v8.8.0) (2026-07-14)
+
+
+### Features
+
+* **check-extension:** add unified gate step to know if successful ([bd10506](https://github.com/graycoreio/github-actions-magento2/commit/bd1050697231e80717ed377669317e8bf62464a5))
+* **check-store:** add unified gate step to know if successful ([74f4fdf](https://github.com/graycoreio/github-actions-magento2/commit/74f4fdfb8636093a9028b095287fdb5aa257177f))
+
 ## [8.7.0](https://github.com/graycoreio/github-actions-magento2/compare/v8.6.0...v8.7.0) (2026-06-22)
 
 
