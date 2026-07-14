@@ -111,7 +111,7 @@ runs:
         fi
         printf '%s\n' "$line" >> .gitattributes
 
-    - uses: graycoreio/github-actions-magento2/fix-magento-install@v8.8.0
+    - uses: graycoreio/github-actions-magento2/fix-magento-install@main
       name: Fix Magento Out of Box Install Issues
       with:
         magento_directory: ${{ steps.setup-magento-compute-directory.outputs.MAGENTO_DIRECTORY }}
