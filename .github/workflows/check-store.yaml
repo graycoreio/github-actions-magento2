@@ -247,3 +247,18 @@ jobs:
         if: contains(fromJSON(needs.compute_matrix.outputs.resolved)['smoke-test'].probes, 'graphql')
         with:
           kind: graphql
+
+  gate:
+    name: Check Store Success
+    runs-on: ubuntu-latest
+    needs: [compute_matrix, unit-test, coding-standard, smoke-test]
+    if: always()
+    steps:
+      - name: Check results
+        run: |
+          if [[ "${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}" == "true" ]]; then
+            echo "One or more jobs failed or were cancelled:"
+            echo '${{ toJSON(needs.*.result) }}'
+            exit 1
+          fi
+          echo "All jobs succeeded or were skipped."
