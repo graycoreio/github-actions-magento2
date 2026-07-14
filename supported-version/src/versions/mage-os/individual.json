@@ -298,6 +298,21 @@
         "nginx": "nginx:1.28",
         "os": "ubuntu-latest",
         "release": "2026-06-18T00:00:00+0000",
-        "eol": "2029-06-18T00:00:00+0000"
+        "eol": "2026-07-14T00:00:00+0000"
+    },
+    "mage-os/project-community-edition:3.2.0": {
+        "magento": "mage-os/project-community-edition:3.2.0",
+        "upstream": "2.4.9",
+        "php": 8.4,
+        "composer": "2.10.2",
+        "mysql": "mysql:8.4",
+        "opensearch": "opensearchproject/opensearch:3",
+        "rabbitmq": "rabbitmq:4.1-management",
+        "valkey": "valkey/valkey:8",
+        "varnish": "varnish:7.7",
+        "nginx": "nginx:1.28",
+        "os": "ubuntu-latest",
+        "release": "2026-07-14T00:00:00+0000",
+        "eol": "2029-07-14T00:00:00+0000"
     }
 }
