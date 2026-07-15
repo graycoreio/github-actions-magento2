@@ -2,7 +2,11 @@ version: 2
 updates:
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
-    directory: "/"
+    # "/" covers .github/workflows; "/*" covers each root-level composite
+    # action's action.yml (directories without one are skipped).
+    directories:
+      - "/"
+      - "/*"
     schedule:
       interval: "weekly"
     cooldown:
