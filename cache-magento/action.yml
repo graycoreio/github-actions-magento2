@@ -90,7 +90,7 @@ runs:
           >> $GITHUB_OUTPUT
 
     - name: "Cache Composer Packages"
-      uses: actions/cache@v5
+      uses: actions/cache@v6
       id: cache-magento-cache
       with:
         key: ${{ steps.cache-magento-keys.outputs.download-key }}
@@ -114,7 +114,7 @@ runs:
         } >> "$GITHUB_OUTPUT"
 
     - name: "Cache Vendor (Stamp)"
-      uses: actions/cache@v5
+      uses: actions/cache@v6
       if: inputs.stamp == 'true'
       with:
         key: ${{ steps.cache-magento-keys.outputs.stamp-key }}
