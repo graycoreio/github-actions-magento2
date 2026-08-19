@@ -178,7 +178,7 @@
         "mysql": "mysql:8.4",
         "valkey": "valkey/valkey:9",
         "opensearch": "opensearchproject/opensearch:3",
-        "rabbitmq": "rabbitmq:4.2-management",
+        "rabbitmq": "rabbitmq:4.3-management",
         "varnish": "varnish:8",
         "nginx": "nginx:1.28",
         "os": "ubuntu-24.04",
