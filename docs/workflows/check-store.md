@@ -59,7 +59,7 @@ on:
 
 jobs:
   check-store:
-    uses: graycoreio/github-actions-magento2/.github/workflows/check-store.yaml@v8.9.0 # x-release-please-version
+    uses: graycoreio/github-actions-magento2/.github/workflows/check-store.yaml@v8.10.0 # x-release-please-version
     secrets:
       composer_auth: ${{ secrets.COMPOSER_AUTH }}
 ```
@@ -71,7 +71,7 @@ If your pipeline builds or prepares the store in a prior job and uploads it as a
 ```yml
 jobs:
   check-store:
-    uses: graycoreio/github-actions-magento2/.github/workflows/check-store.yaml@v8.9.0 # x-release-please-version
+    uses: graycoreio/github-actions-magento2/.github/workflows/check-store.yaml@v8.10.0 # x-release-please-version
     secrets:
       composer_auth: ${{ secrets.COMPOSER_AUTH }}
 ```
