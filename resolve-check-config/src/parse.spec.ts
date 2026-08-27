@@ -24,6 +24,7 @@ const MATRIX: Matrix = {
 };
 
 const noDefaults: JobDefaults = { services: [] };
+const optInDefaults: JobDefaults = { services: [], enabledByDefault: false };
 const smokeDefaults: JobDefaults = { services: ['search', 'queue', 'cache', 'web'] };
 const probeDefaults: JobDefaults = { services: [], probes: ['page'] };
 
@@ -125,6 +126,21 @@ describe('normalizeJobEntry', () => {
 
   it('omits probes for a job that declares no probe defaults', () => {
     expect(normalizeJobEntry('unit-test', { services: [] }, noDefaults).probes).toBeUndefined();
+  });
+
+  it('honors enabledByDefault=false when the entry is undefined', () => {
+    expect(normalizeJobEntry('phpstan', undefined, optInDefaults).enabled).toBe(false);
+  });
+
+  it('treats naming an opt-in job as opting in', () => {
+    expect(normalizeJobEntry('phpstan', true, optInDefaults).enabled).toBe(true);
+    expect(normalizeJobEntry('phpstan', {}, optInDefaults).enabled).toBe(true);
+    expect(normalizeJobEntry('phpstan', { services: [] }, optInDefaults).enabled).toBe(true);
+  });
+
+  it('honors an explicit enabled=false on an opt-in job', () => {
+    expect(normalizeJobEntry('phpstan', false, optInDefaults).enabled).toBe(false);
+    expect(normalizeJobEntry('phpstan', { enabled: false }, optInDefaults).enabled).toBe(false);
   });
 });
 

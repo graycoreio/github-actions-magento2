@@ -38,6 +38,7 @@ If the reusable workflows do not fit your needs, the individual actions are the 
 | [Get Magento Version](./get-magento-version/README.md)       | A Github Action that computes the installed Magento version.                              |
 | [Get Composer Version](./get-composer-version/README.md)     | A Github Action that computes an installed Composer version.                              |
 | [Coding Standard](./coding-standard/README.md)               | A Github Action that runs the Magento Coding Standard.                                    |
+| [PHPStan](./phpstan/README.md)                               | A Github Action that runs PHPStan with the Magento PHPStan extension.                     |
 | [Semver Compare](./semver-compare/README.md)                 | A Github Action that semantically compares two versions                                   |
 | [Supported Version](./supported-version/README.md)           | A Github Action that computes the currently supported Github Actions Matrix for Magento 2 |
 | [Setup Install](./setup-install/README.md)                   | A Github Action that runs `bin/magento setup:install` from the supported-version services matrix |

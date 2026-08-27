@@ -17,7 +17,19 @@ const MATRIX: Matrix = {
 
 describe('STORE_JOBS', () => {
   it('declares the check-store jobs', () => {
-    expect(Object.keys(STORE_JOBS).sort()).toEqual(['coding-standard', 'smoke-test', 'unit-test']);
+    expect(Object.keys(STORE_JOBS).sort()).toEqual([
+      'coding-standard',
+      'phpstan',
+      'smoke-test',
+      'unit-test',
+    ]);
+  });
+
+  it('declares phpstan as the only opt-in job', () => {
+    expect(STORE_JOBS['phpstan'].enabledByDefault).toBe(false);
+    for (const name of ['unit-test', 'coding-standard', 'smoke-test']) {
+      expect(STORE_JOBS[name].enabledByDefault).toBeUndefined();
+    }
   });
 
   it('declares smoke-test required tiers (end-user cannot toggle)', () => {
@@ -35,9 +47,10 @@ describe('STORE_JOBS', () => {
     expect(STORE_JOBS['smoke-test'].probes).toEqual(['page']);
   });
 
-  it('exposes empty service defaults for unit-test and coding-standard', () => {
+  it('exposes empty service defaults for unit-test, coding-standard and phpstan', () => {
     expect(STORE_JOBS['unit-test'].services).toEqual([]);
     expect(STORE_JOBS['coding-standard'].services).toEqual([]);
+    expect(STORE_JOBS['phpstan'].services).toEqual([]);
   });
 
   it('keeps KNOWN_JOBS_STORE in sync with the map keys', () => {
@@ -48,7 +61,12 @@ describe('STORE_JOBS', () => {
 describe('resolveStoreConfig', () => {
   it('emits every known job with default tier expansion, always including mysql for smoke-test', () => {
     const resolved = resolveStoreConfig({}, MATRIX);
-    expect(Object.keys(resolved).sort()).toEqual(['coding-standard', 'smoke-test', 'unit-test']);
+    expect(Object.keys(resolved).sort()).toEqual([
+      'coding-standard',
+      'phpstan',
+      'smoke-test',
+      'unit-test',
+    ]);
     expect(resolved['unit-test'].matrix.include[0].services).toEqual({});
     expect(Object.keys(resolved['smoke-test'].matrix.include[0].services!).sort()).toEqual([
       'mysql',
@@ -73,6 +91,17 @@ describe('resolveStoreConfig', () => {
       'rabbitmq',
       'valkey',
     ]);
+  });
+
+  it('leaves phpstan disabled when the caller says nothing', () => {
+    const resolved = resolveStoreConfig({}, MATRIX);
+    expect(resolved['phpstan'].enabled).toBe(false);
+    expect(resolved['unit-test'].enabled).toBe(true);
+  });
+
+  it('enables phpstan when the caller opts in', () => {
+    expect(resolveStoreConfig({ jobs: { phpstan: true } }, MATRIX)['phpstan'].enabled).toBe(true);
+    expect(resolveStoreConfig({ jobs: { phpstan: {} } }, MATRIX)['phpstan'].enabled).toBe(true);
   });
 
   it('honors enabled=false for a job', () => {

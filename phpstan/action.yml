@@ -1,0 +1,165 @@
+name: "PHPStan"
+author: "Graycore"
+description: "A Github Action that runs PHPStan with the Magento PHPStan extension."
+
+inputs:
+  working-directory:
+    required: false
+    default: "."
+    description: "The project root containing `vendor/`. Accepts the output of the setup-magento action."
+
+  path:
+    required: false
+    default: "."
+    description: "The directory containing the code to analyze, relative to `working-directory`. Only used when generating a config; ignored when a phpstan config file is found."
+
+  level:
+    required: false
+    default: "1"
+    description: "The PHPStan rule level to analyze at. Only used when generating a config; a phpstan config file of your own supplies its own level."
+
+  version:
+    required: false
+    default: "^2"
+    description: "The version of phpstan/phpstan to use."
+
+  phpstan_magento_version:
+    required: false
+    default: "*"
+    description: "The version of bitexpert/phpstan-magento to use."
+
+  configuration:
+    required: false
+    default: ""
+    description: "Path to a phpstan config file, absolute or relative to `working-directory`. If not provided, an existing phpstan.neon/phpstan.neon.dist/phpstan.dist.neon in `working-directory` is used, otherwise one is generated."
+
+  memory_limit:
+    required: false
+    default: "-1"
+    description: "The memory limit to run PHPStan with. Analyzing Magento needs more than PHP's default."
+
+  error_format:
+    required: false
+    default: ""
+    description: "The PHPStan error format (e.g. `github` to emit workflow annotations). Defaults to PHPStan's table output."
+
+  composer_auth:
+    required: false
+    default: ""
+    description: "Composer authentication credentials (contents of auth.json as a JSON string)"
+
+runs:
+  using: composite
+  steps:
+    - name: Check if PHPStan is already installed
+      id: check-installed
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        if [ -f "vendor/bin/phpstan" ] && [ -d "vendor/bitexpert/phpstan-magento" ]; then
+          echo "installed=true" >> $GITHUB_OUTPUT
+        else
+          echo "installed=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Install PHPStan
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      ## --with-all-dependencies: a plain require is a partial update, which cannot move
+      ## anything already in the lock file. bitexpert/phpstan-magento caps symfony/finder at
+      ## ^7 while a PHP 8.4+ tree resolves ^8, so the shared dependency has to be free to
+      ## move or Composer settles on a release too old to know about Magento\TestFramework.
+      run: composer require --dev --with-all-dependencies "phpstan/phpstan:${{ inputs.version }}" "bitexpert/phpstan-magento:${{ inputs.phpstan_magento_version }}"
+      if: steps.check-installed.outputs.installed != 'true'
+      env:
+        COMPOSER_AUTH: ${{ inputs.composer_auth }}
+
+    - name: Resolve PHPStan configuration
+      id: configuration
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        CONFIGURATION: ${{ inputs.configuration }}
+        ANALYZE_PATH: ${{ inputs.path }}
+        LEVEL: ${{ inputs.level }}
+      run: |
+        if [ -n "$CONFIGURATION" ]; then
+          echo "file=$CONFIGURATION" >> $GITHUB_OUTPUT
+          exit 0
+        fi
+
+        for CANDIDATE in phpstan.neon phpstan.neon.dist phpstan.dist.neon; do
+          if [ -f "$CANDIDATE" ]; then
+            echo "file=$CANDIDATE" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+        done
+
+        ## Generated outside the checkout so the caller's repository is left untouched.
+        ## Relative paths in a neon resolve against the config file, so every path is absolute.
+        GENERATED="$(mktemp -d)/phpstan.neon"
+        cat > "$GENERATED" << EOF
+        includes:
+            - ${PWD}/vendor/bitexpert/phpstan-magento/extension.neon
+        parameters:
+            level: ${LEVEL}
+            paths:
+                - ${PWD}/${ANALYZE_PATH}
+        EOF
+
+        ## Analyzing the project root would walk into Magento itself. An extension is
+        ## instead analyzed from where Composer installed it, so there the project's
+        ## vendor/ must stay in scope and only the extension's own nested one is dropped.
+        case "$ANALYZE_PATH" in
+          vendor|vendor/*)
+        cat >> "$GENERATED" << EOF
+            excludePaths:
+                analyse:
+                    - ${PWD}/${ANALYZE_PATH}/vendor/*
+        EOF
+            ;;
+          *)
+        cat >> "$GENERATED" << EOF
+            excludePaths:
+                analyse:
+                    - ${PWD}/vendor/*
+                    - ${PWD}/generated/*
+                    - ${PWD}/var/*
+                    - ${PWD}/dev/*
+                    - ${PWD}/setup/*
+        EOF
+            ;;
+        esac
+
+        ## Magento\TestFramework ships in magento2-base's dev/tests, so it exists only inside
+        ## a full Magento install. Analyzing an extension against its own dependencies cannot
+        ## resolve it, and every integration test would report class.notFound.
+        if [ ! -d "dev/tests/integration/framework" ]; then
+        cat >> "$GENERATED" << EOF
+                    - ${PWD}/*Test/Integration/*
+                    - ${PWD}/*Test/Api/*
+        EOF
+        fi
+
+        echo "file=$GENERATED" >> $GITHUB_OUTPUT
+
+    - name: PHPStan Analysis
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        CONFIGURATION: ${{ steps.configuration.outputs.file }}
+        MEMORY_LIMIT: ${{ inputs.memory_limit }}
+        ERROR_FORMAT: ${{ inputs.error_format }}
+      run: |
+        FLAGS=()
+        [ -n "$ERROR_FORMAT" ] && FLAGS+=(--error-format="$ERROR_FORMAT") || true
+
+        vendor/bin/phpstan analyse \
+          --configuration="$CONFIGURATION" \
+          --memory-limit="$MEMORY_LIMIT" \
+          --no-progress \
+          "${FLAGS[@]}"
+
+branding:
+  icon: "search"
+  color: "green"

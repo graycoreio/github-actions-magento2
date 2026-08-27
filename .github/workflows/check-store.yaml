@@ -183,6 +183,63 @@ jobs:
           path: ${{ steps.setup-magento.outputs.path }}
           composer_auth: ${{ secrets.composer_auth }}
 
+  phpstan:
+    runs-on: ${{ matrix.os }}
+    needs: compute_matrix
+    if: ${{ fromJSON(needs.compute_matrix.outputs.resolved)['phpstan'].enabled != false }}
+    strategy:
+      matrix: ${{ fromJSON(needs.compute_matrix.outputs.resolved)['phpstan'].matrix }}
+
+    steps:
+      - uses: actions/checkout@v7
+        if: inputs.store_artifact_name == ''
+
+      - uses: actions/download-artifact@v8
+        if: inputs.store_artifact_name != ''
+        with:
+          name: ${{ inputs.store_artifact_name }}
+          path: ${{ inputs.path }}
+
+      - uses: graycoreio/github-actions-magento2/setup-magento@main
+        id: setup-magento
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v${{ matrix.composer }}
+          mode: store
+          working-directory: ${{ inputs.path }}
+          composer_auth: ${{ secrets.composer_auth }}
+
+      - uses: graycoreio/github-actions-magento2/cache-magento@main
+        with:
+          composer_cache_key: ${{ inputs.composer_cache_key }}
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          stamp: ${{ inputs.stamp }}
+
+      - name: Composer install
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        run: composer install
+        env:
+          COMPOSER_AUTH: ${{ secrets.composer_auth }}
+
+      - name: Check for custom code
+        id: custom-code
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        run: |
+          if [ -n "$(find app/code -name '*.php' -print -quit 2>/dev/null)" ]; then
+            echo "found=true" >> $GITHUB_OUTPUT
+          else
+            echo "found=false" >> $GITHUB_OUTPUT
+          fi
+
+      ## PHPStan fails outright on an empty path, so a store with no app/code has nothing to analyze.
+      - uses: graycoreio/github-actions-magento2/phpstan@phpstan
+        if: steps.custom-code.outputs.found == 'true'
+        with:
+          working-directory: ${{ steps.setup-magento.outputs.path }}
+          path: app/code
+          error_format: github
+          composer_auth: ${{ secrets.composer_auth }}
+
   smoke-test:
     runs-on: ${{ matrix.os }}
     needs: compute_matrix
@@ -251,7 +308,7 @@ jobs:
   gate:
     name: Check Store Success
     runs-on: ubuntu-latest
-    needs: [compute_matrix, unit-test, coding-standard, smoke-test]
+    needs: [compute_matrix, unit-test, coding-standard, phpstan, smoke-test]
     if: always()
     steps:
       - name: Check results

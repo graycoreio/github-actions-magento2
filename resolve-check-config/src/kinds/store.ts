@@ -11,6 +11,7 @@ import { JobDefaults, Matrix, RawConfig, ResolvedConfig } from '../types';
 export const STORE_JOBS: Record<string, JobDefaults> = {
   'unit-test': { services: [] },
   'coding-standard': { services: [] },
+  'phpstan': { services: [], enabledByDefault: false },
   'smoke-test': {
     services: [],
     requiredServices: ['db', 'search', 'queue', 'cache', 'web'],

@@ -47,7 +47,11 @@ jobs:
         outputs:
             resolved: ${{ steps.resolve.outputs.resolved }}
         steps:
-            - uses: graycoreio/github-actions-magento2/resolve-check-config@main
+            ## resolve-check-config reads `.github/check-extension.json` from the workspace,
+            ## so the caller's repository has to be on disk before it runs.
+            - uses: actions/checkout@v7
+
+            - uses: graycoreio/github-actions-magento2/resolve-check-config@phpstan
               id: resolve
               with:
                   kind: extension
@@ -214,6 +218,38 @@ jobs:
           path: ${{ inputs.path }}
           composer_auth: ${{ secrets.composer_auth }}
 
+    phpstan:
+      runs-on:  ${{ matrix.os }}
+      needs: [compute_resolved, compute_latest_matrix]
+      if: ${{ fromJSON(needs.compute_resolved.outputs.resolved)['phpstan'].enabled != false }}
+      strategy:
+          matrix: ${{ fromJSON(needs.compute_latest_matrix.outputs.matrix) }}
+          fail-fast: ${{ inputs.fail-fast }}
+      steps:
+      - uses: actions/checkout@v7
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v${{ matrix.composer }}
+          coverage: none
+
+      - uses: graycoreio/github-actions-magento2/cache-magento@main
+        with:
+          composer_cache_key: ${{ inputs.composer_cache_key && format('{0} | {1}', inputs.composer_cache_key, matrix.magento) || matrix.magento }}
+
+      - name: Composer install
+        working-directory: ${{ inputs.path }}
+        run: composer install
+        env:
+          COMPOSER_AUTH: ${{ secrets.composer_auth }}
+
+      - uses: graycoreio/github-actions-magento2/phpstan@phpstan
+        with:
+          working-directory: ${{ inputs.path }}
+          error_format: github
+          composer_auth: ${{ secrets.composer_auth }}
+
     integration_test:
       runs-on:  ${{ matrix.os }}
       needs: compute_resolved
@@ -311,7 +347,7 @@ jobs:
     gate:
       name: Check Extension Success
       runs-on: ubuntu-latest
-      needs: [compute_resolved, unit-test-extension, compile-extension, compute_latest_matrix, coding-standard, integration_test]
+      needs: [compute_resolved, unit-test-extension, compile-extension, compute_latest_matrix, coding-standard, phpstan, integration_test]
       if: always()
       steps:
         - name: Check results

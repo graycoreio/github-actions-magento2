@@ -11,6 +11,7 @@
       "properties": {
         "unit-test": { "$ref": "#/$defs/jobConfig" },
         "coding-standard": { "$ref": "#/$defs/jobConfig" },
+        "phpstan": { "$ref": "#/$defs/phpstanJobConfig" },
         "smoke-test": { "$ref": "#/$defs/smokeJobConfig" }
       },
       "additionalProperties": false
@@ -34,6 +35,27 @@
           "additionalProperties": true
         }
       ]
+    },
+    "optInJobConfig": {
+      "description": "Base shape for a job that stays off until the config names it. Boolean form is shorthand for { enabled: <bool> }; object form allows extra per-job keys.",
+      "oneOf": [
+        { "type": "boolean" },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Whether the job should run. Defaults to true when the key is present, false when it is absent.",
+              "default": true
+            }
+          },
+          "additionalProperties": true
+        }
+      ]
+    },
+    "phpstanJobConfig": {
+      "description": "How the phpstan job should be configured. Opt-in — PHPStan does not run unless this key is present. Analysis itself is configured by a phpstan.neon in your repo: https://phpstan.org/config-reference",
+      "allOf": [{ "$ref": "#/$defs/optInJobConfig" }]
     },
     "smokeJobConfig": {
       "description": "How the smoke-test job should be configured. Boolean form is shorthand for { enabled: <bool> }; object form adds a `probes` list on top of `enabled`.",

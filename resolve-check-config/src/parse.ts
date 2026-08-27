@@ -38,7 +38,10 @@ export const normalizeProbes = (
  * shape, the `services` tier list, and the `probes` list; throws on
  * unexpected input. The caller supplies the per-job defaults, used
  * when `services`/`probes` are omitted from the entry. `probes` is
- * `undefined` for jobs that declare no probe defaults.
+ * `undefined` for jobs that declare no probe defaults. An omitted
+ * entry falls back to the job's `enabledByDefault`; naming the job at
+ * all is an explicit opt-in, so the object form without `enabled`
+ * still resolves to enabled.
  */
 export const normalizeJobEntry = (
   jobName: string,
@@ -46,7 +49,11 @@ export const normalizeJobEntry = (
   defaults: JobDefaults,
 ): { enabled: boolean; tiers: readonly Tier[]; probes?: readonly Probe[] } => {
   if (raw === undefined) {
-    return { enabled: true, tiers: defaults.services, probes: defaults.probes };
+    return {
+      enabled: defaults.enabledByDefault ?? true,
+      tiers: defaults.services,
+      probes: defaults.probes,
+    };
   }
   if (typeof raw === 'boolean') {
     return { enabled: raw, tiers: defaults.services, probes: defaults.probes };

@@ -20,7 +20,7 @@ The Magento matrix format outlined by the [supported versions action.](https://g
 
 ## Configuration
 
-Each check can be toggled on/off through an optional `.github/check-extension.json` file in the repo that calls this workflow. 
+Each check can be toggled on/off through an optional `.github/check-extension.json` file in the repo that calls this workflow.
 
 You can learn more about this file here in the [`resolve-check-config` action.](../../resolve-check-config/README.md): 
 

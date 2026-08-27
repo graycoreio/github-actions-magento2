@@ -12,6 +12,7 @@ export const EXTENSION_JOBS: Record<string, JobDefaults> = {
   'unit-test-extension': { services: [] },
   'compile-extension': { services: [] },
   'coding-standard': { services: [] },
+  'phpstan': { services: [], enabledByDefault: false },
   'integration_test': {
     services: [],
     requiredServices: ['db', 'search', 'queue', 'cache'],

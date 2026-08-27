@@ -20,6 +20,7 @@ describe('EXTENSION_JOBS', () => {
       'coding-standard',
       'compile-extension',
       'integration_test',
+      'phpstan',
       'unit-test-extension',
     ]);
   });
@@ -39,9 +40,16 @@ describe('EXTENSION_JOBS', () => {
   });
 
   it('leaves the non-service jobs with empty defaults', () => {
-    for (const name of ['unit-test-extension', 'compile-extension', 'coding-standard']) {
+    for (const name of ['unit-test-extension', 'compile-extension', 'coding-standard', 'phpstan']) {
       expect(EXTENSION_JOBS[name].services).toEqual([]);
       expect(EXTENSION_JOBS[name].requiredServices).toBeUndefined();
+    }
+  });
+
+  it('declares phpstan as the only opt-in job', () => {
+    expect(EXTENSION_JOBS['phpstan'].enabledByDefault).toBe(false);
+    for (const name of ['unit-test-extension', 'compile-extension', 'coding-standard', 'integration_test']) {
+      expect(EXTENSION_JOBS[name].enabledByDefault).toBeUndefined();
     }
   });
 });
@@ -53,15 +61,30 @@ describe('resolveExtensionConfig', () => {
       'coding-standard',
       'compile-extension',
       'integration_test',
+      'phpstan',
       'unit-test-extension',
     ]);
   });
 
   it('emits services={} for the non-service jobs', () => {
     const resolved = resolveExtensionConfig({}, MATRIX);
-    for (const name of ['unit-test-extension', 'compile-extension', 'coding-standard']) {
+    for (const name of ['unit-test-extension', 'compile-extension', 'coding-standard', 'phpstan']) {
       expect(resolved[name].matrix.include[0].services).toEqual({});
     }
+  });
+
+  it('leaves phpstan disabled when the caller says nothing', () => {
+    const resolved = resolveExtensionConfig({}, MATRIX);
+    expect(resolved['phpstan'].enabled).toBe(false);
+    expect(resolved['coding-standard'].enabled).toBe(true);
+  });
+
+  it('enables phpstan when the caller opts in', () => {
+    expect(resolveExtensionConfig({ jobs: { phpstan: true } }, MATRIX)['phpstan'].enabled).toBe(true);
+    expect(resolveExtensionConfig({ jobs: { phpstan: {} } }, MATRIX)['phpstan'].enabled).toBe(true);
+    expect(
+      resolveExtensionConfig({ jobs: { phpstan: { enabled: true } } }, MATRIX)['phpstan'].enabled,
+    ).toBe(true);
   });
 
   it('integration_test includes mysql/search/queue/cache but NOT nginx/php-fpm', () => {

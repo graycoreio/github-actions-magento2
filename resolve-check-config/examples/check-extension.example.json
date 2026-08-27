@@ -4,6 +4,7 @@
     "unit-test-extension": true,
     "compile-extension": true,
     "coding-standard": true,
+    "phpstan": true,
     "integration_test": {
       "services": ["search", "cache"]
     }

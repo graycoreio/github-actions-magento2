@@ -3,11 +3,9 @@
   "jobs": {
     "unit-test": true,
     "coding-standard": true,
-    "integration-test": {
-      "services": ["search", "queue", "cache"]
-    },
+    "phpstan": true,
     "smoke-test": {
-      "services": ["search", "queue", "cache", "nginx", "php-fpm"],
+      "services": ["search", "queue", "cache", "web"],
       "probes": ["page", "graphql"]
     }
   }

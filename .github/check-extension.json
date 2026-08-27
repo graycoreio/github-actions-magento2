@@ -1,0 +1,6 @@
+{
+  "$schema": "../resolve-check-config/check-extension.schema.json",
+  "jobs": {
+    "phpstan": true
+  }
+}
