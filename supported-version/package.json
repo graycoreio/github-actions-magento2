@@ -11,8 +11,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "0.0.0-PLACEHOLDER",
-    "@actions/github": "0.0.0-PLACEHOLDER"
+    "@actions/core": "0.0.0-PLACEHOLDER"
   },
   "devDependencies": {
     "@types/jest": "0.0.0-PLACEHOLDER",
