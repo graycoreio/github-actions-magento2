@@ -51,7 +51,7 @@ jobs:
             ## so the caller's repository has to be on disk before it runs.
             - uses: actions/checkout@v7
 
-            - uses: graycoreio/github-actions-magento2/resolve-check-config@phpstan
+            - uses: graycoreio/github-actions-magento2/resolve-check-config@main
               id: resolve
               with:
                   kind: extension
@@ -67,7 +67,7 @@ jobs:
         steps:
         - uses: actions/checkout@v7
 
-        - uses: graycoreio/github-actions-magento2/setup-magento@v8.10.0
+        - uses: graycoreio/github-actions-magento2/setup-magento@main
           id: setup-magento
           with:
             php-version: ${{ matrix.php }}
@@ -96,7 +96,7 @@ jobs:
           env:
             COMPOSER_AUTH: ${{ secrets.composer_auth }}
 
-        - uses: graycoreio/github-actions-magento2/cache-magento@v8.10.0
+        - uses: graycoreio/github-actions-magento2/cache-magento@main
           with:
             composer_cache_key: ${{ inputs.composer_cache_key && format('{0} | {1}', inputs.composer_cache_key, matrix.magento) || matrix.magento }}
             working-directory: ${{ steps.setup-magento.outputs.path }}
@@ -138,7 +138,7 @@ jobs:
         steps:
         - uses: actions/checkout@v7
 
-        - uses: graycoreio/github-actions-magento2/setup-magento@v8.10.0
+        - uses: graycoreio/github-actions-magento2/setup-magento@main
           id: setup-magento
           with:
             php-version: ${{ matrix.php }}
@@ -167,7 +167,7 @@ jobs:
           env:
             COMPOSER_AUTH: ${{ secrets.composer_auth }}
           
-        - uses: graycoreio/github-actions-magento2/cache-magento@v8.10.0
+        - uses: graycoreio/github-actions-magento2/cache-magento@main
           with:
             composer_cache_key: ${{ inputs.composer_cache_key && format('{0} | {1}', inputs.composer_cache_key, matrix.magento) || matrix.magento }}
             working-directory: ${{ steps.setup-magento.outputs.path }}
@@ -180,7 +180,7 @@ jobs:
             COMPOSER_AUTH: ${{ secrets.composer_auth }}
             COMPOSER_MIRROR_PATH_REPOS: 1
 
-        - uses: graycoreio/github-actions-magento2/setup-di-compile@v8.10.0
+        - uses: graycoreio/github-actions-magento2/setup-di-compile@main
           with:
             path: ${{ steps.setup-magento.outputs.path }}
 
@@ -189,7 +189,7 @@ jobs:
       outputs:
         matrix: ${{ steps.supported-version.outputs.matrix }}
       steps:
-        - uses: graycoreio/github-actions-magento2/supported-version@v8.10.0
+        - uses: graycoreio/github-actions-magento2/supported-version@main
           id: supported-version
           with:
             kind: latest
@@ -209,11 +209,11 @@ jobs:
           tools: composer:v${{ matrix.composer }}
           coverage: none
 
-      - uses: graycoreio/github-actions-magento2/cache-magento@v8.10.0
+      - uses: graycoreio/github-actions-magento2/cache-magento@main
         with:
           composer_cache_key: ${{ inputs.composer_cache_key && format('{0} | {1}', inputs.composer_cache_key, matrix.magento) || matrix.magento }}
 
-      - uses: graycoreio/github-actions-magento2/coding-standard@v8.10.0
+      - uses: graycoreio/github-actions-magento2/coding-standard@main
         with:
           path: ${{ inputs.path }}
           composer_auth: ${{ secrets.composer_auth }}
@@ -234,7 +234,7 @@ jobs:
           tools: composer:v${{ matrix.composer }}
           coverage: none
 
-      - uses: graycoreio/github-actions-magento2/cache-magento@v8.10.0
+      - uses: graycoreio/github-actions-magento2/cache-magento@main
         with:
           composer_cache_key: ${{ inputs.composer_cache_key && format('{0} | {1}', inputs.composer_cache_key, matrix.magento) || matrix.magento }}
 
@@ -244,7 +244,7 @@ jobs:
         env:
           COMPOSER_AUTH: ${{ secrets.composer_auth }}
 
-      - uses: graycoreio/github-actions-magento2/phpstan@phpstan
+      - uses: graycoreio/github-actions-magento2/phpstan@main
         with:
           working-directory: ${{ inputs.path }}
           error_format: github
@@ -261,7 +261,7 @@ jobs:
       steps:
       - uses: actions/checkout@v7
 
-      - uses: graycoreio/github-actions-magento2/setup-magento@v8.10.0
+      - uses: graycoreio/github-actions-magento2/setup-magento@main
         id: setup-magento
         with:
           php-version: ${{ matrix.php }}
@@ -290,7 +290,7 @@ jobs:
         env:
             COMPOSER_AUTH: ${{ secrets.composer_auth }}
             
-      - uses: graycoreio/github-actions-magento2/cache-magento@v8.10.0
+      - uses: graycoreio/github-actions-magento2/cache-magento@main
         with:
           composer_cache_key: ${{ inputs.composer_cache_key && format('{0} | {1}', inputs.composer_cache_key, matrix.magento) || matrix.magento }}
           working-directory: ${{ steps.setup-magento.outputs.path }}
@@ -303,7 +303,7 @@ jobs:
           COMPOSER_AUTH: ${{ secrets.composer_auth }}
           COMPOSER_MIRROR_PATH_REPOS: 1
 
-      - uses: graycoreio/github-actions-magento2/get-magento-version@v8.10.0
+      - uses: graycoreio/github-actions-magento2/get-magento-version@main
         id: magento-version
         with:
           working-directory: ${{ steps.setup-magento.outputs.path }}
