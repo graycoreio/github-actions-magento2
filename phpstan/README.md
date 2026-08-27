@@ -44,7 +44,7 @@ jobs:
 
     - run: composer install
 
-    - uses: graycoreio/github-actions-magento2/phpstan@v8.9.0 # x-release-please-version
+    - uses: graycoreio/github-actions-magento2/phpstan@v8.10.0 # x-release-please-version
       with:
         path: app/code # Optional, defaults to .
         level: 2 # Optional, defaults to 1.

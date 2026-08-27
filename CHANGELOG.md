@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.10.0](https://github.com/graycoreio/github-actions-magento2/compare/v8.9.0...v8.10.0) (2026-08-27)
+
+
+### Features
+
+* **check-extension,check-store:** add support for php-stan ([6557b81](https://github.com/graycoreio/github-actions-magento2/commit/6557b816fc6f93f6e026e211c704e02911fe92dc))
+* **supported-version:** add Mage-OS 3.3.0 (Magento 2.4.9) ([#322](https://github.com/graycoreio/github-actions-magento2/issues/322)) ([f51c347](https://github.com/graycoreio/github-actions-magento2/commit/f51c347010f092e0c78f77f67db4876e5b8fd273))
+* **supported-version:** add Mage-OS 3.4.0 (Magento 2.4.9) ([8285a89](https://github.com/graycoreio/github-actions-magento2/commit/8285a89d9a96561c6b568aed31c59d22d4006381))
+
 ## [8.9.0](https://github.com/graycoreio/github-actions-magento2/compare/v8.8.0...v8.9.0) (2026-07-15)
 
 
