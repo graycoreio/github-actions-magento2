@@ -15,8 +15,8 @@
     "@actions/exec": "3.0.0"
   },
   "devDependencies": {
-    "@types/jest": "0.0.0-PLACEHOLDER",
-    "jest": "0.0.0-PLACEHOLDER",
+    "@types/jest": "30.0.0",
+    "jest": "30.4.2",
     "ts-jest": "0.0.0-PLACEHOLDER"
   }
 }
