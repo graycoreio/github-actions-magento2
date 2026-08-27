@@ -12,16 +12,24 @@ updates:
     cooldown:
       default-days: 3
   - package-ecosystem: "npm"
-    directory: "/"
+    directories:
+      - "/"
+      - "/resolve-check-config"
+      - "/setup-install"
+      - "/supported-version"
     schedule:
       interval: "weekly"
-    # TS subpackages pin deps to 0.0.0-PLACEHOLDER; real versions are managed
-    # in the root package.json Keep Dependabot out of them so it stops 
-    # "bumping" the placeholder (see PR #267).
-    exclude-paths:
-      - "resolve-check-config/**"
-      - "setup-install/**"
-      - "supported-version/**"
+    groups:
+      actions-shared:
+        group-by: dependency-name
+        patterns:
+          - "@actions/*"
+      jest-shared:
+        group-by: dependency-name
+        patterns:
+           - "types/jest"
+           - "jest"
+           - "ts-jest"
     # @types/node tracks the Node runtime version, not the latest release;
     # bumping it ahead of the pinned Node version is noise.
     ignore:
