@@ -169,6 +169,9 @@ describe('getCurrentlySupportedVersions for mage-os', () => {
         ['2026-10-13T00:00:01Z', 'Release of 3.6.0', [
             'mage-os/project-community-edition:3.6.0',
         ]],
+        ['2026-10-30T00:00:01Z', 'Release of 4.0.0', [
+            'mage-os/project-community-edition:4.0.0',
+        ]],
         ])(
         'supportedVersions for %s',
         (date, description ,result) => {
