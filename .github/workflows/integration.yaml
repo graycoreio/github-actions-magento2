@@ -119,6 +119,31 @@ jobs:
       if: |
         steps.magento-version.outputs.version == '"2.4.0"'
 
+    # Composer 2.9+ blocks league/flysystem 2.x (PKSA-w9tt-7782-78jx), which 2.4.7 requires. Remove both
+    # steps once thephpleague/flysystem#1925 ships a patched 2.x or 2.4.7 leaves the supported matrix.
+    - uses: graycoreio/github-actions-magento2/get-composer-version@main
+      id: get-composer-version
+      if: |
+        startsWith(steps.magento-version.outputs.version, '"2.4.7')
+
+    - name: Check if this version of composer blocks insecure packages
+      uses: graycoreio/github-actions-magento2/semver-compare@main
+      id: is-composer-blocking-insecure
+      if: |
+        startsWith(steps.magento-version.outputs.version, '"2.4.7')
+      with:
+        version: 2.9
+        compare_against: ${{ steps.get-composer-version.outputs.version }}
+
+    - run: |
+        composer config --no-interaction --merge --json audit.ignore \
+          '{"PKSA-w9tt-7782-78jx": {"apply": "block", "reason": "No patched league/flysystem 2.x: https://github.com/thephpleague/flysystem/issues/1925"}}'
+      name: Fixup league/flysystem advisory blocking install
+      working-directory:  ${{ inputs.magento_directory }}
+      if: |
+        startsWith(steps.magento-version.outputs.version, '"2.4.7')
+        && steps.is-composer-blocking-insecure.outputs.result < 1
+
     - run: | 
         composer config --no-interaction allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
         composer config --no-interaction allow-plugins.laminas/laminas-dependency-plugin true
