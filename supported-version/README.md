@@ -17,7 +17,7 @@ See the [action.yml](./action.yml)
 | project         | The project to return the supported versions for. Allowed values are `mage-os`, `mage-os-minimal`, and `magento-open-source`                 | false    | 'magento-open-source' |
 | custom_versions | The versions you want to support, as a comma-separated string, i.e. 'magento/project-community-edition:2.3.7-p3, magento/project-community-edition:2.4.2-p2' | false    | ''                    |
 | recent_time_frame | The time frame (from today) used when `kind` is `recent`. Combination of years (y), months (m), and days (d), e.g. `2y 2m 2d`.                               | false    | '2y'                  |
-| include_services | Whether to include a `services` key in each matrix entry with GitHub Actions service container configurations for MySQL, search engine, RabbitMQ, and cache.  | false    | 'true'                |
+| include_services | Whether to include a `services` key in each matrix entry with GitHub Actions service container configurations for the database (MySQL or MariaDB), search engine, RabbitMQ, and cache.  | false    | 'true'                |
 | service_preferences | Comma-separated list of service implementations to prefer (e.g. `elasticsearch,valkey`). See [Service preferences](#service-preferences).                  | false    | ''                    |
 
 ## Kinds
@@ -38,10 +38,11 @@ See the [action.yml](./action.yml)
 
 When `include_services: true` (the default), each matrix entry is enriched with a `services` map. Some tiers of services (for example, search) have more than one valid implementation across the supported Magento versions:
 
+- **db**: `mariadb` or `mysql`
 - **search**: `opensearch` or `elasticsearch`
 - **cache**: `valkey` or `redis`
 
-By default the action picks `opensearch` over `elasticsearch` and `valkey` over `redis` wherever both are available for the matrix entry's Magento version. `service_preferences` lets the caller override that default pick by naming the implementation they want.
+By default the action picks `mariadb` over `mysql`, `opensearch` over `elasticsearch`, and `valkey` over `redis` wherever both are available for the matrix entry's Magento version. `service_preferences` lets the caller override that default pick by naming the implementation they want.
 
 Tiers without a preference fall back to the per-version default pick. Your preferences are **selective**, not **exclusive**.
 
@@ -58,6 +59,7 @@ with:
 
 | Name             | Tier   |
 |------------------|--------|
+| `mariadb`        | db     |
 | `mysql`          | db     |
 | `elasticsearch`  | search |
 | `opensearch`     | search |

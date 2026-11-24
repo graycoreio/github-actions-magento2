@@ -7,6 +7,7 @@ const baseEntry = (overrides: Partial<PackageMatrixVersion> = {}): PackageMatrix
   php: '8.3',
   composer: '2.7.4',
   mysql: 'mysql:8.4',
+  mariadb: '',
   elasticsearch: 'elasticsearch:8.11.4',
   opensearch: 'opensearchproject/opensearch:2.19.1',
   rabbitmq: 'rabbitmq:4.0-management',
@@ -33,6 +34,13 @@ describe('validatePreferencesAgainstMatrix', () => {
     ];
     expect(() => validatePreferencesAgainstMatrix({ search: 'opensearch' }, entries)).toThrow(
       /not satisfied for:\n\s+- magento 2\.4\.5 \(supported: elasticsearch\)/
+    );
+  });
+
+  it('rejects a mysql preference for an entry that only ships mariadb', () => {
+    const entries = [baseEntry({ version: '2.4.7', mysql: '', mariadb: 'mariadb:10.6' })];
+    expect(() => validatePreferencesAgainstMatrix({ db: 'mysql' }, entries)).toThrow(
+      /magento 2\.4\.7 \(supported: mariadb\)/
     );
   });
 

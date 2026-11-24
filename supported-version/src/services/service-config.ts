@@ -20,6 +20,22 @@ export const mysqlConfig: ServiceTemplate = {
   }
 };
 
+export const mariadbConfig: ServiceTemplate = {
+  getConfig(image: string): ServiceConfig {
+    return {
+      image,
+      env: {
+        MYSQL_DATABASE: 'magento_integration_tests',
+        MYSQL_USER: 'user',
+        MYSQL_PASSWORD: 'password',
+        MYSQL_ROOT_PASSWORD: 'rootpassword'
+      },
+      ports: ['3306:3306'],
+      options: '--health-cmd="healthcheck.sh --connect --innodb_initialized" --health-interval=10s --health-timeout=5s --health-retries=3'
+    };
+  }
+};
+
 export const elasticsearchConfig: ServiceTemplate = {
   getConfig(image: string): ServiceConfig {
     return {

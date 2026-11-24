@@ -31,7 +31,7 @@
     "magento": "mage-os/project-community-edition:>=1.0 <1.1",
     "php": 8.3,
     "composer": "2.9.8",
-    "mysql": "mariadb:10.6",
+    "mariadb": "mariadb:10.6",
     "elasticsearch": "elasticsearch:8.11.4",
     "rabbitmq": "rabbitmq:3.13-management",
     "redis": "redis:7.2",

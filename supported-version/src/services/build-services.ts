@@ -1,5 +1,6 @@
 import { PackageMatrixVersion, Services } from '../matrix/matrix-type';
 import {
+  mariadbConfig,
   mysqlConfig,
   elasticsearchConfig,
   opensearchConfig,
@@ -11,6 +12,11 @@ import {
 } from './service-config';
 import { ServicePreferences } from './preferences';
 
+interface DatabaseChoice {
+  type: 'mariadb' | 'mysql';
+  image: string;
+}
+
 interface SearchEngineChoice {
   type: 'opensearch' | 'elasticsearch';
   image: string;
@@ -19,6 +25,32 @@ interface SearchEngineChoice {
 interface CacheChoice {
   type: 'valkey' | 'redis';
   image: string;
+}
+
+/**
+ * Picks the database for a matrix entry. Honors caller's `service_preferences`
+ * when set; otherwise prefers mariadb over mysql.
+ */
+const getDatabaseChoice = (entry: PackageMatrixVersion, preference?: string): DatabaseChoice | null => {
+  if (preference === 'mariadb') {
+    if (entry.mariadb && entry.mariadb.trim() !== '') {
+      return { type: 'mariadb', image: entry.mariadb };
+    }
+    return null;
+  }
+  if (preference === 'mysql') {
+    if (entry.mysql && entry.mysql.trim() !== '') {
+      return { type: 'mysql', image: entry.mysql };
+    }
+    return null;
+  }
+  if (entry.mariadb && entry.mariadb.trim() !== '') {
+    return { type: 'mariadb', image: entry.mariadb };
+  }
+  if (entry.mysql && entry.mysql.trim() !== '') {
+    return { type: 'mysql', image: entry.mysql };
+  }
+  return null;
 }
 
 /**
@@ -75,7 +107,7 @@ const getCacheChoice = (entry: PackageMatrixVersion, preference?: string): Cache
 
 /**
  * Builds the services object for a single matrix entry. Emits every
- * tier the entry has data for: mysql, search (opensearch/elasticsearch),
+ * tier the entry has data for: db (mariadb/mysql), search (opensearch/elasticsearch),
  * queue (rabbitmq), cache (valkey/redis), and web (nginx + php-fpm
  * together). The web tier requires `workspace` so the volume mount
  * has a real path; if the entry lacks either nginx or php data the
@@ -88,8 +120,13 @@ export const buildServicesForEntry = (
 ): Services => {
   const services: Services = {};
 
-  if (entry.mysql && entry.mysql.trim() !== '') {
-    services.mysql = mysqlConfig.getConfig(entry.mysql);
+  const database = getDatabaseChoice(entry, preferences.db);
+  if (database) {
+    if (database.type === 'mariadb') {
+      services.mariadb = mariadbConfig.getConfig(database.image);
+    } else {
+      services.mysql = mysqlConfig.getConfig(database.image);
+    }
   }
 
   const searchEngine = getSearchEngineChoice(entry, preferences.search);
