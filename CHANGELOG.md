@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.12.1](https://github.com/graycoreio/github-actions-magento2/compare/v8.12.0...v8.12.1) (2026-11-24)
+
+
+### Bug Fixes
+
+* **fix-magento-install:** unblock league/flysystem advisory on 2.4.7 ([#348](https://github.com/graycoreio/github-actions-magento2/issues/348)) ([756dad4](https://github.com/graycoreio/github-actions-magento2/commit/756dad4641bf425f0084a9078601d7a44218e641))
+
 ## [8.12.0](https://github.com/graycoreio/github-actions-magento2/compare/v8.11.0...v8.12.0) (2026-10-19)
 
 
