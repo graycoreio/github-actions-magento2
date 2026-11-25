@@ -74,7 +74,7 @@ jobs:
 
     - name: Allow SQL triggers
       run: |
-        mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -u root -prootpassword -e "set global log_bin_trust_function_creators=1;"
+        mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] || job.services.mariadb.ports['3306'] }} -u root -prootpassword -e "set global log_bin_trust_function_creators=1;"
 
     - run: composer create-project --repository-url="${{ inputs.magento_repository }}" "${{ matrix.magento }}" ${{ inputs.magento_directory }} --no-install
       shell: bash

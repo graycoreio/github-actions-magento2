@@ -2,6 +2,7 @@ import { tierFor } from './tier-map';
 
 describe('tierFor', () => {
   it.each([
+    ['mariadb', 'db'],
     ['mysql', 'db'],
     ['elasticsearch', 'search'],
     ['opensearch', 'search'],

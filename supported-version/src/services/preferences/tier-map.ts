@@ -24,6 +24,7 @@ export type ServicePreferences = Partial<Record<Tier, string>>;
  * not alternatives, so picking one via preferences would be meaningless.
  */
 export const SERVICE_TIER_MAP: Record<string, Tier> = {
+  mariadb: 'db',
   mysql: 'db',
   elasticsearch: 'search',
   opensearch: 'search',
@@ -40,7 +41,7 @@ export const SERVICE_TIER_MAP: Record<string, Tier> = {
  * `buildServicesForEntry` to know what to fall back to.
  */
 export const TIER_IMPLEMENTATIONS: Record<Tier, string[]> = {
-  db: ['mysql'],
+  db: ['mariadb', 'mysql'],
   search: ['opensearch', 'elasticsearch'],
   queue: ['rabbitmq'],
   cache: ['valkey', 'redis'],

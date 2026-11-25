@@ -24,3 +24,23 @@ describe('getCompositeVersionsForProject', () => {
         expect(() => getCompositeVersionsForProject(<Project>"spock")).toThrow()
     })
 })
+
+describe('runner os for MariaDB 11+ versions', () => {
+    // The mysqldump client on ubuntu-latest (MySQL 8.4) fails to dump MariaDB 11+ databases in the Magento
+    // integration test setup, because the test framework only passes --column-statistics=0 to mysqldump 8.0
+    // and MariaDB 11+ no longer reports a 5.5.5- version prefix.
+    // See https://github.com/mage-os/github-actions/issues/399
+    const projects: Project[] = ["mage-os", "mage-os-minimal", "magento-open-source"]
+    const mariadb11Entries = projects.flatMap(project => Object.entries({
+        ...getIndividualVersionsForProject(project),
+        ...getCompositeVersionsForProject(project)
+    })).filter(([, entry]) => /^mariadb:(1[1-9]|[2-9]\d)/.test(entry.mariadb ?? ''))
+
+    it('has MariaDB 11+ versions', () => {
+        expect(mariadb11Entries.length).toBeGreaterThan(0)
+    })
+
+    it.each(mariadb11Entries)('%s runs on ubuntu-24.04', (_, entry) => {
+        expect(entry.os).toBe('ubuntu-24.04')
+    })
+})
