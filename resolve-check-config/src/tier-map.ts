@@ -15,7 +15,7 @@ export type Tier = 'db' | 'search' | 'queue' | 'cache' | 'web';
  * the keys that union to the values of the selected tiers here.
  */
 export const TIER_TO_SERVICES: Record<Tier, readonly string[]> = {
-  db: ['mysql'],
+  db: ['mariadb', 'mysql'],
   search: ['opensearch', 'elasticsearch'],
   queue: ['rabbitmq'],
   cache: ['valkey', 'redis'],

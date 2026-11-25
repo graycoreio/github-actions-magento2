@@ -7,6 +7,7 @@ export interface ServiceConfig {
 }
 
 export interface Services {
+    mariadb?: ServiceConfig;
     mysql?: ServiceConfig;
     opensearch?: ServiceConfig;
     elasticsearch?: ServiceConfig;
@@ -15,6 +16,9 @@ export interface Services {
     valkey?: ServiceConfig;
     'php-fpm'?: ServiceConfig;
 }
+
+export const getDatabaseService = (services: Services): ServiceConfig | undefined =>
+    services.mariadb ?? services.mysql;
 
 const BASE_ARGS = [
     '--base-url=http://localhost/',
@@ -31,9 +35,9 @@ const parsePort = (svc: ServiceConfig | undefined, index: 0 | 1, fallback: strin
     return svc?.ports?.[0]?.split(':')[index] ?? fallback;
 };
 
-export const buildMysqlPrepArgs = (mysql: ServiceConfig): string[] => {
-    const rootPassword = mysql.env?.MYSQL_ROOT_PASSWORD ?? 'rootpassword';
-    const port = parsePort(mysql, 0, '3306');
+export const buildMysqlPrepArgs = (database: ServiceConfig): string[] => {
+    const rootPassword = database.env?.MYSQL_ROOT_PASSWORD ?? 'rootpassword';
+    const port = parsePort(database, 0, '3306');
     return ['-h127.0.0.1', `--port=${port}`, '-uroot', `-p${rootPassword}`, '-e', 'SET GLOBAL log_bin_trust_function_creators = 1;'];
 };
 
@@ -45,14 +49,16 @@ export const buildInstallArgs = (services: Services | null, containerMode = fals
     const portIdx: 0 | 1 = containerMode ? 1 : 0;
     const hostFor = (alias: string): string => containerMode ? alias : 'localhost';
 
-    if (services.mysql) {
-        const dbPort = parsePort(services.mysql, portIdx, '3306');
-        const dbHost = containerMode ? `mysql:${dbPort}` : `127.0.0.1:${dbPort}`;
+    const database = getDatabaseService(services);
+    if (database) {
+        const dbAlias = services.mariadb ? 'mariadb' : 'mysql';
+        const dbPort = parsePort(database, portIdx, '3306');
+        const dbHost = containerMode ? `${dbAlias}:${dbPort}` : `127.0.0.1:${dbPort}`;
         args.push(
             `--db-host=${dbHost}`,
-            `--db-name=${services.mysql.env?.MYSQL_DATABASE ?? 'magento'}`,
-            `--db-user=${services.mysql.env?.MYSQL_USER ?? 'magento'}`,
-            `--db-password=${services.mysql.env?.MYSQL_PASSWORD ?? 'magento'}`,
+            `--db-name=${database.env?.MYSQL_DATABASE ?? 'magento'}`,
+            `--db-user=${database.env?.MYSQL_USER ?? 'magento'}`,
+            `--db-password=${database.env?.MYSQL_PASSWORD ?? 'magento'}`,
         );
     }
 

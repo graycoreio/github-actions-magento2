@@ -32,6 +32,10 @@ describe('servicesForTiers', () => {
     expect([...servicesForTiers(['search'])].sort()).toEqual(['elasticsearch', 'opensearch']);
   });
 
+  it('expands the db tier to both implementations', () => {
+    expect([...servicesForTiers(['db'])].sort()).toEqual(['mariadb', 'mysql']);
+  });
+
   it('expands the web tier to nginx + php-fpm', () => {
     expect([...servicesForTiers(['web'])].sort()).toEqual(['nginx', 'php-fpm']);
   });
