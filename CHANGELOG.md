@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.0.0](https://github.com/graycoreio/github-actions-magento2/compare/v8.12.1...v9.0.0) (2026-11-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* **supported-version:** matrix entries that run MariaDB now emit the service as `services.mariadb` instead of `services.mysql`, so steps that read `job.services.mysql` (e.g. for the port) must also check `job.services.mariadb`. Magento 2.4.7-p10 now runs `mariadb:10.11` instead of `mysql:8.0`, 2.4.8-p5 runs `mariadb:11.8` instead of `mysql:8.4`, and 2.4.9, the rolling entry and `:next` default to `mariadb:12.3` instead of `mysql:8.4`. Set `service_preferences: mysql` to keep MySQL on versions that list both.
+
+### Features
+
+* **setup-install,resolve-check-config:** accept a mariadb service ([#351](https://github.com/graycoreio/github-actions-magento2/issues/351)) ([3effbb8](https://github.com/graycoreio/github-actions-magento2/commit/3effbb8f1437d3f234ca8fde16391d2496f2f8ac))
+* **supported-version:** add Mage-OS 4.0.0 (Magento 2.4.9) ([#357](https://github.com/graycoreio/github-actions-magento2/issues/357)) ([06e6e22](https://github.com/graycoreio/github-actions-magento2/commit/06e6e2277a74164b5eb14b8aca2fc0c3a029e8cf))
+* **supported-version:** model MariaDB as a separate service from MySQL ([#349](https://github.com/graycoreio/github-actions-magento2/issues/349)) ([625f98f](https://github.com/graycoreio/github-actions-magento2/commit/625f98f21857811d0bf55364d01366ff0631dd57))
+
+
+### Bug Fixes
+
+* **supported-version:** align Magento 2.4.8-p5 and 2.4.7-p10 with their system requirements ([#359](https://github.com/graycoreio/github-actions-magento2/issues/359)) ([4b770e2](https://github.com/graycoreio/github-actions-magento2/commit/4b770e29c6a090bffc1aff3231d71f0327bd6a29))
+* **supported-version:** align Magento nightly with 2.4.10-alpha system requirements ([#356](https://github.com/graycoreio/github-actions-magento2/issues/356)) ([8a25483](https://github.com/graycoreio/github-actions-magento2/commit/8a25483ee60c6249c47519a3718750d407ebbe74))
+
 ## [8.12.1](https://github.com/graycoreio/github-actions-magento2/compare/v8.12.0...v8.12.1) (2026-11-24)
 
 
