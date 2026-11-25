@@ -82,7 +82,7 @@ jobs:
         COMPOSER_AUTH: ${{ secrets.composer_auth }}
       name: Create Magento ${{ matrix.magento }} Project 
 
-    - uses: graycoreio/github-actions-magento2/get-magento-version@main
+    - uses: graycoreio/github-actions-magento2/get-magento-version@v8.12.1
       id: magento-version
       with:
         working-directory:  ${{ inputs.magento_directory }}
@@ -121,13 +121,13 @@ jobs:
 
     # Composer 2.9+ blocks league/flysystem 2.x (PKSA-w9tt-7782-78jx), which 2.4.7 requires. Remove both
     # steps once thephpleague/flysystem#1925 ships a patched 2.x or 2.4.7 leaves the supported matrix.
-    - uses: graycoreio/github-actions-magento2/get-composer-version@main
+    - uses: graycoreio/github-actions-magento2/get-composer-version@v8.12.1
       id: get-composer-version
       if: |
         startsWith(steps.magento-version.outputs.version, '"2.4.7')
 
     - name: Check if this version of composer blocks insecure packages
-      uses: graycoreio/github-actions-magento2/semver-compare@main
+      uses: graycoreio/github-actions-magento2/semver-compare@v8.12.1
       id: is-composer-blocking-insecure
       if: |
         startsWith(steps.magento-version.outputs.version, '"2.4.7')
