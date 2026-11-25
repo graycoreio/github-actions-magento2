@@ -1052,7 +1052,7 @@
         "valkey": "valkey/valkey:8.1",
         "varnish": "varnish:8",
         "nginx": "nginx:1.28",
-        "os": "ubuntu-latest",
+        "os": "ubuntu-24.04",
         "release": "2026-05-07T00:00:00+0000",
         "eol": "2028-05-31T00:00:00+0000"
     },
@@ -1067,7 +1067,7 @@
         "valkey": "valkey/valkey:9",
         "varnish": "varnish:8",
         "nginx": "nginx:1.28",
-        "os": "ubuntu-latest",
+        "os": "ubuntu-24.04",
         "release": "2026-05-07T00:00:00+0000",
         "eol": "2029-05-31T00:00:00+0000"
     }
