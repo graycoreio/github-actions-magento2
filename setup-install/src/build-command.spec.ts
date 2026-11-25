@@ -23,7 +23,19 @@ const MYSQL_SERVICE = {
     options: '--health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3',
 };
 
-const MYSQL_ARGS = [
+const MARIADB_SERVICE = {
+    image: 'mariadb:11.4',
+    env: {
+        MYSQL_DATABASE: 'magento_integration_tests',
+        MYSQL_USER: 'user',
+        MYSQL_PASSWORD: 'password',
+        MYSQL_ROOT_PASSWORD: 'rootpassword',
+    },
+    ports: ['3306:3306'],
+    options: '--health-cmd="healthcheck.sh --connect --innodb_initialized" --health-interval=10s --health-timeout=5s --health-retries=3',
+};
+
+const DB_ARGS = [
     '--db-host=127.0.0.1:3306',
     '--db-name=magento_integration_tests',
     '--db-user=user',
@@ -67,10 +79,25 @@ describe('buildInstallArgs', () => {
         });
     });
 
-    describe('mysql', () => {
+    describe('database', () => {
         it('adds db flags when mysql service is present', () => {
             const services: Services = { mysql: MYSQL_SERVICE };
-            expect(buildInstallArgs(services)).toEqual([...BASE_ARGS, ...MYSQL_ARGS]);
+            expect(buildInstallArgs(services)).toEqual([...BASE_ARGS, ...DB_ARGS]);
+        });
+
+        it('adds db flags when mariadb service is present', () => {
+            const services: Services = { mariadb: MARIADB_SERVICE };
+            expect(buildInstallArgs(services)).toEqual([...BASE_ARGS, ...DB_ARGS]);
+        });
+
+        it('prefers mariadb over mysql when both are present', () => {
+            const services: Services = {
+                mariadb: MARIADB_SERVICE,
+                mysql: { ...MYSQL_SERVICE, ports: ['3307:3306'] },
+            };
+            const args = buildInstallArgs(services);
+            expect(args).toContain('--db-host=127.0.0.1:3306');
+            expect(args).not.toContain('--db-host=127.0.0.1:3307');
         });
     });
 
@@ -140,8 +167,18 @@ describe('buildInstallArgs', () => {
     });
 
     describe('buildMysqlPrepArgs', () => {
-        it('uses root password and port from service config', () => {
+        it('uses root password and port from mysql service config', () => {
             expect(buildMysqlPrepArgs(MYSQL_SERVICE)).toEqual([
+                '-h127.0.0.1',
+                '--port=3306',
+                '-uroot',
+                '-prootpassword',
+                '-e', 'SET GLOBAL log_bin_trust_function_creators = 1;',
+            ]);
+        });
+
+        it('uses root password and port from mariadb service config', () => {
+            expect(buildMysqlPrepArgs(MARIADB_SERVICE)).toEqual([
                 '-h127.0.0.1',
                 '--port=3306',
                 '-uroot',
@@ -171,7 +208,7 @@ describe('buildInstallArgs', () => {
             };
             expect(buildInstallArgs(services)).toEqual([
                 ...BASE_ARGS,
-                ...MYSQL_ARGS,
+                ...DB_ARGS,
                 ...OPENSEARCH_ARGS,
                 ...RABBITMQ_ARGS,
                 ...CACHE_ARGS,
@@ -187,6 +224,19 @@ describe('buildInstallArgs', () => {
             expect(buildInstallArgs(services, true)).toEqual([
                 ...BASE_ARGS,
                 '--db-host=mysql:3306',
+                '--db-name=magento_integration_tests',
+                '--db-user=user',
+                '--db-password=password',
+            ]);
+        });
+
+        it('uses the mariadb network alias when the mariadb service is present', () => {
+            const services: Services = {
+                mariadb: { ...MARIADB_SERVICE, ports: ['33060:3306'] },
+            };
+            expect(buildInstallArgs(services, true)).toEqual([
+                ...BASE_ARGS,
+                '--db-host=mariadb:3306',
                 '--db-name=magento_integration_tests',
                 '--db-user=user',
                 '--db-password=password',

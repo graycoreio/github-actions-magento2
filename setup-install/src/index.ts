@@ -1,7 +1,7 @@
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
 import * as nodePath from 'path';
-import { buildInstallArgs, buildMysqlPrepArgs, Services } from './build-command';
+import { buildInstallArgs, buildMysqlPrepArgs, getDatabaseService, Services } from './build-command';
 
 const resolveContainerPath = (runnerPath: string): string => {
     const workspace = process.env.GITHUB_WORKSPACE || '';
@@ -28,8 +28,10 @@ export async function run(): Promise<void> {
 
         // setup:install creates MySQL triggers, which requires log_bin_trust_function_creators=1
         // when binary logging is enabled. The prep always runs runner-side against the published port.
-        if (services?.mysql) {
-            await exec.exec('mysql', buildMysqlPrepArgs(services.mysql));
+        // The same SQL works against MariaDB.
+        const database = services ? getDatabaseService(services) : undefined;
+        if (database) {
+            await exec.exec('mysql', buildMysqlPrepArgs(database));
         }
 
         const args = buildInstallArgs(services, containerMode);
