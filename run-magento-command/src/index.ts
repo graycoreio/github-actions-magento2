@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
-import buildCommandArgs from 'build-command.ts'
+import { buildCommandArgs } from './build-command.ts'
 
 async function run(): Promise<void> {
     const containerId = core.getInput('container_id', {
