@@ -1,0 +1,25 @@
+name: "Run Magento command"
+author: "Graycore"
+description: "Executes a Magento CLI command inside the PHP service container."
+
+inputs:
+  container_id:
+    required: true
+    description: "PHP service container ID."
+
+  path:
+    required: false
+    default: "."
+    description: "Path to the Magento root directory. Accepts the output of the setup-magento action."
+
+  command:
+    required: true
+    description: "Magento CLI command and arguments."
+
+runs:
+  using: "node24"
+  main: "dist/index.js"
+
+branding:
+  icon: "terminal"
+  color: "gray-dark"

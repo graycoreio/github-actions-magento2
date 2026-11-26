@@ -1,0 +1,22 @@
+{
+  "name": "@graycoreio/github-actions-magento2-run-magento-command",
+  "version": "1.0.0",
+  "description": "A GitHub Action that executes Magento CLI commands inside the PHP service container.",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "build": "npx esbuild --outfile=dist/index.js --platform=node --bundle --minify src/index.ts",
+    "test": "jest"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "3.0.1",
+    "@actions/exec": "3.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "30.0.0",
+    "jest": "30.4.2",
+    "ts-jest": "0.0.0-PLACEHOLDER"
+  }
+}
