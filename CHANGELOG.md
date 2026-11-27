@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.2.0](https://github.com/graycoreio/github-actions-magento2/compare/v9.1.0...v9.2.0) (2026-11-27)
+
+
+### Features
+
+* **run-magento-command:** add new action ([#361](https://github.com/graycoreio/github-actions-magento2/issues/361)) ([adae059](https://github.com/graycoreio/github-actions-magento2/commit/adae059df26d95374d96542ef7c3ef33b3cd28dc))
+
 ## [9.1.0](https://github.com/graycoreio/github-actions-magento2/compare/v9.0.0...v9.1.0) (2026-11-27)
 
 
