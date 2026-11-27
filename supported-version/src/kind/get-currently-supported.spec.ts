@@ -181,3 +181,23 @@ describe('getCurrentlySupportedVersions for mage-os', () => {
         }
     );
 })
+
+describe('getCurrentlySupportedVersions for mage-os-minimal', () => {
+    const project: Project = "mage-os-minimal";
+
+    test.each([
+        ['2026-05-19T00:00:01Z', 'Release of 3.0.0', [
+            'mage-os/project-minimal-edition:3.0.0',
+        ]],
+        ['2026-10-30T00:00:01Z', 'Release of 4.0.0', [
+            'mage-os/project-minimal-edition:4.0.0',
+        ]],
+        ])(
+        'supportedVersions for %s',
+        (date, description ,result) => {
+            expect(
+                getCurrentlySupportedVersions(project, new Date(date))
+            ).toEqual(result);
+        }
+    );
+})
