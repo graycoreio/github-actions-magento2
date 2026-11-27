@@ -1,0 +1,104 @@
+name: Run Magento Command Test
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches:
+    - main
+    paths:
+    - "run-magento-command/**"
+    - ".github/workflows/_internal-run-magento-command.yaml"
+    - "supported-version/**"
+    - "!**/*.md"
+  pull_request:
+    branches:
+    - main
+    paths:
+    - "run-magento-command/**"
+    - ".github/workflows/_internal-run-magento-command.yaml"
+    - "supported-version/**"
+    - "!**/*.md"
+
+jobs:
+  compute_matrix:
+    if: "!startsWith(github.head_ref, 'release-please')"
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.supported-version.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./supported-version
+        id: supported-version
+        with:
+          kind: currently-supported
+
+  run-magento-command:
+    needs: compute_matrix
+    strategy:
+      matrix: ${{ fromJSON(needs.compute_matrix.outputs.matrix) }}
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    services: ${{ matrix.services }}
+    steps:
+    - uses: actions/checkout@v7
+
+    - uses: ./setup-magento
+      id: setup-magento
+      with:
+        php-version: ${{ matrix.php }}
+        tools: composer:v${{ matrix.composer }}
+        mode: extension
+        magento_version: ${{ matrix.magento }}
+        magento_repository: "https://mirror.mage-os.org/"
+        composer_auth: ${{ secrets.COMPOSER_AUTH }}
+
+    - run: composer update --no-install
+      working-directory: ${{ steps.setup-magento.outputs.path }}
+      env:
+        COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
+
+    - uses: ./cache-magento
+      with:
+        composer_cache_key: ${{ matrix.magento }}
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        stamp: true
+
+    - name: Composer install
+      working-directory: ${{ steps.setup-magento.outputs.path }}
+      run: composer install
+      env:
+        COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
+
+    - uses: ./setup-install
+      with:
+        services: ${{ toJSON(matrix.services) }}
+        path: ${{ steps.setup-magento.outputs.path }}
+        container_id: ${{ job.services['php-fpm'].id }}
+
+    - uses: ./run-magento-command
+      with:
+        container_id: ${{ job.services['php-fpm'].id }}
+        path: /var/www/html/_ghamagento
+        command: config:set general/locale/code fr_FR
+
+    - name: Assert config was written
+      run: |
+        value=$(docker exec -w /var/www/html/_ghamagento ${{ job.services['php-fpm'].id }} php bin/magento config:show general/locale/code)
+        if [ "$value" != "fr_FR" ]; then
+          echo "Expected fr_FR, got: $value"
+          exit 1
+        fi
+
+    - uses: ./run-magento-command
+      id: invalid-command
+      continue-on-error: true
+      with:
+        container_id: ${{ job.services['php-fpm'].id }}
+        path: /var/www/html/_ghamagento
+        command: not:a:command
+
+    - name: Assert invalid command fails the step
+      if: steps.invalid-command.outcome != 'failure'
+      run: |
+        echo "Expected run-magento-command to fail on an unknown command"
+        exit 1
