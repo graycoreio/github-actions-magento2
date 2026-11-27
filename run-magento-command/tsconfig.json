@@ -3,7 +3,7 @@
         "resolveJsonModule": true,
         "esModuleInterop": true,
         "typeRoots": ["../node_modules/@types"],
-        "types": ["jest"],
+        "types": ["jest", "node"],
         "target": "ES2022"
     }
 }

@@ -1,18 +1,24 @@
 # Run Magento Command
 
-Runs `php bin/magento` inside the configured PHP container.
+Runs `php bin/magento <command>` on the runner, or inside a PHP service container when `container_id` is set.
 
 ## Inputs
 
-- container_id
-- path
-- command
+See [action.yml](./action.yml).
 
 ## Example
 
 ```yaml
 - uses: graycoreio/github-actions-magento2/run-magento-command@main
   with:
-      container_id: ${{ job.services['php-fpm'].id }}
-      path: /var/www/html/magento
-      command: cache:flush
+    path: ${{ steps.setup-magento.outputs.path }}
+    command: cache:flush
+```
+
+```yaml
+- uses: graycoreio/github-actions-magento2/run-magento-command@main
+  with:
+    container_id: ${{ job.services['php-fpm'].id }}
+    path: ${{ steps.setup-magento.outputs.path }}
+    command: cache:flush
+```

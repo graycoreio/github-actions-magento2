@@ -1,25 +1,18 @@
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
-import { buildCommandArgs } from './build-command.ts'
+import { buildMagentoArgs, resolveContainerPath } from './build-command';
 
-async function run(): Promise<void> {
-    const containerId = core.getInput('container_id', {
-        required: true
-    });
+const run = async (): Promise<void> => {
+    const containerId = core.getInput('container_id').trim();
+    const path = core.getInput('path') || '.';
+    const args = buildMagentoArgs(core.getInput('command', { required: true }));
 
-    const containerPath = core.getInput('path') || '/var/www/html';
+    if (containerId) {
+        const containerPath = resolveContainerPath(path, process.env.GITHUB_WORKSPACE || '');
+        await exec.exec('docker', ['exec', '-w', containerPath, containerId, 'php', ...args]);
+    } else {
+        await exec.exec('php', args, { cwd: path });
+    }
+};
 
-    const command = core.getInput('command', {
-        required: true
-    });
-
-    const args = buildCommandArgs(
-        containerId,
-        containerPath,
-        command
-    );
-
-    await exec.exec('docker', args);
-}
-
-run().catch(error => core.setFailed(String(error)));
+run().catch(error => core.setFailed((error as Error).message));

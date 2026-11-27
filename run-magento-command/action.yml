@@ -1,11 +1,12 @@
 name: "Run Magento command"
 author: "Graycore"
-description: "Executes a Magento CLI command inside the PHP service container."
+description: "Executes a Magento CLI command on the runner or inside a PHP service container."
 
 inputs:
   container_id:
-    required: true
-    description: "PHP service container ID."
+    required: false
+    default: ""
+    description: "When set, runs the command via `docker exec` inside the container with this `container_id` (typically the value of `job.services['php-fpm'].id`). The workspace is expected to be mounted at /var/www/html."
 
   path:
     required: false
