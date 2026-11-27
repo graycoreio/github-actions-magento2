@@ -1,0 +1,26 @@
+name: "Run Magento command"
+author: "Graycore"
+description: "Executes a Magento CLI command on the runner or inside a PHP service container."
+
+inputs:
+  container_id:
+    required: false
+    default: ""
+    description: "When set, runs the command via `docker exec` inside the container with this `container_id` (typically the value of `job.services['php-fpm'].id`). The workspace is expected to be mounted at /var/www/html."
+
+  path:
+    required: false
+    default: "."
+    description: "Path to the Magento root directory. Accepts the output of the setup-magento action."
+
+  command:
+    required: true
+    description: "Magento CLI command and arguments."
+
+runs:
+  using: "node24"
+  main: "dist/index.js"
+
+branding:
+  icon: "terminal"
+  color: "gray-dark"
