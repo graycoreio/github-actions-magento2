@@ -30,9 +30,9 @@ jobs:
       - uses: ./supported-version
         id: supported-version
         with:
-          kind: currently-supported
+          kind: latest
 
-  run-magento-command:
+  container:
     needs: compute_matrix
     strategy:
       matrix: ${{ fromJSON(needs.compute_matrix.outputs.matrix) }}
@@ -78,23 +78,73 @@ jobs:
     - uses: ./run-magento-command
       with:
         container_id: ${{ job.services['php-fpm'].id }}
-        path: /var/www/html/_ghamagento
-        command: config:set general/locale/code fr_FR
+        path: ${{ steps.setup-magento.outputs.path }}
+        command: maintenance:enable
 
-    - name: Assert config was written
-      run: |
-        value=$(docker exec -w /var/www/html/_ghamagento ${{ job.services['php-fpm'].id }} php bin/magento config:show general/locale/code)
-        if [ "$value" != "fr_FR" ]; then
-          echo "Expected fr_FR, got: $value"
-          exit 1
-        fi
+    - name: Assert maintenance flag was created
+      working-directory: ${{ steps.setup-magento.outputs.path }}
+      run: test -f var/.maintenance.flag
 
     - uses: ./run-magento-command
       id: invalid-command
       continue-on-error: true
       with:
         container_id: ${{ job.services['php-fpm'].id }}
-        path: /var/www/html/_ghamagento
+        path: ${{ steps.setup-magento.outputs.path }}
+        command: not:a:command
+
+    - name: Assert invalid command fails the step
+      if: steps.invalid-command.outcome != 'failure'
+      run: |
+        echo "Expected run-magento-command to fail on an unknown command"
+        exit 1
+
+  runner:
+    needs: compute_matrix
+    strategy:
+      matrix: ${{ fromJSON(needs.compute_matrix.outputs.matrix) }}
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v7
+
+    - uses: ./setup-magento
+      id: setup-magento
+      with:
+        php-version: ${{ matrix.php }}
+        tools: composer:v${{ matrix.composer }}
+        mode: extension
+        magento_version: ${{ matrix.magento }}
+        magento_repository: "https://mirror.mage-os.org/"
+        composer_auth: ${{ secrets.COMPOSER_AUTH }}
+
+    - run: composer update --no-install
+      working-directory: ${{ steps.setup-magento.outputs.path }}
+      env:
+        COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
+
+    - uses: ./cache-magento
+      with:
+        composer_cache_key: ${{ matrix.magento }}
+        working-directory: ${{ steps.setup-magento.outputs.path }}
+        stamp: true
+
+    - name: Composer install
+      working-directory: ${{ steps.setup-magento.outputs.path }}
+      run: composer install
+      env:
+        COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
+
+    - uses: ./run-magento-command
+      with:
+        path: ${{ steps.setup-magento.outputs.path }}
+        command: --version
+
+    - uses: ./run-magento-command
+      id: invalid-command
+      continue-on-error: true
+      with:
+        path: ${{ steps.setup-magento.outputs.path }}
         command: not:a:command
 
     - name: Assert invalid command fails the step
