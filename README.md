@@ -43,4 +43,5 @@ If the reusable workflows do not fit your needs, the individual actions are the 
 | [Supported Version](./supported-version/README.md)           | A Github Action that computes the currently supported Github Actions Matrix for Magento 2 |
 | [Setup Install](./setup-install/README.md)                   | A Github Action that runs `bin/magento setup:install` from the supported-version services matrix |
 | [Setup DI Compile](./setup-di-compile/README.md)             | A Github Action that enables all modules and runs `bin/magento setup:di:compile`                 |
+| [Run Magento Command](./run-magento-command/README.md)       | A Github Action that runs a `bin/magento` command on the runner or inside a PHP service container. |
 | [Sansec eComscan](./sansec-ecomscan/README.md)               | A Github Action that runs the Sansec eComscan security scanner.                                  |
