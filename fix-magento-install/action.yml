@@ -9,7 +9,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: graycoreio/github-actions-magento2/get-magento-version@main
+    - uses: graycoreio/github-actions-magento2/get-magento-version@v9.1.0
       id: init-magento-get-magento-version
       with:
         working-directory: ${{ inputs.magento_directory }}
@@ -36,7 +36,7 @@ runs:
     # Composer 2.9+ blocks league/flysystem 2.x (PKSA-w9tt-7782-78jx), which 2.4.7 requires. Remove both
     # steps once thephpleague/flysystem#1925 ships a patched 2.x or 2.4.7 leaves the supported matrix.
     - name: Check if this version of composer blocks insecure packages
-      uses: graycoreio/github-actions-magento2/semver-compare@main
+      uses: graycoreio/github-actions-magento2/semver-compare@v9.1.0
       id: is-composer-blocking-insecure
       if: |
         startsWith(steps.init-magento-get-magento-version.outputs.version, '"2.4.7')
