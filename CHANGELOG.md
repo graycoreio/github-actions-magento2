@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.1.0](https://github.com/graycoreio/github-actions-magento2/compare/v9.0.0...v9.1.0) (2026-11-27)
+
+
+### Features
+
+* **supported-version:** add support for mage-os minimal 4.0.0 ([048d36c](https://github.com/graycoreio/github-actions-magento2/commit/048d36cf7c6bb87fedbce3144478ba54a2c7397f))
+
 ## [9.0.0](https://github.com/graycoreio/github-actions-magento2/compare/v8.12.1...v9.0.0) (2026-11-25)
 
 
